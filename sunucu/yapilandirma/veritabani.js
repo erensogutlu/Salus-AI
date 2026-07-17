@@ -2,9 +2,20 @@ const { Pool } = require('pg');
 const Knex = require('knex');
 require('dotenv').config();
 
+let dbUrl = process.env.VERITABANI_URL;
+if (dbUrl && !dbUrl.includes('uselibpqcompat=')) {
+  if (dbUrl.includes('sslmode=require')) {
+    dbUrl = dbUrl.replace('sslmode=require', 'sslmode=require&uselibpqcompat=true');
+  } else if (dbUrl.includes('sslmode=prefer')) {
+    dbUrl = dbUrl.replace('sslmode=prefer', 'sslmode=prefer&uselibpqcompat=true');
+  } else if (dbUrl.includes('sslmode=verify-ca')) {
+    dbUrl = dbUrl.replace('sslmode=verify-ca', 'sslmode=verify-ca&uselibpqcompat=true');
+  }
+}
+
 // postgresql ham bağlantı havuzu (geriye dönük uyumluluk için korunmuştur)
 const havuz = new Pool({
-  connectionString: process.env.VERITABANI_URL,
+  connectionString: dbUrl,
   ssl: {
     rejectUnauthorized: false
   }
@@ -14,7 +25,7 @@ const havuz = new Pool({
 const knex = Knex({
   client: 'pg',
   connection: {
-    connectionString: process.env.VERITABANI_URL,
+    connectionString: dbUrl,
     ssl: { rejectUnauthorized: false }
   },
   pool: {
