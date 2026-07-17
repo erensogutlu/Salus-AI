@@ -30,7 +30,8 @@ const istemciUrl = process.env.CLIENT_URL || 'http://localhost:5173';
 uygulama.use(cors({
   origin: (origin, callback) => {
     const izinVerilenler = [istemciUrl, 'http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'];
-    if (!origin || izinVerilenler.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+    const vercelMensei = origin && (origin.endsWith('.vercel.app') || origin.includes('vercel.app'));
+    if (!origin || izinVerilenler.indexOf(origin) !== -1 || vercelMensei || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
       callback(new Error('CORS politikası engeli: bu adrese erişim izni verilmemiştir'));
