@@ -1,4 +1,4 @@
-const API_TEMEL_URL = '/api';
+const API_TEMEL_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://salus-ai-dobw.onrender.com/api' : '/api');
 
 // genel api istek fonksiyonu
 export const apiIstegi = async (yol, secenekler = {}) => {
