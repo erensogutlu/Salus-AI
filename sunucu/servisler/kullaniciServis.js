@@ -366,7 +366,7 @@ class KullaniciServis {
     try {
       const modulesDir = path.join(__dirname, '../yapay_zeka/moduller');
       const files = fs.readdirSync(modulesDir);
-      aktifAraclar = files.filter(f => f.endsWith('.py') && f !== 'ornek_modul.py' && f !== '__init__.py').length;
+      aktifAraclar = files.filter(f => f.endsWith('.py') && f !== '__init__.py').length;
     } catch (err) {
       aktifAraclar = 10;
     }
