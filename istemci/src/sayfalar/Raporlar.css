@@ -1,0 +1,204 @@
+/* salus ai - raporlar sayfası stilleri */
+
+.raporlar-sayfa {
+  padding: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.raporlar-sayfa-baslik {
+  margin-bottom: 30px;
+}
+
+.raporlar-sayfa-baslik h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.raporlar-sayfa-baslik p {
+  color: var(--metin-soluk);
+  font-size: 1.05rem;
+}
+
+.raporlar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.rapor-kart {
+  padding: 20px;
+  border-radius: var(--yuvarlatma);
+  border: 1px solid var(--sinir);
+  position: relative;
+  transition: var(--gecis);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rapor-kart:hover {
+  border-color: rgba(0, 212, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.rapor-baslik {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-right: 30px; /* çöp kutusu için boşluk */
+}
+
+.rapor-hedef {
+  font-family: var(--font-kod);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--birincil);
+  word-break: break-all;
+}
+
+.rapor-tarih {
+  font-size: 0.8rem;
+  color: var(--metin-cok-soluk);
+  margin-top: 4px;
+}
+
+.rapor-sil-buton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--metin-cok-soluk);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: var(--gecis);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rapor-sil-buton:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--tehlike);
+}
+
+.rapor-istatistikler {
+  display: flex;
+  gap: 12px;
+}
+
+.rapor-stat {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  border-radius: var(--yuvarlatma-kucuk);
+  text-align: center;
+}
+
+.rapor-stat-deger {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.rapor-stat-etiket {
+  font-size: 0.75rem;
+  color: var(--metin-soluk);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rapor-detaylar {
+  border-top: 1px solid var(--sinir);
+  padding-top: 16px;
+}
+
+.rapor-detay-baslik {
+  font-size: 0.9rem;
+  color: var(--metin-soluk);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rapor-detay-liste {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rapor-detay-oge {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.rapor-detay-oge .ikon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.raporlar-bos {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--yuvarlatma);
+  border: 1px dashed var(--sinir);
+}
+
+.raporlar-bos-ikon {
+  color: var(--metin-cok-soluk);
+  margin-bottom: 16px;
+}
+
+.raporlar-bos h3 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.raporlar-bos p {
+  color: var(--metin-soluk);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .raporlar-sayfa {
+    padding: 20px;
+  }
+  
+  .raporlar-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* silme modalı */
+.modal-arkaplan {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: belirme 0.2s ease-out;
+}
+
+.modal-icerik {
+  animation: yukari-kaydir 0.3s ease-out;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

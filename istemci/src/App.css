@@ -1,0 +1,95 @@
+/* salus ai - genel uygulama yerleşimi */
+
+.uygulama-konteyner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--arkaplan);
+}
+
+.ana-icerik {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 70px);
+}
+
+/* ortak sayfa animasyonu */
+@keyframes belirme {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dondur {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes nabiz {
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* dönen yükleme ikonu */
+.donen-ikon {
+  animation: dondur 1.2s linear infinite;
+}
+
+/* genel buton animasyonları ve roketleme */
+.buton {
+  cursor: pointer;
+  user-select: none;
+}
+
+.rozet {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.rozet-güvenli, .rozet-düşük, .rozet-dusuk {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--basari);
+  border: 1px solid var(--basari);
+}
+
+.rozet-orta {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--uyari);
+  border: 1px solid var(--uyari);
+}
+
+.rozet-yüksek, .rozet-yuksek {
+  background: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+  border: 1px solid #f97316;
+}
+
+.rozet-tehlikeli, .rozet-kritik {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--tehlike);
+  border: 1px solid var(--tehlike);
+}
+
+/* mobil duyarlılık */
+@media (max-width: 768px) {
+  .ana-icerik {
+    min-height: calc(100vh - 60px);
+  }
+}

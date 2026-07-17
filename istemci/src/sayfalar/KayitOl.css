@@ -1,0 +1,114 @@
+/* salus ai - kayıt ol sayfası stilleri */
+
+.kayit-sayfa {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.kayit-kart {
+  width: 100%;
+  max-width: 480px;
+  padding: 40px;
+  position: relative;
+  z-index: 1;
+  animation: yukari-kaydir 0.5s ease-out;
+}
+
+.kayit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.kayit-form .buton {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+.kayit-satir {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* şifre güç göstergesi */
+.sifre-guc {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.sifre-guc-cubuklar {
+  display: flex;
+  gap: 4px;
+}
+
+.sifre-guc-cubuk {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--sinir);
+  transition: var(--gecis);
+}
+
+.sifre-guc-cubuk.dolu { background: var(--tehlike); }
+.sifre-guc-cubuk.dolu.orta { background: var(--uyari); }
+.sifre-guc-cubuk.dolu.guclu { background: var(--basari); }
+
+.sifre-guc-metin {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.sifre-guc-metin.zayif { color: var(--tehlike); }
+.sifre-guc-metin.orta { color: var(--uyari); }
+.sifre-guc-metin.guclu { color: var(--basari); }
+
+/* şartlar kutusu */
+.sartlar-kutu {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.sartlar-kutu input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  accent-color: var(--birincil);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.sartlar-kutu label {
+  font-size: 0.85rem;
+  color: var(--metin-soluk);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.sartlar-kutu label a {
+  color: var(--birincil);
+}
+
+/* duyarlı tasarım */
+@media (max-width: 480px) {
+  .kayit-kart {
+    padding: 28px 20px;
+  }
+
+  .kayit-satir {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}

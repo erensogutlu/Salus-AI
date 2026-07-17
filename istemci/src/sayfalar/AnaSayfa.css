@@ -1,0 +1,454 @@
+/* salus ai - ana sayfa stilleri */
+
+/* ===== kahraman bölümü ===== */
+.kahraman {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  overflow: hidden;
+}
+
+.kahraman-arkaplan {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* matrix yağmuru efekti */
+.matrix-sutun {
+  position: absolute;
+  top: -100%;
+  font-family: var(--font-kod);
+  font-size: 14px;
+  color: rgba(0, 212, 255, 0.12);
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  animation: matrix-yagmuru linear infinite;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ışık efekti */
+.kahraman-isik {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.kahraman-isik-1 {
+  top: -200px;
+  left: -100px;
+  background: var(--birincil);
+}
+
+.kahraman-isik-2 {
+  bottom: -200px;
+  right: -100px;
+  background: var(--ikincil);
+}
+
+.kahraman-icerik {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 800px;
+  animation: yukari-kaydir 0.8s ease-out;
+}
+
+.kahraman-rozet {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: var(--yuvarlatma-tam);
+  color: var(--birincil);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  animation: nabiz 3s ease-in-out infinite;
+}
+
+.kahraman-rozet-nokta {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--basari);
+  animation: nabiz 1.5s ease-in-out infinite;
+}
+
+.kahraman-baslik {
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  letter-spacing: -2px;
+}
+
+.kahraman-baslik-gradyan {
+  background: linear-gradient(135deg, var(--birincil), #60a5fa, var(--ikincil));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.kahraman-altbaslik {
+  font-size: 1.25rem;
+  color: var(--metin-soluk);
+  margin-bottom: 40px;
+  line-height: 1.7;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.kahraman-butonlar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.kahraman-butonlar .buton {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+/* yüzen ikonlar */
+.yuzen-ikonlar {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.yuzen-ikon {
+  position: absolute;
+  color: rgba(0, 212, 255, 0.08);
+  animation: yukari-asagi ease-in-out infinite;
+}
+
+/* ===== özellikler bölümü ===== */
+.ozellikler {
+  padding: 100px 24px;
+  position: relative;
+}
+
+.bolum-baslik {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.bolum-ust-etiket {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--birincil);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.bolum-ana-baslik {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.bolum-aciklama {
+  font-size: 1.05rem;
+  color: var(--metin-soluk);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.ozellik-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ozellik-kart {
+  padding: 32px 24px;
+  text-align: center;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.ozellik-kart::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--birincil), var(--ikincil));
+  opacity: 0;
+  transition: var(--gecis);
+}
+
+.ozellik-kart:hover::before {
+  opacity: 1;
+}
+
+.ozellik-kart:hover {
+  transform: translateY(-4px);
+}
+
+.ozellik-ikon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--yuvarlatma);
+  background: rgba(0, 212, 255, 0.08);
+  color: var(--birincil);
+  transition: var(--gecis);
+}
+
+.ozellik-kart:hover .ozellik-ikon {
+  background: rgba(0, 212, 255, 0.15);
+  box-shadow: var(--parlama-birincil);
+}
+
+.ozellik-baslik {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.ozellik-aciklama {
+  font-size: 0.9rem;
+  color: var(--metin-soluk);
+  line-height: 1.6;
+}
+
+/* ===== istatistikler bölümü ===== */
+.istatistikler {
+  padding: 80px 24px;
+  background: var(--yuzey);
+  border-top: 1px solid var(--sinir);
+  border-bottom: 1px solid var(--sinir);
+}
+
+.istatistik-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.istatistik-oge {
+  text-align: center;
+  padding: 24px;
+}
+
+.istatistik-deger {
+  font-size: 2.8rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.istatistik-etiket {
+  font-size: 0.9rem;
+  color: var(--metin-soluk);
+  font-weight: 500;
+}
+
+/* ===== nasıl çalışır bölümü ===== */
+.nasil-calisir {
+  padding: 100px 24px;
+  position: relative;
+}
+
+.adimlar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* bağlayıcı çizgi */
+.adimlar::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--birincil), var(--ikincil), var(--birincil));
+  opacity: 0.3;
+}
+
+.adim {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.adim-numara {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--yuzey);
+  border: 2px solid var(--birincil);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--birincil);
+  box-shadow: var(--parlama-birincil);
+}
+
+.adim-baslik {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.adim-aciklama {
+  font-size: 0.9rem;
+  color: var(--metin-soluk);
+  line-height: 1.6;
+}
+
+/* ===== son çağrı bölümü ===== */
+.son-cagri {
+  padding: 100px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.son-cagri-arkaplan {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(124, 58, 237, 0.05));
+  border-top: 1px solid var(--sinir);
+}
+
+.son-cagri-icerik {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.son-cagri-baslik {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.son-cagri-aciklama {
+  font-size: 1.05rem;
+  color: var(--metin-soluk);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+/* animasyonlar scroll ile tetikleme */
+.gorunur-animasyon {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.gorunur-animasyon.gorundu {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* duyarlı tasarım */
+@media (max-width: 1024px) {
+  .ozellik-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .istatistik-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .kahraman {
+    min-height: 80vh;
+    padding: 60px 20px;
+  }
+
+  .kahraman-baslik {
+    font-size: 2.8rem;
+    letter-spacing: -1px;
+  }
+
+  .kahraman-altbaslik {
+    font-size: 1.05rem;
+  }
+
+  .bolum-ana-baslik {
+    font-size: 2rem;
+  }
+
+  .adimlar {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .adimlar::before {
+    display: none;
+  }
+
+  .son-cagri-baslik {
+    font-size: 2rem;
+  }
+
+  .istatistik-deger {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .kahraman-baslik {
+    font-size: 2.2rem;
+  }
+
+  .ozellik-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .istatistik-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .kahraman-butonlar {
+    flex-direction: column;
+  }
+
+  .kahraman-butonlar .buton {
+    width: 100%;
+  }
+}

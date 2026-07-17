@@ -1,0 +1,151 @@
+/* salus ai - alt bilgi (footer) stilleri */
+
+.alt-bilgi {
+  background: var(--yuzey);
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--birincil), var(--ikincil), var(--birincil)) 1;
+  padding: 48px 24px 24px;
+  margin-top: auto;
+}
+
+.alt-bilgi-icerik {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.alt-bilgi-marka {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.alt-bilgi-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.alt-bilgi-logo-ikon {
+  color: var(--birincil);
+  filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.3));
+}
+
+.alt-bilgi-logo-metin {
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.alt-bilgi-aciklama {
+  color: var(--metin-soluk);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  max-width: 320px;
+}
+
+.alt-bilgi-sosyal {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.alt-bilgi-sosyal-baglanti {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--yuvarlatma-kucuk);
+  border: 1px solid var(--sinir);
+  color: var(--metin-soluk);
+  transition: var(--gecis);
+}
+
+.alt-bilgi-sosyal-baglanti:hover {
+  border-color: var(--birincil);
+  color: var(--birincil);
+  background: rgba(0, 212, 255, 0.08);
+}
+
+.alt-bilgi-bolum {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alt-bilgi-baslik {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--metin);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.alt-bilgi-baglanti {
+  color: var(--metin-soluk);
+  font-size: 0.88rem;
+  transition: var(--gecis);
+  text-decoration: none;
+}
+
+.alt-bilgi-baglanti:hover {
+  color: var(--birincil);
+  padding-left: 4px;
+}
+
+.alt-bilgi-alt {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--sinir);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--metin-cok-soluk);
+  font-size: 0.8rem;
+}
+
+.alt-bilgi-alt a {
+  color: var(--metin-soluk);
+}
+
+.alt-bilgi-alt a:hover {
+  color: var(--birincil);
+}
+
+/* duyarlı tasarım */
+@media (max-width: 768px) {
+  .alt-bilgi-icerik {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .alt-bilgi-marka {
+    grid-column: 1 / -1;
+  }
+
+  .alt-bilgi-alt {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .alt-bilgi-icerik {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .alt-bilgi {
+    padding: 32px 16px 16px;
+  }
+}

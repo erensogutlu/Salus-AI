@@ -1,0 +1,41 @@
+# dependencies
+node_modules/
+jspm_packages/
+web_modules/
+istemci/node_modules/
+sunucu/node_modules/
+
+# local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+sunucu/.env
+istemci/.env
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# build outputs
+dist/
+build/
+out/
+istemci/dist/
+
+# editor folders
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db

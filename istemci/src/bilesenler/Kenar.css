@@ -1,0 +1,177 @@
+/* salus ai - kenar çubuğu stilleri */
+
+.kenar-cubugu {
+  width: 260px;
+  min-height: calc(100vh - 70px);
+  background: var(--yuzey);
+  border-right: 1px solid var(--sinir);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  transition: var(--gecis);
+}
+
+.kenar-baslik {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--metin-cok-soluk);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 8px 12px;
+  margin-top: 8px;
+}
+
+.kenar-baglanti {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  color: var(--metin-soluk);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: var(--yuvarlatma-kucuk);
+  transition: var(--gecis);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.kenar-baglanti:hover {
+  color: var(--metin);
+  background: var(--yuzey-acik);
+}
+
+.kenar-baglanti.aktif {
+  color: var(--birincil);
+  background: rgba(0, 212, 255, 0.08);
+  border-left: 3px solid var(--birincil);
+}
+
+.kenar-baglanti .ikon-kapsayici {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--yuvarlatma-kucuk);
+  background: var(--yuzey-acik);
+  flex-shrink: 0;
+}
+
+.kenar-baglanti.aktif .ikon-kapsayici {
+  background: rgba(0, 212, 255, 0.15);
+}
+
+.kenar-ayirici {
+  height: 1px;
+  background: var(--sinir);
+  margin: 12px 0;
+}
+
+/* alt kullanıcı bölümü */
+.kenar-kullanici {
+  margin-top: auto;
+  padding: 16px 12px;
+  border-top: 1px solid var(--sinir);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kenar-kullanici-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.kenar-kullanici-bilgi {
+  flex: 1;
+  min-width: 0;
+}
+
+.kenar-kullanici-ad {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--metin);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kenar-kullanici-rol {
+  font-size: 0.75rem;
+  color: var(--metin-cok-soluk);
+}
+
+/* mobil kenar çubuğu */
+.kenar-mobil-tetik {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 998;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+  transition: var(--gecis);
+}
+
+.kenar-mobil-tetik:hover {
+  transform: scale(1.1);
+}
+
+.kenar-arka {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+@media (max-width: 900px) {
+  .kenar-cubugu {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    height: 100vh;
+    z-index: 1000;
+    width: 260px;
+    transition: left 0.3s ease;
+  }
+
+  .kenar-cubugu.acik {
+    left: 0;
+  }
+
+  .kenar-mobil-tetik {
+    display: flex;
+  }
+
+  .kenar-arka.acik {
+    display: block;
+  }
+}

@@ -1,0 +1,445 @@
+/* salus ai - yönetici paneli (admin panel) stilleri */
+
+.yonetici-sayfa {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.yonetici-karsilama {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.yonetici-karsilama h1 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.yonetici-karsilama p {
+  color: var(--metin-soluk);
+  font-size: 1.1rem;
+}
+
+.yenile-buton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+}
+
+.dönen-ikon {
+  animation: dondur 1s linear infinite;
+}
+
+/* sekmeler */
+.yonetici-sekmeler {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid var(--sinir);
+  padding-bottom: 12px;
+  margin-bottom: 30px;
+}
+
+.sekme-buton {
+  background: transparent;
+  color: var(--metin-soluk);
+  border: 1px solid transparent;
+  padding: 10px 20px;
+  border-radius: var(--yuvarlatma-kucuk);
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--gecis);
+}
+
+.sekme-buton:hover {
+  color: var(--metin);
+  background: var(--yuzey-acik);
+}
+
+.sekme-buton.aktif {
+  color: var(--birincil);
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.yonetici-yukleniyor-kapsayici {
+  padding: 80px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* kullanıcı yönetimi arama barı */
+.arama-filtre-bar {
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+/* tablo ekstra stiller */
+.kendi-satiri td {
+  background: rgba(0, 212, 255, 0.03) !important;
+}
+
+.kullanici-adi-metin {
+  font-weight: 600;
+  color: #fff;
+}
+
+.aktif-kullanici-etiket {
+  background: rgba(0, 212, 255, 0.15);
+  color: var(--birincil);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  text-transform: uppercase;
+}
+
+.soluk-metin {
+  color: var(--metin-cok-soluk);
+  font-style: italic;
+}
+
+.tarih-td {
+  font-family: var(--font-kod);
+  font-size: 0.85rem;
+  color: var(--metin-soluk);
+}
+
+.islem-butonlar {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.islem-buton {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--yuzey-acik);
+  border: 1px solid var(--sinir);
+  color: var(--metin-soluk);
+  transition: var(--gecis);
+}
+
+.islem-buton:hover {
+  color: #fff;
+}
+
+.islem-buton.duzenle:hover {
+  background: rgba(0, 212, 255, 0.15);
+  border-color: var(--birincil);
+  color: var(--birincil);
+}
+
+.islem-buton.sil:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: var(--tehlike);
+  color: var(--tehlike);
+}
+
+.islem-buton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: transparent !important;
+  border-color: var(--sinir) !important;
+  color: var(--metin-cok-soluk) !important;
+}
+
+/* istatistik kartları grid */
+.yonetici-istatistik-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* detay grid (servis ve kaynak) */
+.sistem-detay-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+@media (max-width: 900px) {
+  .sistem-detay-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.servis-kartlari, .kaynak-kullanimi {
+  padding: 24px;
+}
+
+.servis-kartlari h3, .kaynak-kullanimi h3 {
+  margin-bottom: 20px;
+  color: #fff;
+  border-bottom: 1px solid var(--sinir);
+  padding-bottom: 10px;
+}
+
+/* servis listesi */
+.servis-listesi {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.servis-satir {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: var(--yuvarlatma-kucuk);
+  background: var(--yuzey);
+  border: 1px solid var(--sinir);
+}
+
+.servis-bilgi {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.servis-ikon {
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--yuzey-acik);
+}
+
+.database-renk { color: #336791; }
+.cache-renk { color: #d82c20; }
+.server-renk { color: #10b981; }
+.node-renk { color: #68a063; }
+
+.servis-ad {
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.servis-aciklama {
+  font-size: 0.8rem;
+  color: var(--metin-soluk);
+}
+
+/* kaynak kullanımı metrikler */
+.kaynak-istatistikleri {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.kaynak-oge {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 15px;
+}
+
+.kaynak-baslik-alan {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.kaynak-etiket {
+  font-size: 0.85rem;
+  color: var(--metin-soluk);
+  font-weight: 500;
+}
+
+.kaynak-deger {
+  font-weight: 600;
+  color: #fff;
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+.kaynak-load-bar {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-kod);
+  font-size: 1.1rem;
+  color: var(--birincil);
+  margin-top: 4px;
+  text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+}
+
+.load-ayrac {
+  color: var(--metin-cok-soluk);
+}
+
+.kaynak-bellek-deger {
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.kaynak-bar {
+  height: 8px;
+  background: var(--yuzey-acik);
+  border-radius: var(--yuvarlatma-tam);
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.kaynak-bar-dolgu {
+  height: 100%;
+  border-radius: var(--yuvarlatma-tam);
+  transition: width 0.5s ease-out;
+}
+
+.kaynak-bar-bilgi {
+  font-size: 0.8rem;
+  color: var(--metin-cok-soluk);
+}
+
+/* uptime grid */
+.uptime-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.uptime-kutu {
+  background: var(--yuzey);
+  border: 1px solid var(--sinir);
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--metin-soluk);
+}
+
+.uptime-kutu svg {
+  color: var(--birincil);
+}
+
+.uptime-etiket {
+  font-size: 0.75rem;
+  color: var(--metin-cok-soluk);
+}
+
+.uptime-deger {
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.9rem;
+  font-family: var(--font-kod);
+  margin-top: 2px;
+}
+
+.sistem-bos-mesaj {
+  padding: 40px;
+  text-align: center;
+  color: var(--tehlike);
+}
+
+/* düzenleme modalı */
+.yonetici-modal-arka {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 11000;
+  padding: 20px;
+}
+
+.yonetici-modal {
+  width: 100%;
+  max-width: 500px;
+  padding: 24px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.modal-baslik {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--sinir);
+  padding-bottom: 12px;
+}
+
+.modal-baslik h3 {
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.modal-kapat {
+  background: transparent;
+  color: var(--metin-soluk);
+  border: none;
+  cursor: pointer;
+  transition: var(--gecis);
+}
+
+.modal-kapat:hover {
+  color: #fff;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.select-rol {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+.modal-aksiyonlar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+  border-top: 1px solid var(--sinir);
+  padding-top: 16px;
+}
+
+/* mobil uyumlar */
+@media (max-width: 768px) {
+  .yonetici-karsilama {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .yonetici-sekmeler {
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  
+  .sekme-buton {
+    white-space: nowrap;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .uptime-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,176 @@
+/* salus ai - giriş yap sayfası stilleri */
+
+.giris-sayfa {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* arkaplan efektleri */
+.giris-arkaplan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.giris-isik {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.08;
+}
+
+.giris-isik-1 {
+  top: -150px;
+  right: -100px;
+  background: var(--birincil);
+}
+
+.giris-isik-2 {
+  bottom: -150px;
+  left: -100px;
+  background: var(--ikincil);
+}
+
+/* form kartı */
+.giris-kart {
+  width: 100%;
+  max-width: 440px;
+  padding: 40px;
+  position: relative;
+  z-index: 1;
+  animation: yukari-kaydir 0.5s ease-out;
+}
+
+.giris-baslik {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.giris-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.giris-logo-ikon {
+  color: var(--birincil);
+  filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.4));
+}
+
+.giris-logo-metin {
+  font-size: 1.6rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.giris-baslik h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.giris-baslik p {
+  color: var(--metin-soluk);
+  font-size: 0.9rem;
+}
+
+/* form */
+.giris-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.giris-form .form-girisi-ikon {
+  position: relative;
+}
+
+.giris-form .form-girisi-ikon .form-girisi {
+  padding-left: 44px;
+}
+
+.giris-form .form-girisi-ikon .giris-ikon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--metin-cok-soluk);
+  pointer-events: none;
+}
+
+.giris-form .buton {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+/* hata mesajı */
+.giris-hata {
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--yuvarlatma-kucuk);
+  color: var(--tehlike);
+  font-size: 0.85rem;
+  text-align: center;
+  animation: yukari-kaydir 0.3s ease-out;
+}
+
+/* alt bağlantılar */
+.giris-altBaglanti {
+  text-align: center;
+  margin-top: 24px;
+  color: var(--metin-soluk);
+  font-size: 0.9rem;
+}
+
+.giris-altBaglanti a {
+  color: var(--birincil);
+  font-weight: 600;
+}
+
+.giris-altBaglanti a:hover {
+  text-decoration: underline;
+}
+
+/* şifre göster/gizle */
+.sifre-goster {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--metin-cok-soluk);
+  cursor: pointer;
+  padding: 4px;
+  transition: var(--gecis);
+}
+
+.sifre-goster:hover {
+  color: var(--metin);
+}
+
+/* duyarlı tasarım */
+@media (max-width: 480px) {
+  .giris-kart {
+    padding: 28px 20px;
+  }
+
+  .giris-baslik h2 {
+    font-size: 1.3rem;
+  }
+}
