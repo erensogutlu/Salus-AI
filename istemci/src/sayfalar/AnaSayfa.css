@@ -1,5 +1,29 @@
 /* salus ai - ana sayfa stilleri */
 
+/* genel animasyonlar */
+@keyframes matrix-yagmuru {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 0.12; }
+  90% { opacity: 0.12; }
+  100% { transform: translateY(180vh); opacity: 0; }
+}
+
+@keyframes yuz {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-16px) rotate(4deg); }
+}
+
+.gorunur-animasyon {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gorunur-animasyon.gorundu {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* giris bolumu */
 .kahraman {
   position: relative;
@@ -7,7 +31,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 24px;
+  padding: 100px 24px 80px;
   overflow: hidden;
   background-color: #000000;
 }
@@ -16,7 +40,20 @@
   position: absolute;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
   pointer-events: none;
+}
+
+.matrix-sutun {
+  position: absolute;
+  top: -100px;
+  font-family: var(--font-kod);
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  color: var(--birincil);
+  animation: matrix-yagmuru linear infinite;
 }
 
 .kahraman-isik {
@@ -38,19 +75,36 @@
 
 .kahraman-isik-2 {
   bottom: -200px;
-  right: 10%;
+  right: 15%;
   background: #5e5ce6;
   opacity: 0.08;
 }
 
+/* yuzen ikonlar */
+.yuzen-ikonlar {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.yuzen-ikon {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.12);
+  animation: yuz ease-in-out infinite alternate;
+}
+
+/* ana icerik */
 .kahraman-icerik {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 900px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 auto;
 }
 
 .kahraman-rozet {
@@ -68,60 +122,143 @@
   backdrop-filter: blur(20px);
 }
 
-.kahraman-rozet-ikon {
-  color: var(--birincil);
+.kahraman-rozet-nokta {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--birincil);
+  box-shadow: 0 0 8px var(--birincil);
 }
 
 .kahraman-baslik {
-  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  font-size: clamp(2.8rem, 6vw, 4.4rem);
   font-weight: 800;
   letter-spacing: -0.04em;
-  line-height: 1.08;
+  line-height: 1.1;
   margin-bottom: 20px;
   color: #f5f5f7;
 }
 
-.kahraman-aciklama {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  color: var(--metin-soluk);
-  line-height: 1.5;
-  letter-spacing: -0.015em;
-  max-width: 680px;
-  margin-bottom: 36px;
+.kahraman-baslik-gradyan {
+  background: linear-gradient(135deg, #ffffff 40%, #a1a1a6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.kahraman-aksiyonlar {
+.kahraman-altbaslik {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: var(--metin-soluk);
+  line-height: 1.55;
+  letter-spacing: -0.015em;
+  max-width: 680px;
+  margin: 0 auto 36px;
+}
+
+.kahraman-butonlar {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 48px;
 }
 
-.kahraman-guvenlik-ozet {
-  display: flex;
-  align-items: center;
+/* ozellikler bolumu */
+.ozellikler {
+  padding: 100px 24px;
+  background: #000000;
+}
+
+.bolum-baslik {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 56px;
+}
+
+.bolum-ust-etiket {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--birincil);
+  margin-bottom: 10px;
+}
+
+.bolum-ana-baslik {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #f5f5f7;
+  margin-bottom: 14px;
+}
+
+.bolum-aciklama {
+  font-size: 1.05rem;
+  color: var(--metin-soluk);
+  line-height: 1.5;
+}
+
+.ozellik-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 24px;
-  color: var(--metin-cok-soluk);
-  font-size: 0.85rem;
 }
 
-.guvenlik-ozet-oge {
+.ozellik-kart {
+  padding: 36px 28px;
+  background: rgba(28, 28, 30, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.ozellik-kart:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(36, 36, 40, 0.75);
+}
+
+.ozellik-ikon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(0, 113, 227, 0.12);
+  color: var(--birincil);
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-/* istatistikler */
-.istatistikler-bolum {
-  padding: 60px 24px;
+.ozellik-baslik {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.ozellik-aciklama {
+  font-size: 0.92rem;
+  color: var(--metin-soluk);
+  line-height: 1.55;
+}
+
+/* istatistikler bolumu */
+.istatistikler {
+  padding: 80px 24px;
   background: #000000;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.istatistikler-grid {
+.istatistik-grid {
   max-width: 1080px;
   margin: 0 auto;
   display: grid;
@@ -129,12 +266,12 @@
   gap: 24px;
 }
 
-.istatistik-kutu {
+.istatistik-oge {
   text-align: center;
   padding: 24px;
 }
 
-.istatistik-sayi {
+.istatistik-deger {
   font-size: clamp(2.4rem, 4vw, 3.4rem);
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -149,103 +286,66 @@
   letter-spacing: -0.01em;
 }
 
-/* ozellikler alani */
-.ozellikler-bolum {
+/* nasil calisir bolumu */
+.nasil-calisir {
   padding: 100px 24px;
   background: #000000;
 }
 
-.bolum-baslik-alani {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto 64px;
-}
-
-.bolum-etiketi {
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--birincil);
-  margin-bottom: 12px;
-}
-
-.bolum-ana-baslik {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: #f5f5f7;
-  margin-bottom: 16px;
-}
-
-.bolum-alt-metin {
-  font-size: 1.05rem;
-  color: var(--metin-soluk);
-}
-
-.bento-grid {
+.adimlar {
   max-width: 1080px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 32px;
 }
 
-.bento-kart {
-  padding: 36px 30px;
-  background: rgba(28, 28, 30, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+.adim {
+  padding: 36px 28px;
+  background: rgba(28, 28, 30, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  position: relative;
   display: flex;
   flex-direction: column;
 }
 
-.bento-kart:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(36, 36, 40, 0.75);
-}
-
-.bento-kart-genis {
-  grid-column: span 2;
-}
-
-.bento-ikon-kapsayici {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
+.adim-numara {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
   margin-bottom: 20px;
 }
 
-.bento-kart h3 {
-  font-size: 1.3rem;
+.adim-baslik {
+  font-size: 1.2rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: #ffffff;
   margin-bottom: 10px;
 }
 
-.bento-kart p {
-  font-size: 0.92rem;
+.adim-aciklama {
+  font-size: 0.9rem;
   color: var(--metin-soluk);
   line-height: 1.55;
 }
 
-/* eylem cagrisi bolumu */
-.cta-bolum {
-  padding: 100px 24px;
+/* son cagri (cta) bolumu */
+.son-cagri {
+  padding: 80px 24px 120px;
   background: #000000;
 }
 
-.cta-kart {
+.son-cagri-icerik {
   max-width: 1080px;
   margin: 0 auto;
   padding: 64px 36px;
@@ -256,7 +356,7 @@
   backdrop-filter: blur(30px);
 }
 
-.cta-kart h2 {
+.son-cagri-baslik {
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -264,23 +364,20 @@
   margin-bottom: 16px;
 }
 
-.cta-kart p {
+.son-cagri-aciklama {
   font-size: 1.1rem;
   color: var(--metin-soluk);
   max-width: 600px;
   margin: 0 auto 32px;
+  line-height: 1.55;
 }
 
 @media (max-width: 860px) {
-  .istatistikler-grid {
+  .istatistik-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .bento-grid {
+  .adimlar {
     grid-template-columns: 1fr;
-  }
-
-  .bento-kart-genis {
-    grid-column: span 1;
   }
 }
