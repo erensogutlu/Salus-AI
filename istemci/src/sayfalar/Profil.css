@@ -1,53 +1,61 @@
-/* salus ai - profil sayfası stilleri */
+/* salus ai - profil ve ayarlar stilleri */
 
 .profil-sayfa {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 32px;
-  animation: belirme 0.4s ease-out;
+  padding: 48px 24px;
+  animation: belirme 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .profil-baslik {
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
 
 .profil-baslik h1 {
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
   margin-bottom: 8px;
+  color: #f5f5f7;
 }
 
 .profil-baslik p {
   color: var(--metin-soluk);
-  font-size: 0.95rem;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
 }
 
 .profil-grid {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 28px;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  align-items: start;
 }
 
-/* sol sütun: avatar ve hızlı bilgiler */
+/* sol sutun */
 .profil-sol-kart {
-  padding: 24px;
+  padding: 32px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: fit-content;
+  background: rgba(28, 28, 30, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
 }
 
 .profil-avatar-kapsayici {
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 104px;
+  height: 104px;
   margin-bottom: 16px;
   border-radius: 50%;
-  padding: 4px;
-  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
-  box-shadow: var(--parlama-birincil);
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.04));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .profil-avatar-resim {
@@ -55,129 +63,149 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  background: var(--yuzey);
-  border: 3px solid var(--yuzey);
+  background: #1c1c1e;
+  border: 2px solid #000;
 }
 
 .profil-kullanici-adi {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   margin-bottom: 4px;
-  color: var(--metin);
+  color: #ffffff;
 }
 
 .profil-eposta {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: var(--metin-soluk);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .profil-hizli-istatistikler {
   width: 100%;
-  border-top: 1px solid var(--sinir);
-  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 20px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .profil-istatistik-satir {
   display: flex;
   justify-content: space-between;
-  font-size: 0.8rem;
+  align-items: center;
+  font-size: 0.85rem;
+  padding: 6px 0;
 }
 
 .profil-istatistik-satir span:first-child {
   color: var(--metin-soluk);
+  display: flex;
+  align-items: center;
 }
 
 .profil-istatistik-satir span:last-child {
   font-weight: 600;
-  color: var(--birincil);
+  color: #ffffff;
 }
 
-/* sağ sütun: ayarlar sekmeleri */
+/* sag sutun form alani */
 .profil-sag-kart {
-  padding: 28px;
+  padding: 36px 32px;
+  background: rgba(28, 28, 30, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
 }
 
 .profil-form-bolumu {
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
 .profil-form-bolumu h3 {
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--sinir);
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  color: #ffffff;
 }
 
 .profil-form-satir {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 .form-geribildirim {
-  padding: 12px 16px;
-  border-radius: var(--yuvarlatma-kucuk);
-  font-size: 0.85rem;
-  margin-bottom: 16px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .form-geribildirim.basarili {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid var(--basari);
+  background: rgba(48, 209, 88, 0.1);
+  border: 1px solid rgba(48, 209, 88, 0.25);
   color: var(--basari);
 }
 
 .form-geribildirim.hata {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid var(--tehlike);
+  background: rgba(255, 69, 58, 0.1);
+  border: 1px solid rgba(255, 69, 58, 0.25);
   color: var(--tehlike);
 }
 
-/* tehlikeli bölge */
+/* tehlike bolgesi */
 .tehlike-bolgesi {
   margin-top: 40px;
-  border: 1px dashed var(--tehlike);
-  border-radius: var(--yuvarlatma);
-  padding: 20px;
-  background: rgba(239, 68, 68, 0.02);
+  border: 1px solid rgba(255, 69, 58, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  background: rgba(255, 69, 58, 0.04);
 }
 
 .tehlike-bolgesi h3 {
   color: var(--tehlike);
   font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  border: none;
+  padding: 0;
 }
 
 .tehlike-bolgesi p {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: var(--metin-soluk);
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   line-height: 1.5;
 }
 
-/* duyarlı tasarım */
-@media (max-width: 768px) {
+@media (max-width: 840px) {
+  .profil-sayfa {
+    padding: 28px 16px;
+  }
+
   .profil-grid {
     grid-template-columns: 1fr;
+    gap: 24px;
   }
   
   .profil-form-satir {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 }

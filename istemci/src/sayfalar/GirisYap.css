@@ -1,16 +1,17 @@
-/* salus ai - giriş yap sayfası stilleri */
+/* salus ai - giris yap stilleri */
 
 .giris-sayfa {
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 52px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
+  padding: 48px 20px;
   position: relative;
   overflow: hidden;
+  background-color: #000000;
 }
 
-/* arkaplan efektleri */
+/* arkaplan isik efekti */
 .giris-arkaplan {
   position: absolute;
   inset: 0;
@@ -19,33 +20,42 @@
 
 .giris-isik {
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.08;
+  filter: blur(140px);
+  opacity: 0.12;
 }
 
 .giris-isik-1 {
   top: -150px;
-  right: -100px;
+  left: 50%;
+  transform: translateX(-50%);
   background: var(--birincil);
 }
 
 .giris-isik-2 {
-  bottom: -150px;
-  left: -100px;
-  background: var(--ikincil);
+  bottom: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #30d158;
+  opacity: 0.06;
 }
 
-/* form kartı */
+/* form karti */
 .giris-kart {
   width: 100%;
   max-width: 440px;
-  padding: 40px;
+  padding: 44px 36px;
   position: relative;
   z-index: 1;
-  animation: yukari-kaydir 0.5s ease-out;
+  background: rgba(28, 28, 30, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  backdrop-filter: blur(40px) saturate(190%);
+  -webkit-backdrop-filter: blur(40px) saturate(190%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  animation: belirme 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .giris-baslik {
@@ -58,32 +68,32 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .giris-logo-ikon {
-  color: var(--birincil);
-  filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.4));
+  color: #ffffff;
 }
 
 .giris-logo-metin {
-  font-size: 1.6rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #ffffff;
 }
 
 .giris-baslik h2 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  color: #ffffff;
 }
 
 .giris-baslik p {
   color: var(--metin-soluk);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
 }
 
 /* form */
@@ -112,24 +122,26 @@
 
 .giris-form .buton {
   width: 100%;
-  padding: 14px;
-  font-size: 1rem;
-  margin-top: 4px;
+  padding: 13px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 980px;
+  margin-top: 8px;
 }
 
-/* hata mesajı */
+/* hata mesaji */
 .giris-hata {
   padding: 12px 16px;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: var(--yuvarlatma-kucuk);
+  background: rgba(255, 69, 58, 0.1);
+  border: 1px solid rgba(255, 69, 58, 0.25);
+  border-radius: 12px;
   color: var(--tehlike);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   text-align: center;
-  animation: yukari-kaydir 0.3s ease-out;
+  margin-bottom: 20px;
 }
 
-/* alt bağlantılar */
+/* alt baglantilar */
 .giris-altBaglanti {
   text-align: center;
   margin-top: 24px;
@@ -139,17 +151,20 @@
 
 .giris-altBaglanti a {
   color: var(--birincil);
-  font-weight: 600;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity var(--gecis-hiz);
 }
 
 .giris-altBaglanti a:hover {
   text-decoration: underline;
+  opacity: 0.85;
 }
 
-/* şifre göster/gizle */
+/* sifre goster butonu */
 .sifre-goster {
   position: absolute;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -157,20 +172,23 @@
   color: var(--metin-cok-soluk);
   cursor: pointer;
   padding: 4px;
-  transition: var(--gecis);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--gecis-hiz);
 }
 
 .sifre-goster:hover {
-  color: var(--metin);
+  color: #ffffff;
 }
 
-/* duyarlı tasarım */
 @media (max-width: 480px) {
   .giris-kart {
-    padding: 28px 20px;
+    padding: 32px 24px;
+    border-radius: 20px;
   }
 
   .giris-baslik h2 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
 }

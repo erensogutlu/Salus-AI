@@ -1,22 +1,29 @@
-/* salus ai - kayıt ol sayfası stilleri */
+/* salus ai - kayit ol stilleri */
 
 .kayit-sayfa {
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 52px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
+  padding: 48px 20px;
   position: relative;
   overflow: hidden;
+  background-color: #000000;
 }
 
 .kayit-kart {
   width: 100%;
-  max-width: 480px;
-  padding: 40px;
+  max-width: 520px;
+  padding: 44px 36px;
   position: relative;
   z-index: 1;
-  animation: yukari-kaydir 0.5s ease-out;
+  background: rgba(28, 28, 30, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  backdrop-filter: blur(40px) saturate(190%);
+  -webkit-backdrop-filter: blur(40px) saturate(190%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  animation: belirme 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .kayit-form {
@@ -27,9 +34,11 @@
 
 .kayit-form .buton {
   width: 100%;
-  padding: 14px;
-  font-size: 1rem;
-  margin-top: 4px;
+  padding: 13px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 980px;
+  margin-top: 8px;
 }
 
 .kayit-satir {
@@ -38,25 +47,25 @@
   gap: 16px;
 }
 
-/* şifre güç göstergesi */
+/* sifre gucu gostergesi */
 .sifre-guc {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .sifre-guc-cubuklar {
   display: flex;
-  gap: 4px;
+  gap: 6px;
 }
 
 .sifre-guc-cubuk {
   flex: 1;
   height: 4px;
-  border-radius: 2px;
-  background: var(--sinir);
-  transition: var(--gecis);
+  border-radius: 980px;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background-color var(--gecis-hiz);
 }
 
 .sifre-guc-cubuk.dolu { background: var(--tehlike); }
@@ -66,24 +75,26 @@
 .sifre-guc-metin {
   font-size: 0.75rem;
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .sifre-guc-metin.zayif { color: var(--tehlike); }
 .sifre-guc-metin.orta { color: var(--uyari); }
 .sifre-guc-metin.guclu { color: var(--basari); }
 
-/* şartlar kutusu */
+/* sartlar kutusu */
 .sartlar-kutu {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
+  margin-top: 4px;
 }
 
 .sartlar-kutu input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  border-radius: 4px;
+  border-radius: 6px;
   accent-color: var(--birincil);
   cursor: pointer;
   flex-shrink: 0;
@@ -94,21 +105,26 @@
   font-size: 0.85rem;
   color: var(--metin-soluk);
   cursor: pointer;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .sartlar-kutu label a {
   color: var(--birincil);
+  text-decoration: none;
 }
 
-/* duyarlı tasarım */
-@media (max-width: 480px) {
+.sartlar-kutu label a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 520px) {
   .kayit-kart {
-    padding: 28px 20px;
+    padding: 32px 24px;
+    border-radius: 20px;
   }
 
   .kayit-satir {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
   }
 }
