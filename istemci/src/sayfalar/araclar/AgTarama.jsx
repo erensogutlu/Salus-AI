@@ -26,14 +26,7 @@ const AgTarama = () => {
   const [gecmis, setGecmis] = useState([]);
   const terminalSonuRef = useRef(null);
 
-  // terminali otomatik aşağı kaydırma iptal edildi (kullanıcı isteği üzerine)
-  // useeffect(() => {
-  // if (terminalsonuref.current) {
-  // terminalsonuref.current.scrollıntoview({ behavior: 'smooth' });
-  // }
-  // }, [loglar]);
-
-  // tarama geçmişini veritabanından yükle
+  // tarama geçmişini yükle
   const gecmisYukle = async () => {
     try {
       const yanit = await taramaSonuclari();
@@ -49,12 +42,12 @@ const AgTarama = () => {
     gecmisYukle();
   }, []);
 
-  // tarama logları ekleme fonksiyonu
+  // log ekleme
   const logEkle = (metin, tip = 'bilgi') => {
     setLoglar((onceki) => [...onceki, { metin, tip, id: Math.random() }]);
   };
 
-  // simülasyonu başlatma
+  // taramayı başlatma
   const taramayiBaslat = async (e) => {
     e.preventDefault();
     if (!hedef.trim()) return;
@@ -68,7 +61,7 @@ const AgTarama = () => {
 
     const beklet = (ms) => new Promise((coz) => setTimeout(coz, ms));
 
-    // simülasyon adımları ve log yazdırma işlemleri
+    // simülasyon adımları
     logEkle(`[+] Tarama başlatılıyor: ${hedef}`, 'komut');
     await beklet(600);
     logEkle(`[*] DNS çözümleniyor: ${hedef}...`, 'bilgi');
@@ -91,7 +84,7 @@ const AgTarama = () => {
       if (yanit.basarili && yanit.veri) {
         const veri = yanit.veri;
         
-        // portları veritabanından gelen veriyle doldur
+        // açık portları işle
         const gelenPortlar = (veri.acikPortlar || []).map(p => ({
           port: p.port,
           servis: p.servis,
@@ -99,14 +92,14 @@ const AgTarama = () => {
           aciklama: `${p.servis} Servisi (${p.risk.toUpperCase()} Risk)`
         }));
         
-        // terminale yazdıracak açık portları loglayalım
+        // terminal logları
         for (let i = 0; i < gelenPortlar.length; i++) {
           const p = gelenPortlar[i];
           logEkle(`[!] AÇIK PORT BULUNDU: ${p.port}/${p.servis} (${p.aciklama})`, 'uyari');
           await beklet(400);
         }
         
-        // kapalı portlardan birkaç simülasyon ekleyelim ki boş durmasın
+        // kapalı port simülasyonu
         const kapaliPortlar = [
           { port: 21, servis: 'FTP', durum: 'kapali', aciklama: 'Dosya aktarım protokolü' },
           { port: 23, servis: 'Telnet', durum: 'kapali', aciklama: 'Şifrelenmemiş terminal bağlantısı' },
@@ -122,7 +115,7 @@ const AgTarama = () => {
         logEkle(`[*] Zafiyet taraması başlatılıyor...`, 'komut');
         await beklet(800);
         
-        // zafiyetleri apı'den alalım
+        // zafiyetleri işle
         const gelenZafiyetler = (veri.tesbitEdilenZafiyetler || []).map((z, index) => {
           const seviyeStr = z.seviye === 'kritik' ? 'kritik' : z.seviye === 'yüksek' ? 'yuksek' : z.seviye === 'orta' ? 'orta' : 'dusuk';
           let bazSkor = seviyeStr === 'kritik' ? 90 : seviyeStr === 'yuksek' ? 75 : seviyeStr === 'orta' ? 50 : 25;
@@ -153,7 +146,7 @@ const AgTarama = () => {
 
         logEkle(`[+] Tarama başarıyla tamamlandı. Sonuçlar rapor haline getirildi.`, 'basari');
 
-        // tüm portları birleştirip gösterelim
+        // port listesi
         const tumPortlar = [
           ...gelenPortlar,
           ...kapaliPortlar
@@ -162,7 +155,7 @@ const AgTarama = () => {
         setPortlar(tumPortlar);
         setZafiyetler(gelenZafiyetler);
         
-        // önerileri apı'den alalım
+        // önerileri işle
         const gelenOneriler = (veri.oneriler || []).map(oneri => ({
           baslik: oneri,
           aciklama: `Bu önlem sisteminizi güvenceye almak için önerilmektedir.`
@@ -172,7 +165,7 @@ const AgTarama = () => {
         setTaramaAktif(false);
         setTamamlandi(true);
 
-        // geçmişi tekrar yükle
+        // geçmişi güncelle
         gecmisYukle();
       } else {
         throw new Error('Analiz basarisiz oldu');

@@ -43,20 +43,20 @@ import Cerezler from './sayfalar/Cerezler';
 
 import './App.css';
 
-// korumalı rotalar için ara katman bileşeni
+// korumalı rota bileşeni
 const KorumaliRota = () => {
   const { oturumAcikMi, yukleniyor } = useYetkilendirme();
 
-  // yükleniyorsa spinner göster
+  // yükleme durumu
   if (yukleniyor) {
     return <YuklemeSpinner tamSayfa metin="Doğrulanıyor..." />;
   }
 
-  // oturum açıksa içeriği, değilse girişe yönlendir
+  // oturum kontrolü
   return oturumAcikMi ? <Outlet /> : <Navigate to="/giris" replace />;
 };
 
-// giriş yapmış kullanıcının tekrar giriş/kayıt sayfalarına gitmesini engeller
+// misafir rotası
 const MisafirRotasi = () => {
   const { oturumAcikMi, yukleniyor } = useYetkilendirme();
 
@@ -78,7 +78,7 @@ const YoneticiRotasi = () => {
 };
 
 function UygulamaIcerik() {
-  // başlangıçta temayı yükle
+  // tema yükleme
   useEffect(() => {
     const kayitliTema = localStorage.getItem('salus-tema') || 'koyu';
     document.documentElement.setAttribute('data-theme', kayitliTema);

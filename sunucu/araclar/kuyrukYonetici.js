@@ -13,7 +13,7 @@ try {
   redisBaglantisi = new IORedis(REDIS_URL, {
     maxRetriesPerRequest: null,
     enableReadyCheck: false,
-    lazyConnect: true // bağlantıyı hemen zorlama, hata durumunu yakalayalım
+    lazyConnect: true // gecikmeli baglanti
   });
 
   redisBaglantisi.on('error', (hata) => {
@@ -38,18 +38,18 @@ try {
   fallbackModu = true;
 }
 
-// socket.io referansı (anlık bildirimler için)
+// soket referansi
 let ioInstance = null;
 
 const socketIoAyarla = (io) => {
   ioInstance = io;
 };
 
-// görev ekle (kuyruğa veya doğrudan yürütmeye)
+// gorev ekle
 const gorevEkle = async (gorevTipi, veri, isleyiciFonksiyon) => {
   if (fallbackModu || !taramaKuyrugu) {
     console.log(`[FALLBACK] Görev kuyruğa alınmadan doğrudan çalıştırılıyor: ${gorevTipi}`);
-    // doğrudan asenkron çalıştır (express thread bloklanmasın)
+    // asenkron calistir
     setImmediate(async () => {
       try {
         const sonuc = await isleyiciFonksiyon(veri);
@@ -66,7 +66,7 @@ const gorevEkle = async (gorevTipi, veri, isleyiciFonksiyon) => {
     return { id: `local_${Date.now()}`, durum: 'isleniyor' };
   }
 
-  // redis aktifse bullmq kuyruğuna ekle
+  // kuyruga ekle
   const job = await taramaKuyrugu.add(gorevTipi, veri, {
     attempts: 3,
     backoff: 5000
@@ -75,13 +75,12 @@ const gorevEkle = async (gorevTipi, veri, isleyiciFonksiyon) => {
   return { id: job.id, durum: 'kuyrukta' };
 };
 
-// worker yapılandırması (sadece redis aktifse çalışır)
+// isci yapilandirmasi
 if (redisBaglantisi && !fallbackModu) {
   const worker = new Worker('salus_taramalar', async (job) => {
     console.log(`[WORKER] Görev başladı: ${job.name} (ID: ${job.id})`);
     
-    // taramayı çalıştır (bu kısım denetleyiciden gelen işleyici fonksiyonları bağlar)
-    // gerçek prodüksiyon kodunda worker ayrı bir süreçte çalıştırılmalıdır
+    // tarama gorevini calistir
     
     if (ioInstance && job.data.soketId) {
       ioInstance.to(job.data.soketId).emit('tarama_durumu', { adim: 'Taramalar yapılıyor...' });

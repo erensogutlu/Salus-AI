@@ -99,7 +99,7 @@ const hedefDogrula = async (hedef) => {
     return { gecerli: true, temizHedef };
   }
   
-  // domain ise dns coz ve ip'leri kontrol et (ssrf/dns rebinding onleme)
+  // domain ise dns coz ve ip kontrolu yap
   try {
     const adresler = await dns.resolve(temizHedef).catch(async () => {
       const { address } = await dns.lookup(temizHedef);
@@ -166,7 +166,7 @@ const zamanAsimiAraci = (sure = 15000) => {
     let istekSuresi = sure;
     const yol = istek.originalUrl || istek.path || '';
     if (yol.includes('/api/tehdit/analiz') || yol.includes('/api/araclar/calistir') || yol.includes('/api/tehdit/log-analiz')) {
-      istekSuresi = 65000; // tarama islemleri icin 65 saniye limit
+      istekSuresi = 65000; // tarama limit suresi
     }
     yanit.setTimeout(istekSuresi, () => {
       if (!yanit.headersSent) {
@@ -180,13 +180,13 @@ const zamanAsimiAraci = (sure = 15000) => {
   };
 };
 
-let cbState = 'CLOSED'; // CLOSED, OPEN, HALF_OPEN
+let cbState = 'CLOSED'; // durum: kapali, acik, yari acik
 let cbConsecutiveErrors = 0;
-const CB_THRESHOLD = 5; // 5 adet ardışık 500 hatası
-const CB_COOLDOWN = 30000; // 30 saniye soğuma süresi
+const CB_THRESHOLD = 5; // hata esigi
+const CB_COOLDOWN = 30000; // bekleme suresi
 let cbLastTripTime = 0;
 
-// ardı ardına çok fazla sistem hatası (500) alındığında devre kesen middleware
+// devre kesici ara katmani
 const devreKesiciMiddleware = (istek, yanit, sonraki) => {
   const yol = istek.path;
   if (yol === '/' || yol === '/api/saglik') {

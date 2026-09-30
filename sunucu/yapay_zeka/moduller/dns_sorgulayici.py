@@ -15,10 +15,10 @@ import urllib.parse
 from typing import List, Dict, Any, Tuple
 import salus_common
 
-# utf-8 standart giriş/çıkış yapılandırması
+# utf-8 yapılandırması
 salus_common.reconfigure_utf8()
 
-# ─── metadata ──────────────────────────────────────────────
+# modül bilgileri
 PRIORITY: int = 40
 VERSION: str = "1.0.0"
 DESCRIPTION: str = "Kapsamlı DNS kayıtları sorgulayıcı ve güvenlik analizi"
@@ -41,14 +41,14 @@ def dns_sorgula_sistem(domain: str, kayit_tipi: str) -> List[str]:
     sonuclar = []
     try:
         if kayit_tipi == "A":
-            # a kayıtlarını sorgula
+            # a kaydı sorgusu
             infos = socket.getaddrinfo(domain, 80, proto=socket.IPPROTO_TCP)
             for info in infos:
                 ip = info[4][0]
                 if ":" not in ip and ip not in sonuclar:
                     sonuclar.append(ip)
         elif kayit_tipi == "AAAA":
-            # aaaa kayıtlarını sorgula
+            # aaaa kaydı sorgusu
             infos = socket.getaddrinfo(domain, 80, proto=socket.IPPROTO_TCP)
             for info in infos:
                 ip = info[4][0]
@@ -66,7 +66,7 @@ def execute(message: str) -> str:
         
     md = f"## 📡 DNS Kayıtları ve Güvenlik Raporu: `{domain}`\n\n"
     
-    # a ve aaaa kayıtlarını sorgula
+    # ip kayıtları
     a_kayitlari = dns_sorgula_sistem(domain, "A")
     aaaa_kayitlari = dns_sorgula_sistem(domain, "AAAA")
     
@@ -83,11 +83,10 @@ def execute(message: str) -> str:
         for ip in aaaa_kayitlari:
             md += f"  - `{ip}`\n"
             
-    # güvenlik ve mx/txt analizleri için temel bilgiler
+    # e-posta güvenlik kayıtları
     md += "\n### 🛡️ E-Posta ve Alan Adı Güvenlik Analizi\n"
     
-    # not: standart kütüphaneyle mx/txt gibi detaylı kayıtlar platforma bağlı
-    # nslookup komutunu subprocess ile kullanarak işletim sistemi üzerinden sorgulayabiliriz
+    # nslookup sorgusu
     import subprocess
     import platform
     
@@ -97,12 +96,12 @@ def execute(message: str) -> str:
             is_win = platform.system() == "Windows"
             cmd = ["nslookup", f"-type={tip}", domain]
             
-            # windows'ta nslookup türkçe/ingilizce çıktı verebilir, bu yüzden çıktıyı regex ile tarayacağız
+            # regex ile çıktı tarama
             islem = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=5)
             output = islem.stdout
             
             if tip == "MX":
-                # windows/linux mx çıktılarını yakala
+                # mx kayıtları
                 matches = re.findall(r'mail exchanger\s*=\s*([a-zA-Z0-9\.\-_]+)', output, re.IGNORECASE)
                 if not matches:
                     matches = re.findall(r'exchanger\s*=\s*([a-zA-Z0-9\.\-_]+)', output, re.IGNORECASE)
@@ -111,7 +110,7 @@ def execute(message: str) -> str:
                     if val not in kayitlar:
                         kayitlar.append(val)
             elif tip == "TXT":
-                # txt text kayıtlarını yakala
+                # txt kayıtları
                 matches = re.findall(r'"([^"]+)"', output)
                 for m in matches:
                     if m.strip() not in kayitlar:
@@ -141,7 +140,7 @@ def execute(message: str) -> str:
         for mx in mx_kayitlari:
             md += f"  - `{mx}`\n"
             
-    # spf ve dmarc güvenlik kontrolleri
+    # spf ve dmarc kontrolü
     spf_var = False
     dmarc_var = False
     spf_record = ""
@@ -155,7 +154,7 @@ def execute(message: str) -> str:
             dmarc_var = True
             dmarc_record = txt
             
-    # ayrı dmarc txt sorgusu denemesi (dmarc kayıtları genellikle _dmarc.domain adresindedir)
+    # dmarc sorgusu
     if not dmarc_var:
         try:
             cmd = ["nslookup", "-type=TXT", f"_dmarc.{domain}"]

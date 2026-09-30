@@ -34,7 +34,7 @@ const AnaSayfa = () => {
   const istatistikRef = useRef(null);
   const sayacBasladi = useRef(false);
 
-  // Sayaç animasyonu
+  // sayaç animasyonu
   useEffect(() => {
     const gozlemci = new IntersectionObserver(
       (girdiler) => {
@@ -77,7 +77,7 @@ const AnaSayfa = () => {
     }, adim);
   };
 
-  // Hızlı arama / analiz başlatıcı
+  // hızlı analiz başlatıcı
   const hizliAnalizBaslat = (e) => {
     e.preventDefault();
     if (!hizliHedef.trim()) return;
@@ -95,7 +95,7 @@ const AnaSayfa = () => {
     }
   };
 
-  // 8 Çekirdek Siber Araç
+  // siber araçlar
   const araclar = [
     {
       id: 'tehdit',
@@ -139,19 +139,19 @@ const AnaSayfa = () => {
     },
     {
       id: 'kripto',
-      baslik: 'Hash & Kod Çözücü',
-      aciklama: 'Bilinmeyen hash tiplerini tanımlayın; çok katmanlı Base64, Hex ve URL formatlarını dönüştürün.',
+      baslik: 'Encoding & Kodlama Stüdyosu',
+      aciklama: 'Base64, URL Encode ve HTML Entity dönüşümleri yapın; çözülen metinleri XSS/SQLi payloadlarına karşı tarayın.',
       ikon: Hash,
       yol: '/araclar/kripto',
-      etiket: 'Format Dönüştürücü',
+      etiket: 'Base64 / URL / HTML',
     },
     {
       id: 'ip',
-      baslik: 'IP & OSINT İstihbarat',
-      aciklama: 'Coğrafi konum, ISP, VPN/Tor tespiti ve tehdit istihbarat verilerini tek sorguda görüntüleyin.',
+      baslik: 'IP Coğrafi Konum & İstihbarat',
+      aciklama: 'Fiziksel harita koordinatları, ISP, ASN, Ters DNS ve VPN/Tor/Proxy durumunu anında haritalandırın.',
       ikon: Globe,
       yol: '/araclar/ip-sorgu',
-      etiket: 'GeoIP & ISP',
+      etiket: 'Harita & GeoIP',
     },
     {
       id: 'header',
@@ -163,7 +163,7 @@ const AnaSayfa = () => {
     },
   ];
 
-  // SSS Soruları
+  // sıkça sorulan sorular
   const sssListesi = [
     {
       soru: 'Salus AI nasıl çalışır ve hangi altyapıyı kullanır?',
@@ -185,7 +185,7 @@ const AnaSayfa = () => {
 
   return (
     <div className="ana-sayfa">
-      {/* ===== KAHRAMAN BÖLÜMÜ (HERO) ===== */}
+      {/* kahraman bölümü */}
       <section className="kahraman-sade">
         <div className="kahraman-kapsayici">
           <div className="kahraman-rozet">
@@ -202,7 +202,7 @@ const AnaSayfa = () => {
             Ağ keşfi, tehdit istihbaratı, zafiyet tespiti ve 7/24 yapay zeka danışmanı tek bir sade, güçlü ve hızlı platformda.
           </p>
 
-          {/* Hızlı Arama & Araç Başlatıcı */}
+          {/* hızlı analiz formu */}
           <form className="hizli-tarayici-kutusu" onSubmit={hizliAnalizBaslat}>
             <div className="hizli-tarayici-secici">
               <select
@@ -240,7 +240,7 @@ const AnaSayfa = () => {
             </button>
           </form>
 
-          {/* Hızlı Etiketler */}
+          {/* hızlı etiketler */}
           <div className="hizli-etiketler">
             <span className="hizli-etiket-baslik">Hızlı Erişim:</span>
             <Link to="/tehdit-analiz" className="hizli-etiket-link">Tehdit Taraması</Link>
@@ -251,7 +251,7 @@ const AnaSayfa = () => {
         </div>
       </section>
 
-      {/* ===== İNTERAKTİF ÖZELLİK VİTRİNİ (DEMO / PREVIEW) ===== */}
+      {/* özellik vitrini */}
       <section className="vitrin-bolumu">
         <div className="vitrin-kapsayici">
           <div className="bolum-baslik">
@@ -262,7 +262,7 @@ const AnaSayfa = () => {
             </p>
           </div>
 
-          {/* Sekme Butonları */}
+          {/* sekme butonları */}
           <div className="vitrin-sekmeler">
             <button
               className={`vitrin-sekme-buton ${aktifSekme === 'tehdit' ? 'aktif' : ''}`}
@@ -290,7 +290,7 @@ const AnaSayfa = () => {
             </button>
           </div>
 
-          {/* Sekme İçerikleri */}
+          {/* sekme içerikleri */}
           <div className="vitrin-icerik-kart cam-kart">
             {aktifSekme === 'tehdit' && (
               <div className="vitrin-panel">
@@ -447,7 +447,7 @@ const AnaSayfa = () => {
         </div>
       </section>
 
-      {/* ===== SİBER ARAÇ KUTUSU (8 ÇEKİRDEK ARAÇ) ===== */}
+      {/* siber araçlar */}
       <section className="araclar-bolumu" id="araclar">
         <div className="bolum-baslik">
           <p className="bolum-ust-etiket">Araç Seti</p>
@@ -476,7 +476,7 @@ const AnaSayfa = () => {
         </div>
       </section>
 
-      {/* ===== RAKAMLAR VE PERFORMANS ===== */}
+      {/* istatistikler */}
       <section className="istatistikler-sade" ref={istatistikRef}>
         <div className="istatistik-kapsayici">
           <div className="istatistik-oge">
@@ -498,7 +498,7 @@ const AnaSayfa = () => {
         </div>
       </section>
 
-      {/* ===== SİSTEM GÜVENLİĞİ VE MİMARİ ===== */}
+      {/* mimari ve güvenlik */}
       <section className="mimari-bolum">
         <div className="mimari-kapsayici">
           <div className="bolum-baslik">
@@ -537,7 +537,7 @@ const AnaSayfa = () => {
         </div>
       </section>
 
-      {/* ===== SSS (SIKÇA SORULAN SORULAR) ===== */}
+      {/* sıkça sorulan sorular */}
       <section className="sss-bolumu">
         <div className="sss-kapsayici">
           <div className="bolum-baslik">
@@ -569,7 +569,7 @@ const AnaSayfa = () => {
         </div>
       </section>
 
-      {/* ===== ÇAĞRI (CTA) BÖLÜMÜ ===== */}
+      {/* çağrı alanı */}
       <section className="cta-sade">
         <div className="cta-kapsayici cam-kart">
           <h2>Dijital Varlıklarınızı Bugün Güvenceye Alın</h2>

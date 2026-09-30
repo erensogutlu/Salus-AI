@@ -150,12 +150,12 @@ def os_ve_cihaz_ayristir(log: str) -> str:
     Returns:
         str: Tespit edilen işletim sistemi adı veya "Bilinmiyor".
     """
-    # os details: linux 3.2 - 4.9, routeros 6.32
+    # os tespiti
     os_match = re.search(r"OS details:\s*([^\r\n]+)", log, re.IGNORECASE)
     if os_match:
         return os_match.group(1).strip()
     
-    # alternatif: mac tabanlı tespit (mac address: 00:11:22:33:44:55 (cisco systems))
+    # mac tespiti
     mac_match = re.search(r"MAC Address: (?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\s+\(([^)]+)\)", log)
     if mac_match:
         return mac_match.group(1).strip() + " Cihazı"

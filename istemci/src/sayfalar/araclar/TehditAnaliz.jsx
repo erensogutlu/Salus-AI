@@ -369,7 +369,7 @@ const TehditAnaliz = () => {
                   <div className="risk-puan-etiket">Risk Skoru</div>
                 </div>
 
-                {/* bulgular (kısa özet) */}
+                {/* bulgular */}
                 <div className="bulgular-liste">
                   <h4 style={{ marginBottom: '8px', color: 'var(--metin)', fontSize: '0.9rem', fontWeight: 600 }}>Kritik Bulgular</h4>
                   {sonuc.bulgular.slice(0, 3).map((bulgu, i) => (

@@ -73,7 +73,7 @@ def portlari_tara_paralel(ip, portlar=None):
                     }
                     servis = servisler.get(port, "bilinmiyor")
                 
-                # sürüm/banner tespiti (canlı tarama)
+                # banner tespiti
                 banner = banner_yakala(ip, port)
                 if banner:
                     servis = f"{servis} ({banner})"
@@ -121,7 +121,7 @@ def web_baslik_analizi(domain):
             url, 
             headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) SalusScanner/1.0'}
         )
-        # ssl doğrulamasını atlayarak güvenli olmayan sertifikalarda da başlıkları alabilmek
+        # ssl doğrulama atlama
         import ssl
         ctx = ssl.create_default_context()
         ctx.check_hostname = False
@@ -133,7 +133,7 @@ def web_baslik_analizi(domain):
                 analiz["sslDurumu"] = "aktif"
             headers = {k.lower(): v for k, v in response.info().items()}
     except Exception:
-        # http fallback denemesi
+        # http denemesi
         try:
             http_url = url.replace("https://", "http://") if url.startswith("https://") else f"http://{domain}"
             req = urllib.request.Request(
@@ -166,13 +166,13 @@ def tarama_yap(hedef):
             "hata": f"Hedef '{hedef}' çözümlenemedi. Lütfen geçerli bir domain veya IP adresi girin."
         }
         
-    # eş zamanlı port tarama
+    # port tarama
     acik_portlar = portlari_tara_paralel(ip)
     
-    # web başlık ve ssl analizi (ıp adresi ise atla, domain ise çalıştır)
+    # web başlık ve ssl analizi
     try:
         socket.inet_aton(domain)
-        # hedef ıp olduğu için web analizi standart bir biçimde mock/atlama yapılır
+        # ip hedefi kontrolü
         web_analizi = {
             "sslDurumu": "Bilinmiyor (IP Hedefi)",
             "sunucuTuru": "Bilinmiyor",
@@ -183,12 +183,12 @@ def tarama_yap(hedef):
     except socket.error:
         web_analizi = web_baslik_analizi(domain)
         
-    # açık portları formatlama ("80/tcp open" formatı)
+    # açık port formatlama
     tespit_edilen = []
     for p in acik_portlar:
         tespit_edilen.append(f"{p['port']}/tcp open {p['servis']}")
         
-    # risk puanı ve tehdit derecesi hesaplama
+    # risk puanı hesabı
     risk_puani = 0
     oneriler = []
     zafiyetler = []

@@ -16,33 +16,33 @@ import math
 import re
 from typing import List, Dict, Set, Tuple
 
-# utf-8 standart giriş/çıkış yapılandırması
+# utf-8 yapılandırması
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 else:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-# ─── metadata ──────────────────────────────────────────────
+# modül bilgileri
 PRIORITY: int = 20
 VERSION: str = "2.1.0"
 DESCRIPTION: str = "Gelişmiş şifre gücü, klavye örüntüsü ve pratik entropi analizörü"
 AUTHOR: str = "Salus AI"
 
-# siber güvenlikte en sık karşılaşılan zayıf parolalar (top 20 ingilizce)
+# yaygın parolalar
 YAYGIN_SIFRELER: Set[str] = {
     "123456", "123456789", "password", "qwerty", "12345", "12345678", "111111",
     "123123", "admin", "welcome", "1234567", "1234567890", "iloveyou", "test",
     "letmein", "monkey", "dragon", "master", "trustno1", "qazwsx", "asdfghjkl"
 }
 
-# türkiye'de en yaygın kullanılan zayıf kelimeler/parolalar
+# türkçe yaygın kelimeler
 YAYGIN_TURKCE: Set[str] = {
     "ankara", "istanbul", "izmir", "galatasaray", "fenerbahce", "besiktas",
     "trabzonspor", "turkiye", "mustafa", "mehmet", "ahmet", "sanane",
     "1903", "1905", "1907", "1453", "1923"
 }
 
-# l33t speak dönüşüm tablosu (sözlük atlatma tespiti için)
+# leet dönüşüm tablosu
 L33T_MAP: Dict[str, str] = {
     '@': 'a', '4': 'a',
     '8': 'b',
@@ -96,11 +96,11 @@ def desen_kontrol(sifre: str) -> List[str]:
     uyarilar: List[str] = []
     kucuk = sifre.lower()
     
-    # 1. aynı karakter tekrarları (örn: aaa, 1111)
+    # karakter tekrarları
     if re.search(r'(.)\1{2,}', kucuk):
         uyarilar.append("Şifrenizde 3 veya daha fazla aynı karakter peş peşe tekrarlanıyor.")
         
-    # 2. sıralı sayılar ve harfler (düz ve ters)
+    # sıralı karakterler
     sayi_sirali = ["1234", "2345", "3456", "4567", "5678", "6789", "7890", "0123", "4321", "9876", "8765"]
     if any(s in kucuk for s in sayi_sirali):
         uyarilar.append("Şifrenizde kolay tahmin edilebilir sıralı sayılar bulunuyor.")
@@ -109,7 +109,7 @@ def desen_kontrol(sifre: str) -> List[str]:
     if any(s in kucuk for s in harf_sirali):
         uyarilar.append("Şifrenizde sıralı alfabetik harf dizilimi bulunuyor.")
         
-    # 3. klasik klavye yürüyüşleri (qwerty ve türkçe f/q dizilimi)
+    # klavye desenleri
     klavye_desenleri = ["qwerty", "asdfgh", "zxcvbn", "qazwsx", "wsxcde", "edcvfr", "mnbvcx", "ytrewq"]
     if any(s in kucuk for s in klavye_desenleri):
         uyarilar.append("Şifrenizde klavyedeki tuş sırasını takip eden kolay örüntüler bulunuyor.")
@@ -166,7 +166,7 @@ def execute(message: str) -> str:
     if uzunluk == 0:
         return "Şifre boş olamaz."
         
-    # karakter setlerinin tespiti ve havuz boyutunun hesabı
+    # karakter seti ve havuz boyutu
     havuz_boyutu = 0
     kucuk_harf = any(c.islower() for c in sifre)
     buyuk_harf = any(c.isupper() for c in sifre)
@@ -182,35 +182,35 @@ def execute(message: str) -> str:
     if ozel_karakter:
         havuz_boyutu += 32
         
-    # teorik entropi formülü: l * log2(r)
+    # teorik entropi
     entropi = uzunluk * math.log2(havuz_boyutu) if havuz_boyutu > 0 else 0
     orijinal_entropi = entropi
     
-    # pratik entropi ve ceza puanları (gelişmiş zafiyet kontrolleri)
+    # pratik entropi ve ceza puanları
     ceza_puani = 0.0
     uyarilar: List[str] = []
     
     sifre_kucuk = sifre.lower()
     sifre_l33t = normalizasyon_l33t(sifre)
     
-    # 1. sözlük & yaygın parola kontrolü (normalize edilmiş hallerle)
+    # sözlük kontrolü
     sozlukte_var = False
     tum_sozluk = YAYGIN_SIFRELER.union(YAYGIN_TURKCE)
     
     for kelime in tum_sozluk:
         if kelime in sifre_kucuk or kelime in sifre_l33t:
-            ceza_puani += entropi * 0.45  # %45 entropi cezası
+            ceza_puani += entropi * 0.45  # ceza puanı
             uyarilar.append(f"Şifreniz çok yaygın bir parola veya kelimeyi ({kelime}) içeriyor.")
             sozlukte_var = True
             break
             
-    # 2. desen & tekrar kontrolleri
+    # desen kontrolleri
     desenler = desen_kontrol(sifre)
     if desenler:
         uyarilar.extend(desenler)
         ceza_puani += (entropi * 0.20 * len(desenler))
         
-    # 3. çeşitlilik cezaları
+    # çeşitlilik cezaları
     if kucuk_harf and not (buyuk_harf or rakam or ozel_karakter):
         uyarilar.append("Sadece küçük harfler kullanılmış. Karakter çeşitliliği yetersiz.")
         ceza_puani += entropi * 0.15
@@ -218,18 +218,17 @@ def execute(message: str) -> str:
         uyarilar.append("Sadece rakamlardan oluşuyor (PIN formatı). Çok hızlı kırılabilir.")
         ceza_puani += entropi * 0.35
         
-    # nihai düzeltilmiş pratik entropiyi hesapla
+    # pratik entropi hesabı
     entropi = max(0.0, orijinal_entropi - ceza_puani)
     
-    # kırılma süreleri tahminleri
-    # 1. online saldırı: saniyede 100 istek (rate-limiting ve web gecikmesi varsayımıyla)
+    # kırılma süresi tahminleri
+    # çevrimiçi saldırı tahmini
     online_saniye = (havuz_boyutu ** uzunluk) / 100 if havuz_boyutu > 0 else 0
     
-    # 2. offline gpu kaba kuvvet saldırısı: saniyede 100 milyar deneme
-    # referans: 8 adet rtx 4090 gpu barındıran modern bir parola kırma donanım kümesi
+    # çevrimdışı gpu saldırı tahmini
     gpu_saniye = (havuz_boyutu ** uzunluk) / 100000000000 if havuz_boyutu > 0 else 0
     
-    # güç seviyesi sınıflandırması
+    # güç seviyesi
     if entropi < 35:
         seviye = "Zayıf 🔴"
     elif entropi < 60:

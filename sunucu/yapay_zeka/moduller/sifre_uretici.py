@@ -14,15 +14,15 @@ import io
 import math
 import secrets
 import string
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Any
 
-# utf-8 standart giriş/çıkış yapılandırması
+# utf-8 yapılandırması
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 else:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-# ─── metadata ──────────────────────────────────────────────
+# modül bilgileri
 PRIORITY: int = 20
 VERSION: str = "2.1.0"
 DESCRIPTION: str = "Kriptografik güvenli şifre ve parola cümlesi (passphrase) oluşturucu"
@@ -30,7 +30,7 @@ AUTHOR: str = "Salus AI"
 
 TETIKLEYICILER: List[str] = ["şifre üret", "sifre uret", "parola üret", "parola uret"]
 
-# genişletilmiş ve özenle seçilmiş yüksek entropili türkçe kelime havuzu (200+ kelime)
+# türkçe kelime havuzu
 TURKCE_KELIMELER: List[str] = [
     "akil", "alan", "altin", "arac", "aslan", "ayar", "ayna", "baca", "bakir", "balik",
     "baris", "basari", "baskan", "bayrak", "bekci", "belge", "beyin", "bilgi", "bilim", "bina",
@@ -90,7 +90,7 @@ def rastgele_sifre_uret(uzunluk: int, ozel_haric: bool) -> Tuple[str, float]:
     
     for _ in range(max_deneme):
         sifre = ''.join(secrets.choice(havuz) for _ in range(uzunluk))
-        # şifre karmaşıklık kurallarının (1 k.harf, 1 b.harf, 1 rakam, 1 özel) doğrulanması
+        # şifre karmaşıklık kontrolü
         kucuk_kontrol = any(c.islower() for c in sifre)
         buyuk_kontrol = any(c.isupper() for c in sifre)
         rakam_kontrol = any(c.isdigit() for c in sifre)
@@ -99,7 +99,7 @@ def rastgele_sifre_uret(uzunluk: int, ozel_haric: bool) -> Tuple[str, float]:
         if kucuk_kontrol and buyuk_kontrol and rakam_kontrol and ozel_kontrol:
             break
             
-    # entropi = l * log2(r)
+    # entropi hesabı
     entropi = uzunluk * math.log2(havuz_boyutu)
     return sifre, entropi
 
@@ -115,13 +115,12 @@ def passphrase_uret(kelime_sayisi: int) -> Tuple[str, float]:
     """
     secilenler = [secrets.choice(TURKCE_KELIMELER) for _ in range(kelime_sayisi)]
     
-    # karakter güvenliğini artırmak için rastgele bir ayıraç seçilir ve sonuna 2 basamaklı sayı eklenir
+    # ayıraç ve sayı eki
     ayirac = secrets.choice(["-", ".", "_"])
-    sayi_eki = secrets.randbelow(90) + 10  # 10 - 99 arası güvenli rastgele sayı
+    sayi_eki = secrets.randbelow(90) + 10  # rastgele sayı eki
     passphrase = ayirac.join(secilenler) + str(sayi_eki)
     
-    # entropi hesabı: (kelime_sayisi * log2(kelime_havuzu)) + log2(ayirac_havuzu) + log2(sayi_havuzu)
-    # r1 = 200 (kelimeler), r2 = 3 (ayıraçlar), r3 = 90 (sayılar)
+    # parola öbeği entropisi
     entropi = (kelime_sayisi * math.log2(len(TURKCE_KELIMELER))) + math.log2(3) + math.log2(90)
     
     return passphrase, entropi
@@ -156,26 +155,26 @@ def execute(message: str) -> str:
     """
     msg_lower = message.lower()
     
-    # parametre ayrıştırma (passphrase modu mu, özel karakter hariç mi?)
+    # parametre kontrolü
     passphrase_modu = "passphrase" in msg_lower or "hatırlana" in msg_lower or "kelime" in msg_lower
     ozel_haric = "özel karakter" in msg_lower and any(x in msg_lower for x in ["olmasın", "hariç", "kullanma"])
     
-    # varsayılan uzunluk parametreleri
+    # varsayılan uzunluk
     uzunluk = 16
     kelime_sayisi = 4
     
-    # mesaj içindeki sayısal parametreleri ayıklama (örn: "şifre üret 24")
+    # sayı parametreleri
     sayilar = [int(s) for s in msg_lower.split() if s.isdigit()]
     if sayilar:
         sayi = sayilar[0]
         if passphrase_modu:
-            kelime_sayisi = max(3, min(sayi, 10))  # 3 ile 10 kelime arası sınırlandır
+            kelime_sayisi = max(3, min(sayi, 10))  # kelime sınırı
         else:
-            uzunluk = max(8, min(sayi, 128))       # 8 ile 128 karakter arası sınırlandır
+            uzunluk = max(8, min(sayi, 128))       # karakter sınırı
             
     sonuclar: List[Dict[str, Any]] = []
     
-    # 3 alternatif şifre oluşturulur
+    # alternatif şifreler
     for _ in range(3):
         if passphrase_modu:
             sifre, entropi = passphrase_uret(kelime_sayisi)

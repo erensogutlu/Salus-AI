@@ -1,7 +1,7 @@
 import React from 'react';
 
 const YuklemeSpinner = ({ boyut = 'normal', metin = 'Yükleniyor...', tamSayfa = false }) => {
-  // Sadeleştirilmiş boyutlar
+  // boyut tanımları
   const piksel = boyut === 'kucuk' ? 20 : boyut === 'buyuk' ? 36 : 28;
 
   return (

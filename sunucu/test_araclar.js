@@ -3,7 +3,7 @@ const path = require('path');
 console.log('Testing Salus AI local modules load status...');
 
 try {
-  // Test requiring local configurations and modules
+  // yerel modül kontrolleri
   const knexfile = require('./knexfile');
   console.log('✓ knexfile.js parsed successfully');
 

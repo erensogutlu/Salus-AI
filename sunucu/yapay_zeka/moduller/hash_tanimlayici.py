@@ -16,13 +16,13 @@ import io
 import re
 from typing import List, Tuple, Dict, Any
 
-# utf-8 standart giriş/çıkış yapılandırması
+# utf-8 yapılandırması
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 else:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-# ─── metadata ──────────────────────────────────────────────
+# modül bilgileri
 PRIORITY: int = 30
 VERSION: str = "2.1.0"
 DESCRIPTION: str = "Gelişmiş kriptografik hash algoritması tespit edici ve analizörü"
@@ -42,44 +42,44 @@ def can_handle(message: str) -> bool:
     return "hash" in msg and any(x in msg for x in ["tan", "analiz", "nedir", "türü"])
 
 
-# hash veritabanı: (regex deseni, algoritma adı, güvenlik seviyesi)
-# not: önek barındıran belirgin formatlar çakışmayı önlemek için üst sıradadır.
+# hash veritabanı
+# öncelikli formatlar
 HASH_YAPILARI: List[Tuple[str, str, str]] = [
-    # argon2 ailesi
+    # argon2
     (r'^\$argon2[id]\$v=\d+\$m=\d+,t=\d+,p=\d+\$[A-Za-z0-9+/]+(\$[A-Za-z0-9+/]+)?$', 'Argon2 (id/i/d)', 'Çok Güçlü 🛡️'),
-    # bcrypt ailesi
+    # bcrypt
     (r'^\$2[abyx]\$[0-9]{2}\$[./A-Za-z0-9]{53}$', 'bcrypt (Blowfish)', 'Güçlü 🟢'),
     # scrypt
     (r'^\$scrypt\$ln=\d+,r=\d+,p=\d+\$[A-Za-z0-9+/]+\$[A-Za-z0-9+/]+$', 'scrypt', 'Güçlü 🟢'),
-    # pbkdf2 varyasyonları
+    # pbkdf2
     (r'^\$pbkdf2-sha256\$\d+\$[A-Za-z0-9./]+\$[A-Za-z0-9./]+$', 'PBKDF2-SHA256 (Passlib)', 'Güçlü 🟢'),
     (r'^pbkdf2_sha256\$\d+\$[A-Za-z0-9]+\$[A-Za-z0-9+/=]+$', 'Django PBKDF2-SHA256', 'Güçlü 🟢'),
     (r'^pbkdf2_sha1\$\d+\$[A-Za-z0-9]+\$[A-Za-z0-9+/=]+$', 'Django PBKDF2-SHA1', 'Orta 🟠'),
-    # wordpress & phpbb3
+    # wordpress ve phpbb3
     (r'^\$P\$[A-Za-z0-9./]{31}$', 'WordPress (phpass)', 'Zayıf 🔴'),
     (r'^\$H\$[A-Za-z0-9./]{31}$', 'phpBB3', 'Zayıf 🔴'),
     # drupal
     (r'^\$S\$[A-Za-z0-9./]{52}$', 'Drupal 7+', 'Güçlü 🟢'),
-    # sha-crypt (linux / cisco)
+    # sha-crypt
     (r'^\$5\$[A-Za-z0-9./]{1,16}\$[A-Za-z0-9./]{43}$', 'SHA-256 Crypt (Linux/Cisco Type 8)', 'Orta 🟠'),
     (r'^\$6\$[A-Za-z0-9./]{1,16}\$[A-Za-z0-9./]{86}$', 'SHA-512 Crypt (Linux/Cisco Type 9)', 'Güçlü 🟢'),
     (r'^\$1\$[A-Za-z0-9./]{1,8}\$[A-Za-z0-9./]{22}$', 'MD5 Crypt (Cisco Type 5 / Linux)', 'Zayıf 🔴'),
     # cisco type 4
     (r'^\$4\$[A-Za-z0-9./]{43}$', 'Cisco Type 4 (SHA-256)', 'Orta 🟠'),
-    # cisco type 7 (basit xor, şifreleme değil)
+    # cisco type 7
     (r'^[0-9A-Fa-f]{2}[0-9A-Fa-f]{2,}$', 'Cisco Type 7', 'Kritik  (Kolayca Çözülebilir)'),
     # mysql5
     (r'^\*[A-Fa-f0-9]{40}$', 'MySQL5 (Dual SHA-1)', 'Orta 🟠'),
-    # netntlmv2 / ntlmv2 (domain tuzlu)
+    # netntlmv2
     (r'^[a-zA-Z0-9\-_]+::[a-zA-Z0-9\-_]+:[0-9a-fA-F]{16}:[0-9a-fA-F]{32}:[0-9a-fA-F]{32,}$', 'NetNTLMv2 / NetNTLMv1', 'Orta 🟠'),
-    # cisco type 9 (sha-512 base64 varyantı)
+    # cisco type 9
     (r'^\$9\$[A-Za-z0-9./]{1,16}\$[A-Za-z0-9./]{86}$', 'Cisco Type 9 (scrypt)', 'Güçlü 🟢'),
 
-    # saf hex tabanlı formatlar (uzunluğa göre eşleşme)
+    # hex formatları
     (r'^[a-fA-F0-9]{8}$', 'CRC32 / Adler-32 / fnv1a-32', 'Zayıf 🔴 (Sadece bütünlük kontrolü)'),
     (r'^[a-fA-F0-9]{16}$', 'MySQL323 / Haval-128 / LM (Eski / < v4.1)', 'Kritik '),
-    (r'^[a-fA-F0-9]{32}$', 'MD5 / NTLM / MD4 / RipeMD-128 / Domain Cached Credentials (DCC)', 'Zayıf 🔴 / Kritik '), # çakışmalı hex
-    (r'^[a-fA-F0-9]{40}$', 'SHA-1 / RIPEMD-160 / MySQL5 (Yıldızsız) / Tiger-160', 'Zayıf 🔴'), # çakışmalı hex
+    (r'^[a-fA-F0-9]{32}$', 'MD5 / NTLM / MD4 / RipeMD-128 / Domain Cached Credentials (DCC)', 'Zayıf 🔴 / Kritik '),
+    (r'^[a-fA-F0-9]{40}$', 'SHA-1 / RIPEMD-160 / MySQL5 (Yıldızsız) / Tiger-160', 'Zayıf 🔴'),
     (r'^[a-fA-F0-9]{56}$', 'SHA-224 / SHA-3-224 / Blake2s-224', 'Orta 🟠'),
     (r'^[a-fA-F0-9]{64}$', 'SHA-256 / SHA-3-256 / GOST R 34.11-94 / Blake2s-256 / Blake3', 'Güçlü 🟢'),
     (r'^[a-fA-F0-9]{96}$', 'SHA-384 / SHA-3-384 / Blake2b-384', 'Güçlü 🟢'),

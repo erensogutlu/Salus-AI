@@ -39,7 +39,7 @@ const Profil = () => {
 
   const [yukleniyor, setYukleniyor] = useState(false);
 
-  // panel verilerini yükle (istatistikler için)
+  // panel verilerini yükle
   useEffect(() => {
     const verileriYukle = async () => {
       try {
@@ -75,7 +75,7 @@ const Profil = () => {
 
       if (yanit.basarili) {
         setProfilBasari('Profil bilgileriniz başarıyla güncellendi.');
-        // departman ve rol genelde db'den gelir ama ui için localde güncelliyoruz
+        // yerel profil güncelleme
         setKullanici({ ...yanit.kullanici, departman, rol });
       }
     } catch (hata) {

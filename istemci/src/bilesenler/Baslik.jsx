@@ -49,7 +49,7 @@ const Baslik = () => {
     return () => document.removeEventListener('mousedown', disariTiklama);
   }, []);
 
-  // mobil menü açıkken sayfa kaydırmasını engelle (toggle kaydırma hatası düzeltmesi)
+  // mobil kaydırma kilidi
   useEffect(() => {
     if (mobilMenuAcik) {
       document.body.style.overflow = 'hidden';
@@ -88,8 +88,8 @@ const Baslik = () => {
     { yol: '/ag-tarama', etiket: 'Ağ Tarama', ikon: Wifi },
     { yol: '/log-analiz', etiket: 'Gelişmiş Log Analizi', ikon: Terminal },
     { yol: '/araclar/sifre', etiket: 'Şifre Araçları', ikon: Lock },
-    { yol: '/araclar/kripto', etiket: 'Hash & Base64', ikon: Hash },
-    { yol: '/araclar/ip-sorgu', etiket: 'IP Sorgulama', ikon: Search },
+    { yol: '/araclar/kripto', etiket: 'Encoding & Kodlama', ikon: Hash },
+    { yol: '/araclar/ip-sorgu', etiket: 'IP & Coğrafi Konum', ikon: Globe },
     { yol: '/araclar/subdomain', etiket: 'Subdomain Bulucu', ikon: Globe },
     { yol: '/araclar/header', etiket: 'Güvenlik Başlıkları', ikon: FileCode }
   ];
@@ -119,7 +119,7 @@ const Baslik = () => {
             </NavLink>
           ))}
 
-          {/* araçlar menüsü (dropdown) */}
+          {/* araçlar menüsü */}
           <div className="kullanici-menu" ref={araclarRef}>
             <button
               className="baslik-nav-baglanti"

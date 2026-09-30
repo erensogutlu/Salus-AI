@@ -41,7 +41,7 @@ const YoneticiPaneli = () => {
   // bildirimler
   const [mesaj, setMesaj] = useState(null); // { tip: 'basari' | 'hata', metin: '' }
 
-  // modal state
+  // modal durumu
   const [duzenlenenKullanici, setDuzenlenenKullanici] = useState(null);
   const [modalForm, setModalForm] = useState({
     kullanici_adi: '',

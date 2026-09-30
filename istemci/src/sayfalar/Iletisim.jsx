@@ -22,7 +22,7 @@ const Iletisim = () => {
       </div>
 
       <div className="profil-grid">
-        {/* Sol kart */}
+        {/* sol kart */}
         <div className="cam-kart profil-sol-kart" style={{ textAlign: 'left', alignItems: 'flex-start', gap: '24px' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--metin)' }}>İletişim Bilgileri</h2>
           
@@ -59,7 +59,7 @@ const Iletisim = () => {
           </div>
         </div>
 
-        {/* Sağ kart */}
+        {/* sağ kart */}
         <div className="cam-kart profil-sag-kart">
           {gonderildi ? (
             <div style={{ textAlign: 'center', padding: '40px 20px' }}>

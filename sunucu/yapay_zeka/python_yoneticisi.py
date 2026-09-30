@@ -18,7 +18,7 @@ import logging
 from types import ModuleType
 from typing import Any, Dict, List, Optional
 
-# loglama yapılandırması: loglar stderr'e yönlendirilir (stdout sadece temiz json çıktıları içindir)
+# log yapılandırması
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -26,7 +26,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("PythonYoneticisi")
 
-# utf-8 standart giriş/çıkış yapılandırması
+# utf-8 yapılandırması
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 else:

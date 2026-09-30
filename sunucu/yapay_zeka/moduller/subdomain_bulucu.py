@@ -21,17 +21,16 @@ import secrets
 from typing import List, Dict, Tuple, Set, Optional, Any
 import salus_common
 
-# utf-8 standart giriş/çıkış yapılandırması
+# utf-8 yapılandırması
 salus_common.reconfigure_utf8()
 
-# ─── metadata ──────────────────────────────────────────────
+# modül bilgileri
 PRIORITY: int = 35
 VERSION: str = "2.1.0"
 DESCRIPTION: str = "Yedekli sertifika günlüğü subdomain keşif ve takeover tarayıcı"
 AUTHOR: str = "Salus AI"
 
-# bilinen subdomain takeover (alt alan adı devralma) cname ımza tablosu
-# format: "imza_cname": "bulut servis sağlayıcı adı"
+# devralma imza tablosu
 TAKEOVER_IMZALARI: Dict[str, str] = {
     "github.io": "GitHub Pages",
     "herokudns.com": "Heroku",
@@ -99,7 +98,7 @@ def cname_getir(subdomain: str) -> Optional[str]:
         Optional[str]: CNAME hedef adresi veya yoksa None.
     """
     try:
-        # socket.getaddrinfo ile aı_canonname kullanılarak kanonik isim (cname) çekilir
+        # cname sorgusu
         sonuc = socket.getaddrinfo(subdomain, None, 0, socket.SOCK_STREAM, 0, socket.AI_CANONNAME)
         canon = sonuc[0][3]
         if canon and canon.lower() != subdomain.lower():
@@ -123,7 +122,7 @@ def subdomain_dogrula(subdomain: str) -> Dict[str, Any]:
     risk = "Düşük 🟢"
     cname_val = "-"
     
-    # 1. dns çözümleme
+    # dns çözümleme
     try:
         ip = socket.gethostbyname(subdomain)
     except socket.gaierror:
@@ -135,7 +134,7 @@ def subdomain_dogrula(subdomain: str) -> Dict[str, Any]:
             "cname": "-"
         }
         
-    # 2. cname sorgusu ve takeover analizi
+    # cname ve takeover analizi
     cname = cname_getir(subdomain)
     if cname:
         cname_val = cname
@@ -144,7 +143,7 @@ def subdomain_dogrula(subdomain: str) -> Dict[str, Any]:
                 risk = f"Kritik (Takeover: {saglayici} 🔴)"
                 break
                 
-    # 3. http istek kontrolü (hızlı zaman aşımı)
+    # http durum kontrolü
     try:
         req = urllib.request.Request(
             f"http://{subdomain}",
@@ -154,7 +153,7 @@ def subdomain_dogrula(subdomain: str) -> Dict[str, Any]:
             durum = str(response.getcode())
     except urllib.error.HTTPError as e:
         durum = str(e.code)
-        # bulut servisleri 404 veriyorsa ve cname biliniyorsa takeover ihtimalini yükseltir
+        # takeover kontrolü
         if e.code == 404 and "Kritik" not in risk:
             risk = "Orta 🟠 (404 Potansiyel Risk)"
     except Exception:
@@ -181,7 +180,7 @@ def crt_sh_sorgula(domain: str) -> Set[str]:
     bulunanlar: Set[str] = set()
     url = f"https://crt.sh/?q=%25.{domain}&output=json"
     
-    # retry (tekrar deneme) mekanizması
+    # yeniden deneme
     for deneme in range(3):
         try:
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -242,33 +241,32 @@ def execute(message: str) -> str:
 
     md = f"## 🗺️ Gelişmiş Subdomain Keşif Raporu: `{hedef}`\n\n"
     
-    # 1. wildcard dns durum tespiti
+    # wildcard dns kontrolü
     is_wildcard = wildcard_dns_kontrolu(hedef)
     if is_wildcard:
         md += "> ⚠️ **Önemli Uyarı:** Hedef alan adında **Wildcard DNS (*)** tespit edilmiştir. Rasgele uydurulan alt alan adları bile bir varsayılan IP'ye çözümlenecektir. Bu nedenle aşağıdaki 'Aktif' IP sonuçları yönlendirme sunucusuna (catch-all) ait olabilir.\n\n"
 
-    # 2. çok kaynaklı alt alan adı toplama
-    # crt.sh ve hackertarget paralel sorgulanır
+    # alt alan adı toplama
     bulunanlar: Set[str] = set()
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         f_crt = executor.submit(crt_sh_sorgula, hedef)
         f_ht = executor.submit(hackertarget_sorgula, hedef)
         
-        # sonuçları kümede birleştir
+        # sonuçları birleştir
         bulunanlar.update(f_crt.result())
         bulunanlar.update(f_ht.result())
 
     if not bulunanlar:
         return md + "❌ **Arama Sonucu:** crt.sh ve yedek API servislerinden hedef alan adına ait herhangi bir alt alan adı kaydı çekilemedi."
 
-    # sonuç sınırlandırması (dos ve zaman aşımı koruması)
+    # sonuç sınırlandırma
     bulunanlar_liste = list(bulunanlar)
     toplam = len(bulunanlar_liste)
     limit = 30
     
     md += f"Ağ istihbarat kaynaklarından toplam **{toplam}** adet alt alan adı tespit edildi.\n"
     if toplam > limit:
-        # kararlılık için popüler olanları veya ilk 30'u al
+        # ilk 30 alan adı
         bulunanlar_liste = bulunanlar_liste[:limit]
         md += f"*(Analiz süresini optimize etmek için en öncelikli {limit} subdomain detaylandırılıyor...)*\n\n"
     else:
@@ -277,14 +275,14 @@ def execute(message: str) -> str:
     md += "| Subdomain | Çözümlenen IP | HTTP Durum | Takeover Riski | CNAME Hedefi |\n"
     md += "|:----------|:--------------|:-----------|:---------------|:-------------|\n"
 
-    # 3. paralel subdomain doğrulama (10 thread worker)
+    # paralel doğrulama
     analiz_sonuclari: List[Dict[str, Any]] = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         gelecekler = {executor.submit(subdomain_dogrula, sub): sub for sub in bulunanlar_liste}
         for gelecek in concurrent.futures.as_completed(gelecekler):
             analiz_sonuclari.append(gelecek.result())
 
-    # sıralama: önce dns'i çözülen ve risk seviyesi yüksek olanları listele
+    # sonuç sıralaması
     analiz_sonuclari.sort(key=lambda x: (
         x["ip"] == "-",
         "Kritik" not in x["risk"],
