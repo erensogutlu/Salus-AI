@@ -1,18 +1,17 @@
-/* salus ai - baslik stilleri */
+/* salus ai - ultra sade baslik stilleri */
 
 .baslik {
   position: sticky;
   top: 0;
   z-index: 1000;
   background: var(--cam-baslik);
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--sinir);
-  padding: 0 24px;
-  height: 52px;
+  padding: 0 20px;
+  height: 50px;
   display: flex;
   align-items: center;
-  transition: background var(--gecis-hiz), border-color var(--gecis-hiz);
 }
 
 .baslik-icerik {
@@ -22,31 +21,26 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
+  gap: 20px;
 }
 
 /* logo */
 .baslik-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-decoration: none;
   flex-shrink: 0;
 }
 
 .baslik-logo-ikon {
   color: var(--birincil);
-  transition: transform var(--gecis-hiz);
-}
-
-.baslik-logo:hover .baslik-logo-ikon {
-  transform: scale(1.08);
 }
 
 .baslik-logo-metin {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   color: var(--metin);
 }
 
@@ -54,19 +48,18 @@
 .baslik-nav {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .baslik-nav-baglanti {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 5px 12px;
   color: var(--metin-soluk);
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
-  border-radius: var(--yuvarlatma-tam);
+  border-radius: var(--yuvarlatma-kucuk);
   transition: all var(--gecis-hiz);
   text-decoration: none;
   white-space: nowrap;
@@ -83,8 +76,8 @@
 
 .baslik-nav-baglanti.aktif {
   color: var(--metin);
-  font-weight: 600;
   background: var(--yuzey-secili);
+  font-weight: 600;
 }
 
 /* kullanici & araclar acilir menusu */
@@ -96,54 +89,51 @@
 .kullanici-menu-tetik {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 12px 4px 6px;
-  border-radius: var(--yuvarlatma-tam);
+  gap: 6px;
+  padding: 3px 10px 3px 4px;
+  border-radius: var(--yuvarlatma-kucuk);
   background: var(--yuzey-acik);
   border: 1px solid var(--sinir);
   color: var(--metin);
   cursor: pointer;
-  transition: all var(--gecis-hiz);
+  transition: border-color var(--gecis-hiz);
   font-family: inherit;
 }
 
 .kullanici-menu-tetik:hover {
-  background: var(--yuzey-secili);
   border-color: var(--sinir-parlak);
 }
 
 .kullanici-avatar {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   object-fit: cover;
-  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
+  background: var(--birincil);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #ffffff;
 }
 
 .kullanici-menu-ad {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 500;
 }
 
 .kullanici-menu-acilir {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 6px);
   right: 0;
-  min-width: 210px;
-  background: var(--yuzey-cam-parlak);
-  backdrop-filter: blur(40px) saturate(200%);
-  -webkit-backdrop-filter: blur(40px) saturate(200%);
-  border: 1px solid var(--sinir-parlak);
-  border-radius: 16px;
-  padding: 8px;
-  box-shadow: var(--golge-buyuk);
-  animation: belirme 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 200px;
+  background: var(--yuzey);
+  border: 1px solid var(--sinir);
+  border-radius: var(--yuvarlatma-kucuk);
+  padding: 6px;
+  box-shadow: var(--golge);
+  animation: belirme 0.15s ease;
   z-index: 1010;
   display: flex;
   flex-direction: column;
@@ -153,24 +143,23 @@
 .kullanici-menu-oge {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
+  gap: 8px;
+  padding: 7px 10px;
   color: var(--metin);
-  font-size: 0.84rem;
-  border-radius: 10px;
+  font-size: 0.82rem;
+  border-radius: 6px;
   text-decoration: none;
   cursor: pointer;
   border: none;
   background: transparent;
   width: 100%;
   text-align: left;
-  transition: all var(--gecis-hiz);
+  transition: background var(--gecis-hiz);
   font-family: inherit;
 }
 
 .kullanici-menu-oge:hover {
-  background: var(--yuzey-secili);
-  color: var(--metin);
+  background: var(--yuzey-acik);
 }
 
 .kullanici-menu-oge.tehlike {
@@ -179,48 +168,40 @@
 
 .kullanici-menu-oge.tehlike:hover {
   background: var(--tehlike-acik);
-  color: var(--tehlike);
 }
 
 .kullanici-menu-ayirici {
   height: 1px;
   background: var(--sinir);
-  margin: 6px 0;
+  margin: 4px 0;
 }
 
 /* sag alan */
 .baslik-sag {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* mobil menu butonu */
+/* mobil menu */
 .mobil-menu-buton {
   display: none;
   background: var(--yuzey-acik);
   border: 1px solid var(--sinir);
-  border-radius: var(--yuvarlatma-kucuk);
+  border-radius: 6px;
   color: var(--metin);
   cursor: pointer;
-  padding: 6px;
+  padding: 5px;
   align-items: center;
   justify-content: center;
-  transition: background var(--gecis-hiz);
 }
 
-.mobil-menu-buton:hover {
-  background: var(--yuzey-secili);
-}
-
-/* mobil menu arkaplani */
 .mobil-nav-arka {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
   z-index: 1998;
 }
 
@@ -228,24 +209,21 @@
   display: block;
 }
 
-/* mobil menu paneli */
 .mobil-nav {
   display: none;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 300px;
-  background: var(--yuzey-cam-parlak);
-  backdrop-filter: blur(40px) saturate(190%);
-  -webkit-backdrop-filter: blur(40px) saturate(190%);
-  border-left: 1px solid var(--sinir-parlak);
-  padding: 24px;
+  width: 260px;
+  background: var(--yuzey);
+  border-left: 1px solid var(--sinir);
+  padding: 20px 16px;
   z-index: 1999;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s ease;
   overflow-y: auto;
 }
 
@@ -258,8 +236,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--sinir);
 }
 

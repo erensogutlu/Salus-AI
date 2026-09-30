@@ -1,69 +1,64 @@
 /* salus ai - kayit ol stilleri */
 
 .kayit-sayfa {
-  min-height: calc(100vh - 52px);
+  min-height: calc(100vh - 50px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 20px;
-  position: relative;
-  overflow: hidden;
+  padding: 32px 20px;
   background-color: var(--arkaplan);
 }
 
 .kayit-kart {
   width: 100%;
-  max-width: 520px;
-  padding: 44px 36px;
-  position: relative;
-  z-index: 1;
-  background: var(--yuzey-cam-parlak);
-  border: 1px solid var(--sinir-parlak);
-  border-radius: 24px;
-  backdrop-filter: blur(40px) saturate(190%);
-  -webkit-backdrop-filter: blur(40px) saturate(190%);
-  box-shadow: var(--golge-buyuk);
-  animation: belirme 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 480px;
+  padding: 36px 32px;
+  background: var(--yuzey);
+  border: 1px solid var(--sinir);
+  border-radius: var(--yuvarlatma);
+  box-shadow: var(--golge);
+  animation: belirme 0.3s ease;
 }
 
 .kayit-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .kayit-form .buton {
   width: 100%;
-  padding: 13px 20px;
-  font-size: 0.95rem;
+  padding: 10px 16px;
+  font-size: 0.9rem;
   font-weight: 600;
-  border-radius: 980px;
-  margin-top: 8px;
+  border-radius: var(--yuvarlatma-kucuk);
+  margin-top: 4px;
+  height: 42px;
 }
 
 .kayit-satir {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 12px;
 }
 
 /* sifre gucu gostergesi */
 .sifre-guc {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 6px;
+  gap: 4px;
+  margin-top: 4px;
 }
 
 .sifre-guc-cubuklar {
   display: flex;
-  gap: 6px;
+  gap: 4px;
 }
 
 .sifre-guc-cubuk {
   flex: 1;
-  height: 4px;
-  border-radius: 980px;
+  height: 3px;
+  border-radius: 2px;
   background: var(--yuzey-secili);
   transition: background-color var(--gecis-hiz);
 }
@@ -73,9 +68,8 @@
 .sifre-guc-cubuk.dolu.guclu { background: var(--basari); }
 
 .sifre-guc-metin {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
 }
 
 .sifre-guc-metin.zayif { color: var(--tehlike); }
@@ -86,15 +80,15 @@
 .sartlar-kutu {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .sartlar-kutu input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
   accent-color: var(--birincil);
   cursor: pointer;
   flex-shrink: 0;
@@ -102,7 +96,7 @@
 }
 
 .sartlar-kutu label {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--metin-soluk);
   cursor: pointer;
   line-height: 1.4;
@@ -119,12 +113,11 @@
 
 @media (max-width: 520px) {
   .kayit-kart {
-    padding: 32px 24px;
-    border-radius: 20px;
+    padding: 28px 20px;
   }
 
   .kayit-satir {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
   }
 }

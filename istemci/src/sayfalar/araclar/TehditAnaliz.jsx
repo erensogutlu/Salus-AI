@@ -291,14 +291,16 @@ const TehditAnaliz = () => {
 
       {/* tarama animasyonu */}
       {yukleniyor && (
-        <div className="analiz-sonuc cam-kart">
+        <div className="analiz-sonuc">
           <div className="tarama-animasyon">
-            <div className="tarama-radar">
-              <Crosshair size={28} style={{ color: 'var(--birincil)', zIndex: 3 }} />
-              <div className="radar-hedef"></div>
+            <div className="tarama-ilerleme-bar">
+              <div 
+                className="tarama-ilerleme-cizgi" 
+                style={{ width: `${Math.min(100, Math.max(15, (taramaAdimi / 4) * 100))}%` }}
+              />
             </div>
             <div className="tarama-mesaj">
-              <strong>{hedef}</strong> derinlemesine analiz ediliyor...
+              <strong>{hedef}</strong> analiz ediliyor...
             </div>
             <div className="tarama-adimlar">
               {taramaAdimlari.map((adim, i) => (
@@ -306,10 +308,10 @@ const TehditAnaliz = () => {
                   key={i}
                   className={`tarama-adim ${i < taramaAdimi ? 'tamamlandi' : i === taramaAdimi ? 'aktif' : ''}`}
                 >
-                  {i < taramaAdimi ? <CheckCircle size={16} /> : i === taramaAdimi ? (
-                    <span className="yukleyici yukleyici-kucuk" style={{ borderColor: 'var(--birincil)', borderTopColor: 'transparent' }} />
+                  {i < taramaAdimi ? <CheckCircle size={14} /> : i === taramaAdimi ? (
+                    <span className="yukleyici yukleyici-kucuk" style={{ borderColor: 'var(--birincil)', borderTopColor: 'transparent', width: 12, height: 12 }} />
                   ) : (
-                    <Clock size={16} />
+                    <Clock size={14} />
                   )}
                   {adim}
                 </div>
@@ -321,7 +323,7 @@ const TehditAnaliz = () => {
 
       {/* analiz sonuçları */}
       {sonuc && !yukleniyor && (
-        <div className="analiz-sonuc cam-kart">
+        <div className="analiz-sonuc">
           <div className="analiz-sonuc-baslik">
             <h3>Güvenlik Raporu: <span style={{ color: 'var(--birincil)' }}>{sonuc.hedef}</span></h3>
             <span className={`rozet ${sonuc.riskPuani >= 70 ? 'rozet-tehlike' : sonuc.riskPuani >= 40 ? 'rozet-uyari' : 'rozet-basari'}`}>
@@ -348,16 +350,16 @@ const TehditAnaliz = () => {
                 <div className="risk-puan-kapsayici">
                   <div className="risk-puan-daire">
                     <svg viewBox="0 0 120 120" style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
-                      <circle className="risk-gauge-bg" cx="60" cy="60" r="50" fill="none" strokeWidth="12" />
+                      <circle className="risk-gauge-bg" cx="60" cy="60" r="50" fill="none" strokeWidth="8" />
                       <circle
                         cx="60" cy="60" r="50"
                         fill="none"
                         stroke={riskRenk(sonuc.riskPuani)}
-                        strokeWidth="12"
+                        strokeWidth="8"
                         strokeLinecap="round"
                         strokeDasharray={`${2 * Math.PI * 50}`}
                         strokeDashoffset={`${2 * Math.PI * 50 * (1 - sonuc.riskPuani / 100)}`}
-                        style={{ transition: 'stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
+                        style={{ transition: 'stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1)' }}
                       />
                     </svg>
                     <div className="risk-puan-deger" style={{ position: 'absolute', color: riskRenk(sonuc.riskPuani) }}>
@@ -369,13 +371,13 @@ const TehditAnaliz = () => {
 
                 {/* bulgular (kısa özet) */}
                 <div className="bulgular-liste">
-                  <h4 style={{ marginBottom: '10px', color: 'var(--metin)' }}>En Kritik Tespitler</h4>
+                  <h4 style={{ marginBottom: '8px', color: 'var(--metin)', fontSize: '0.9rem', fontWeight: 600 }}>Kritik Bulgular</h4>
                   {sonuc.bulgular.slice(0, 3).map((bulgu, i) => (
                     <div key={i} className={`bulgu-oge ${bulgu.seviye}`}>
                       <div className="bulgu-ikon">
-                        {bulgu.seviye === 'tehlike' ? <XCircle size={18} style={{ color: 'var(--tehlike)' }} /> :
-                         bulgu.seviye === 'uyari' ? <AlertTriangle size={18} style={{ color: 'var(--uyari)' }} /> :
-                         <CheckCircle size={18} style={{ color: 'var(--basari)' }} />}
+                        {bulgu.seviye === 'tehlike' ? <XCircle size={16} style={{ color: 'var(--tehlike)' }} /> :
+                         bulgu.seviye === 'uyari' ? <AlertTriangle size={16} style={{ color: 'var(--uyari)' }} /> :
+                         <CheckCircle size={16} style={{ color: 'var(--basari)' }} />}
                       </div>
                       <div className="bulgu-icerik">
                         <h4>{bulgu.baslik}</h4>
@@ -392,9 +394,9 @@ const TehditAnaliz = () => {
                 {sonuc.bulgular.map((bulgu, i) => (
                   <div key={i} className={`bulgu-oge ${bulgu.seviye}`}>
                     <div className="bulgu-ikon">
-                      {bulgu.seviye === 'tehlike' ? <XCircle size={18} style={{ color: 'var(--tehlike)' }} /> :
-                       bulgu.seviye === 'uyari' ? <AlertTriangle size={18} style={{ color: 'var(--uyari)' }} /> :
-                       <CheckCircle size={18} style={{ color: 'var(--basari)' }} />}
+                      {bulgu.seviye === 'tehlike' ? <XCircle size={16} style={{ color: 'var(--tehlike)' }} /> :
+                       bulgu.seviye === 'uyari' ? <AlertTriangle size={16} style={{ color: 'var(--uyari)' }} /> :
+                       <CheckCircle size={16} style={{ color: 'var(--basari)' }} />}
                     </div>
                     <div className="bulgu-icerik">
                       <h4>{bulgu.baslik}</h4>
@@ -407,10 +409,10 @@ const TehditAnaliz = () => {
 
             {taramaAdimi === 12 && (
               <div className="oneriler-bolum">
-                <h4>💡 SOC Güvenlik Önerileri</h4>
+                <h4>SOC Güvenlik Önerileri</h4>
                 {sonuc.oneriler.map((oneri, i) => (
                   <div key={i} className="oneri-oge">
-                    <CheckCircle size={18} className="ikon" />
+                    <CheckCircle size={16} className="ikon" />
                     <span>{oneri}</span>
                   </div>
                 ))}

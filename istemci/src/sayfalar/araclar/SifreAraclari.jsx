@@ -98,14 +98,13 @@ const SifreAraclari = () => {
       )}
 
       {yukleniyor && (
-        <div className="analiz-sonuc cam-kart">
+        <div className="analiz-sonuc">
           <div className="tarama-animasyon">
-            <div className="tarama-radar">
-              <Lock size={28} style={{ color: 'var(--birincil)', zIndex: 3 }} />
-              <div className="radar-hedef"></div>
+            <div className="tarama-ilerleme-bar">
+              <div className="tarama-ilerleme-cizgi" style={{ width: '70%', animation: 'nabiz 1.5s infinite' }} />
             </div>
             <div className="tarama-mesaj">
-              <strong>Yapay Zeka Modülü</strong> çalışıyor...
+              <strong>Yapay zeka modülü</strong> çalışıyor...
             </div>
           </div>
         </div>

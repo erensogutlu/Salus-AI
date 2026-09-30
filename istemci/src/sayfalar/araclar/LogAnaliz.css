@@ -1,73 +1,72 @@
 /* salus ai - log analiz sayfası stilleri */
 
 .log-analiz-sayfa {
-  padding: 36px 24px;
-  max-width: 1200px;
+  padding: 32px 20px 60px;
+  max-width: 1100px;
   margin: 0 auto;
-  animation: belirme 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: belirme 0.3s ease;
 }
 
 .log-analiz-baslik {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .log-analiz-baslik h1 {
-  font-size: 2rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 8px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
   color: var(--metin);
 }
 
 .log-analiz-baslik p {
   color: var(--metin-soluk);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .log-giris-alani {
-  background: var(--yuzey-cam);
+  background: var(--yuzey);
   border: 1px solid var(--sinir);
   border-radius: var(--yuvarlatma);
-  padding: 24px;
-  margin-bottom: 28px;
-  backdrop-filter: blur(30px);
+  padding: 20px;
+  margin-bottom: 24px;
 }
 
 .log-giris-alani label {
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: var(--metin);
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
 }
 
 .log-textarea {
   width: 100%;
-  min-height: 180px;
+  min-height: 160px;
   background: var(--yuzey-acik);
   border: 1px solid var(--sinir);
   border-radius: var(--yuvarlatma-kucuk);
-  padding: 16px;
+  padding: 14px;
   font-family: var(--font-kod);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   color: var(--metin);
   resize: vertical;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   transition: var(--gecis);
   outline: none;
 }
 
 .log-textarea:focus {
   border-color: var(--birincil);
-  box-shadow: 0 0 0 3px var(--birincil-acik);
+  box-shadow: 0 0 0 2px var(--birincil-acik);
 }
 
 .log-buton-grup {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
@@ -75,10 +74,10 @@
   background: var(--yuzey-acik);
   border: 1px solid var(--sinir);
   color: var(--metin-soluk);
-  padding: 10px 18px;
-  border-radius: var(--yuvarlatma-tam);
+  padding: 8px 14px;
+  border-radius: var(--yuvarlatma-kucuk);
   cursor: pointer;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 500;
   transition: var(--gecis);
 }
@@ -90,15 +89,15 @@
 
 /* analiz sonuç kartları */
 .analiz-sonuc-kart {
-  background: var(--yuzey-cam);
+  background: var(--yuzey);
   border: 1px solid var(--sinir);
   border-radius: var(--yuvarlatma);
   overflow: hidden;
-  animation: yukari-kaydir 0.4s ease-out;
+  animation: yukari-kaydir 0.3s ease-out;
 }
 
 .sonuc-ozet-baslik {
-  padding: 20px 24px;
+  padding: 16px 20px;
   background: var(--yuzey-acik);
   border-bottom: 1px solid var(--sinir);
   display: flex;
@@ -107,45 +106,46 @@
 }
 
 .sonuc-ozet-sol h2 {
-  font-size: 1.25rem;
-  margin-bottom: 4px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 2px;
   color: var(--metin);
 }
 
 .sonuc-ozet-sol p {
   color: var(--metin-soluk);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
 }
 
 .risk-rozet {
-  padding: 6px 14px;
-  border-radius: 980px;
-  font-size: 0.8rem;
-  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.04em;
 }
 
-.risk-rozet.kritik { background: var(--tehlike-acik); color: var(--tehlike); border: 1px solid rgba(255, 69, 58, 0.3); }
-.risk-rozet.yüksek { background: var(--uyari-acik); color: var(--uyari); border: 1px solid rgba(255, 159, 10, 0.3); }
-.risk-rozet.orta { background: var(--bilgi-acik); color: var(--bilgi); border: 1px solid rgba(100, 210, 255, 0.3); }
-.risk-rozet.düşük, .risk-rozet.güvenli { background: var(--basari-acik); color: var(--basari); border: 1px solid rgba(48, 209, 88, 0.3); }
+.risk-rozet.kritik { background: var(--tehlike-acik); color: var(--tehlike); border: 1px solid rgba(255, 69, 58, 0.2); }
+.risk-rozet.yüksek { background: var(--uyari-acik); color: var(--uyari); border: 1px solid rgba(255, 159, 10, 0.2); }
+.risk-rozet.orta { background: var(--bilgi-acik); color: var(--bilgi); border: 1px solid rgba(100, 210, 255, 0.2); }
+.risk-rozet.düşük, .risk-rozet.güvenli { background: var(--basari-acik); color: var(--basari); border: 1px solid rgba(48, 209, 88, 0.2); }
 
 .sonuc-icerik {
-  padding: 24px;
+  padding: 20px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 28px;
+  gap: 20px;
 }
 
 .sonuc-bolum h3 {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--birincil);
+  color: var(--metin);
 }
 
 .sonuc-liste {
@@ -154,15 +154,15 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .sonuc-liste-oge {
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: var(--yuzey-acik);
   border-radius: var(--yuvarlatma-kucuk);
   border-left: 3px solid var(--birincil);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--metin);
 }
 
@@ -173,28 +173,30 @@
 
 .port-tablosu th,
 .port-tablosu td {
-  padding: 12px 16px;
+  padding: 10px 14px;
   text-align: left;
   border-bottom: 1px solid var(--sinir);
+  font-size: 0.82rem;
 }
 
 .port-tablosu th {
   background: var(--yuzey-acik);
   color: var(--metin-soluk);
   font-weight: 600;
-  font-size: 0.8rem;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.75rem;
 }
 
 .port-num {
   font-family: var(--font-kod);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--metin);
 }
 
 .port-proto {
   color: var(--metin-soluk);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   margin-left: 4px;
 }
 
@@ -202,15 +204,16 @@
   background: var(--tehlike-acik);
   border: 1px solid rgba(255, 69, 58, 0.2);
   border-radius: var(--yuvarlatma-kucuk);
-  padding: 16px;
-  margin-bottom: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
 }
 
 .zafiyet-baslik {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-weight: 600;
+  font-size: 0.88rem;
   color: var(--metin);
 }
 
@@ -230,11 +233,11 @@
 
 @media (max-width: 768px) {
   .log-analiz-sayfa {
-    padding: 24px 16px;
+    padding: 20px 16px 40px;
   }
   .sonuc-ozet-baslik {
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 10px;
   }
 }
