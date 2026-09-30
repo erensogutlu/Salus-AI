@@ -97,10 +97,7 @@ const LogAnaliz = () => {
       </div>
 
       {yukleniyor && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px' }}>
-          <YuklemeSpinner />
-          <p style={{ marginTop: '16px', color: 'var(--metin-soluk)' }}>Yapay zeka logları yorumluyor...</p>
-        </div>
+        <YuklemeSpinner metin="Yapay zeka logları yorumluyor..." />
       )}
 
       {sonuc && (

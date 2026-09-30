@@ -57,7 +57,7 @@ const Panel = () => {
       {/* karşılama banner */}
       <div className="panel-karsilama">
         <h1>
-          Hoş geldin, <span className="gradyan-metin">{kullanici?.tam_ad || kullanici?.kullanici_adi || 'Kullanıcı'}</span> 👋
+          Hoş geldin, <span className="gradyan-metin">{kullanici?.tam_ad || kullanici?.kullanici_adi || 'Kullanıcı'}</span>
         </h1>
         <p>Sistem aktivitelerinize ve tehdit istatistiklerine genel bakış.</p>
       </div>

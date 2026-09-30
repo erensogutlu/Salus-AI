@@ -1,43 +1,42 @@
-import { Shield } from 'lucide-react';
+import React from 'react';
 
-const YuklemeSpinner = ({ boyut = 'normal', metin = 'Yükleniyor...' }) => {
-  const spinnerBoyut = boyut === 'kucuk' ? 32 : boyut === 'buyuk' ? 64 : 48;
+const YuklemeSpinner = ({ boyut = 'normal', metin = 'Yükleniyor...', tamSayfa = false }) => {
+  // Sadeleştirilmiş boyutlar
+  const piksel = boyut === 'kucuk' ? 20 : boyut === 'buyuk' ? 36 : 28;
 
   return (
-    <div className="yukleyici-kapsayici" style={{ flexDirection: 'column', gap: '16px', minHeight: boyut === 'buyuk' ? '60vh' : 'auto' }}>
-      <div style={{
-        position: 'relative',
-        width: `${spinnerBoyut + 20}px`,
-        height: `${spinnerBoyut + 20}px`,
+    <div
+      className="yukleyici-kapsayici"
+      style={{
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-      }}>
-        {/* dönen dış halka */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          border: '3px solid var(--sinir)',
-          borderTopColor: 'var(--birincil)',
-          borderRightColor: 'var(--ikincil)',
-          borderRadius: '50%',
-          animation: 'dondur 1s linear infinite',
-        }} />
-        {/* kalkan ikonu */}
-        <Shield
-          size={spinnerBoyut * 0.5}
-          style={{
-            color: 'var(--birincil)',
-            animation: 'nabiz 2s ease-in-out infinite',
-          }}
-        />
-      </div>
+        width: '100%',
+        minHeight: tamSayfa ? '70vh' : boyut === 'buyuk' ? '40vh' : '160px',
+        padding: '24px',
+        gap: '12px',
+        margin: '0 auto',
+        textAlign: 'center',
+      }}
+    >
+      <div
+        className="yukleyici"
+        style={{
+          width: `${piksel}px`,
+          height: `${piksel}px`,
+          borderWidth: piksel > 28 ? '2.5px' : '2px',
+        }}
+      />
       {metin && (
-        <span style={{
-          color: 'var(--metin-soluk)',
-          fontSize: '0.9rem',
-          fontWeight: 500,
-        }}>
+        <span
+          style={{
+            color: 'var(--metin-soluk)',
+            fontSize: boyut === 'buyuk' ? '0.88rem' : '0.82rem',
+            fontWeight: 500,
+            letterSpacing: '-0.01em',
+          }}
+        >
           {metin}
         </span>
       )}

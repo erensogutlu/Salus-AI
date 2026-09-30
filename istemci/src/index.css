@@ -357,20 +357,44 @@ a:hover {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.yukleyici-kapsayici {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.yukleyici-tam-sayfa {
+  min-height: calc(100vh - 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .yukleyici {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border: 2px solid var(--sinir);
   border-top-color: var(--birincil);
   border-radius: 50%;
-  animation: dondur 0.7s linear infinite;
+  animation: dondur 0.65s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .yukleyici-kucuk {
   width: 14px;
   height: 14px;
-  border-width: 2px;
+  border-width: 1.75px;
+}
+
+.yukleyici-buyuk {
+  width: 36px;
+  height: 36px;
+  border-width: 2.5px;
 }
 
 /* kaydirma cubugu */

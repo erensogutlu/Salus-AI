@@ -49,11 +49,7 @@ const KorumaliRota = () => {
 
   // yükleniyorsa spinner göster
   if (yukleniyor) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <YuklemeSpinner />
-      </div>
-    );
+    return <YuklemeSpinner tamSayfa metin="Doğrulanıyor..." />;
   }
 
   // oturum açıksa içeriği, değilse girişe yönlendir
@@ -65,11 +61,7 @@ const MisafirRotasi = () => {
   const { oturumAcikMi, yukleniyor } = useYetkilendirme();
 
   if (yukleniyor) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <YuklemeSpinner />
-      </div>
-    );
+    return <YuklemeSpinner tamSayfa metin="Doğrulanıyor..." />;
   }
 
   return !oturumAcikMi ? <Outlet /> : <Navigate to="/panel" replace />;
@@ -79,11 +71,7 @@ const YoneticiRotasi = () => {
   const { kullanici, oturumAcikMi, yukleniyor } = useYetkilendirme();
 
   if (yukleniyor) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <YuklemeSpinner />
-      </div>
-    );
+    return <YuklemeSpinner tamSayfa metin="Yetki kontrol ediliyor..." />;
   }
 
   return oturumAcikMi && kullanici?.rol === 'admin' ? <Outlet /> : <Navigate to="/panel" replace />;

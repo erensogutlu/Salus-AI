@@ -11,6 +11,7 @@ import {
   Globe
 } from 'lucide-react';
 import { tehditKayitlari, tehditKayitSil } from '../servisler/apiServisi';
+import YuklemeSpinner from '../bilesenler/YuklemeSpinner';
 import './Raporlar.css';
 
 const Raporlar = () => {
@@ -102,9 +103,7 @@ const Raporlar = () => {
       </div>
 
       {yukleniyor ? (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>
-          <span className="yukleyici" />
-        </div>
+        <YuklemeSpinner metin="Raporlar yükleniyor..." />
       ) : raporlar.length === 0 ? (
         <div className="raporlar-bos">
           <FileText size={48} className="raporlar-bos-ikon" />
