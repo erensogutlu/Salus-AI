@@ -6,12 +6,15 @@ import {
   Search,
   Wifi,
   User,
-  BarChart3,
-  Settings,
-  Menu,
-  X,
   FileText,
   Terminal,
+  Lock,
+  Hash,
+  Globe,
+  FileCode,
+  Sliders,
+  Menu,
+  X,
 } from 'lucide-react';
 import { useYetkilendirme } from '../baglam/YetkilendirmeBaglami';
 import './Kenar.css';
@@ -29,23 +32,42 @@ const Kenar = () => {
 
   // menü öğeleri
   const menuOgeleri = [
-    { baslik: 'Ana Menü', ogeler: [
-      { yol: '/panel', etiket: 'Panel', ikon: LayoutDashboard },
-      { yol: '/ai-sohbet', etiket: 'AI Sohbet', ikon: MessageSquare },
-      { yol: '/tehdit-analiz', etiket: 'Tehdit Analiz', ikon: Search },
-      { yol: '/ag-tarama', etiket: 'Ağ Tarama', ikon: Wifi },
-      { yol: '/log-analiz', etiket: 'Log Analiz', ikon: Terminal },
-      { yol: '/raporlar', etiket: 'Raporlar', ikon: FileText },
-    ]},
-    { baslik: 'Hesap', ogeler: [
-      { yol: '/profil', etiket: 'Profil', ikon: User },
-    ]},
+    {
+      baslik: 'Genel',
+      ogeler: [
+        { yol: '/panel', etiket: 'Panel', ikon: LayoutDashboard },
+        { yol: '/ai-sohbet', etiket: 'AI Sohbet', ikon: MessageSquare },
+        { yol: '/raporlar', etiket: 'Raporlar', ikon: FileText },
+      ],
+    },
+    {
+      baslik: 'Siber Araçlar',
+      ogeler: [
+        { yol: '/tehdit-analiz', etiket: 'Tehdit Analizi', ikon: Search },
+        { yol: '/ag-tarama', etiket: 'Ağ Tarama', ikon: Wifi },
+        { yol: '/log-analiz', etiket: 'Log Analizi', ikon: Terminal },
+        { yol: '/araclar/sifre', etiket: 'Şifre Araçları', ikon: Lock },
+        { yol: '/araclar/kripto', etiket: 'Hash & Base64', ikon: Hash },
+        { yol: '/araclar/ip-sorgu', etiket: 'IP Sorgulama', ikon: Globe },
+        { yol: '/araclar/subdomain', etiket: 'Subdomain Keşfi', ikon: Search },
+        { yol: '/araclar/header', etiket: 'Güvenlik Başlıkları', ikon: FileCode },
+      ],
+    },
+    {
+      baslik: 'Hesap',
+      ogeler: [
+        { yol: '/profil', etiket: 'Profil', ikon: User },
+        ...(kullanici?.rol === 'admin'
+          ? [{ yol: '/yonetim', etiket: 'Yönetici Paneli', ikon: Sliders }]
+          : []),
+      ],
+    },
   ];
 
   return (
     <>
       {/* mobil tetik butonu */}
-      <button className="kenar-mobil-tetik" onClick={() => setAcik(true)}>
+      <button className="kenar-mobil-tetik" onClick={() => setAcik(true)} aria-label="Menüyü Aç">
         <Menu size={22} />
       </button>
 
@@ -58,30 +80,26 @@ const Kenar = () => {
       {/* kenar çubuğu */}
       <aside className={`kenar-cubugu ${acik ? 'acik' : ''}`}>
         {/* mobilde kapat butonu */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
+        <div className="kenar-kapat-satir">
+          <span className="kenar-logo-metin">Menü</span>
           <button
             onClick={() => setAcik(false)}
-            style={{
-              display: acik ? 'flex' : 'none',
-              background: 'none',
-              border: 'none',
-              color: 'var(--metin-soluk)',
-              cursor: 'pointer',
-              padding: '4px',
-            }}
+            className="kenar-kapat-buton"
+            aria-label="Menüyü Kapat"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
 
         {/* menü grupları */}
         {menuOgeleri.map((grup, indeks) => (
-          <div key={indeks}>
+          <div key={indeks} className="kenar-grup">
             <div className="kenar-baslik">{grup.baslik}</div>
             {grup.ogeler.map((oge) => (
               <NavLink
                 key={oge.yol}
                 to={oge.yol}
+                end={oge.yol === '/panel'}
                 className={({ isActive }) =>
                   `kenar-baglanti ${isActive ? 'aktif' : ''}`
                 }
@@ -90,7 +108,7 @@ const Kenar = () => {
                 <div className="ikon-kapsayici">
                   <oge.ikon size={18} />
                 </div>
-                {oge.etiket}
+                <span>{oge.etiket}</span>
               </NavLink>
             ))}
             {indeks < menuOgeleri.length - 1 && <div className="kenar-ayirici" />}
@@ -100,12 +118,18 @@ const Kenar = () => {
         {/* kullanıcı bilgisi */}
         {kullanici && (
           <div className="kenar-kullanici">
-            <div className="kenar-kullanici-avatar">{basHarf}</div>
+            {kullanici.profil_resmi ? (
+              <img src={kullanici.profil_resmi} alt="Profil" className="kenar-kullanici-avatar" />
+            ) : (
+              <div className="kenar-kullanici-avatar">{basHarf}</div>
+            )}
             <div className="kenar-kullanici-bilgi">
               <div className="kenar-kullanici-ad">
                 {kullanici.tam_ad || kullanici.kullanici_adi || 'Kullanıcı'}
               </div>
-              <div className="kenar-kullanici-rol">Kullanıcı</div>
+              <div className="kenar-kullanici-rol">
+                {kullanici.rol === 'admin' ? 'Yönetici' : 'Kullanıcı'}
+              </div>
             </div>
           </div>
         )}

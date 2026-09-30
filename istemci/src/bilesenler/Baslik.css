@@ -4,15 +4,15 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.78);
+  background: var(--cam-baslik);
   backdrop-filter: blur(30px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--sinir);
   padding: 0 24px;
   height: 52px;
   display: flex;
   align-items: center;
-  transition: background var(--gecis-hiz);
+  transition: background var(--gecis-hiz), border-color var(--gecis-hiz);
 }
 
 .baslik-icerik {
@@ -29,58 +29,62 @@
 .baslik-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   text-decoration: none;
   flex-shrink: 0;
 }
 
 .baslik-logo-ikon {
-  color: #ffffff;
+  color: var(--birincil);
   transition: transform var(--gecis-hiz);
 }
 
 .baslik-logo:hover .baslik-logo-ikon {
-  transform: scale(1.06);
+  transform: scale(1.08);
 }
 
 .baslik-logo-metin {
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: var(--metin);
 }
 
 /* masaustu navigasyon */
 .baslik-nav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .baslik-nav-baglanti {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
   color: var(--metin-soluk);
-  font-size: 0.84rem;
-  font-weight: 400;
+  font-size: 0.86rem;
+  font-weight: 500;
   letter-spacing: -0.01em;
   border-radius: var(--yuvarlatma-tam);
   transition: all var(--gecis-hiz);
   text-decoration: none;
   white-space: nowrap;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .baslik-nav-baglanti:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--metin);
+  background: var(--yuzey-acik);
 }
 
 .baslik-nav-baglanti.aktif {
-  color: #ffffff;
-  font-weight: 500;
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--metin);
+  font-weight: 600;
+  background: var(--yuzey-secili);
 }
 
 /* kullanici & araclar acilir menusu */
@@ -93,17 +97,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px;
+  padding: 4px 12px 4px 6px;
   border-radius: var(--yuvarlatma-tam);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: var(--yuzey-acik);
+  border: 1px solid var(--sinir);
+  color: var(--metin);
   cursor: pointer;
   transition: all var(--gecis-hiz);
+  font-family: inherit;
 }
 
 .kullanici-menu-tetik:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--yuzey-secili);
+  border-color: var(--sinir-parlak);
 }
 
 .kullanici-avatar {
@@ -111,7 +117,7 @@
   height: 26px;
   border-radius: 50%;
   object-fit: cover;
-  background: var(--birincil);
+  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,14 +135,14 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  min-width: 200px;
-  background: rgba(28, 28, 30, 0.85);
+  min-width: 210px;
+  background: var(--yuzey-cam-parlak);
   backdrop-filter: blur(40px) saturate(200%);
   -webkit-backdrop-filter: blur(40px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--sinir-parlak);
   border-radius: 16px;
   padding: 8px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--golge-buyuk);
   animation: belirme 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1010;
   display: flex;
@@ -159,11 +165,12 @@
   width: 100%;
   text-align: left;
   transition: all var(--gecis-hiz);
+  font-family: inherit;
 }
 
 .kullanici-menu-oge:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: var(--yuzey-secili);
+  color: var(--metin);
 }
 
 .kullanici-menu-oge.tehlike {
@@ -171,12 +178,13 @@
 }
 
 .kullanici-menu-oge.tehlike:hover {
-  background: rgba(255, 69, 58, 0.12);
+  background: var(--tehlike-acik);
+  color: var(--tehlike);
 }
 
 .kullanici-menu-ayirici {
   height: 1px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--sinir);
   margin: 6px 0;
 }
 
@@ -190,11 +198,19 @@
 /* mobil menu butonu */
 .mobil-menu-buton {
   display: none;
-  background: transparent;
-  border: none;
-  color: #ffffff;
+  background: var(--yuzey-acik);
+  border: 1px solid var(--sinir);
+  border-radius: var(--yuvarlatma-kucuk);
+  color: var(--metin);
   cursor: pointer;
   padding: 6px;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--gecis-hiz);
+}
+
+.mobil-menu-buton:hover {
+  background: var(--yuzey-secili);
 }
 
 /* mobil menu arkaplani */
@@ -202,8 +218,9 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 1998;
 }
 
@@ -218,15 +235,15 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 280px;
-  background: rgba(28, 28, 30, 0.95);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  width: 300px;
+  background: var(--yuzey-cam-parlak);
+  backdrop-filter: blur(40px) saturate(190%);
+  -webkit-backdrop-filter: blur(40px) saturate(190%);
+  border-left: 1px solid var(--sinir-parlak);
   padding: 24px;
   z-index: 1999;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow-y: auto;
@@ -243,7 +260,7 @@
   justify-content: space-between;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--sinir);
 }
 
 @media (max-width: 860px) {

@@ -2,44 +2,68 @@
 
 .kenar-cubugu {
   width: 260px;
-  min-height: calc(100vh - 70px);
   background: var(--yuzey);
   border-right: 1px solid var(--sinir);
-  padding: 24px 16px;
+  padding: 20px 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   position: sticky;
-  top: 70px;
-  height: calc(100vh - 70px);
+  top: 52px;
+  height: calc(100vh - 52px);
   overflow-y: auto;
   flex-shrink: 0;
   transition: var(--gecis);
 }
 
+.kenar-kapat-satir {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.kenar-logo-metin {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--metin);
+}
+
+.kenar-kapat-buton {
+  background: var(--yuzey-acik);
+  border: 1px solid var(--sinir);
+  color: var(--metin-soluk);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--yuvarlatma-kucuk);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .kenar-baslik {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--metin-cok-soluk);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  padding: 8px 12px;
-  margin-top: 8px;
+  letter-spacing: 0.08em;
+  padding: 8px 10px 4px;
 }
 
 .kenar-baglanti {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 8px 12px;
   color: var(--metin-soluk);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
   border-radius: var(--yuvarlatma-kucuk);
   transition: var(--gecis);
   text-decoration: none;
   cursor: pointer;
-  border: none;
+  border: 1px solid transparent;
   background: none;
   width: 100%;
   text-align: left;
@@ -52,44 +76,51 @@
 
 .kenar-baglanti.aktif {
   color: var(--birincil);
-  background: rgba(0, 212, 255, 0.08);
-  border-left: 3px solid var(--birincil);
+  background: var(--birincil-acik);
+  border-color: rgba(0, 113, 227, 0.2);
+  font-weight: 600;
 }
 
 .kenar-baglanti .ikon-kapsayici {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--yuvarlatma-kucuk);
+  border-radius: 8px;
   background: var(--yuzey-acik);
   flex-shrink: 0;
+  transition: background var(--gecis-hiz);
+}
+
+.kenar-baglanti:hover .ikon-kapsayici {
+  background: var(--yuzey-secili);
 }
 
 .kenar-baglanti.aktif .ikon-kapsayici {
-  background: rgba(0, 212, 255, 0.15);
+  background: var(--birincil);
+  color: #ffffff;
 }
 
 .kenar-ayirici {
   height: 1px;
   background: var(--sinir);
-  margin: 12px 0;
+  margin: 10px 4px;
 }
 
 /* alt kullanıcı bölümü */
 .kenar-kullanici {
   margin-top: auto;
-  padding: 16px 12px;
+  padding: 12px 10px 4px;
   border-top: 1px solid var(--sinir);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .kenar-kullanici-avatar {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--birincil), var(--ikincil));
   display: flex;
@@ -99,6 +130,7 @@
   font-size: 0.85rem;
   color: #fff;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .kenar-kullanici-bilgi {
@@ -107,7 +139,7 @@
 }
 
 .kenar-kullanici-ad {
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: var(--metin);
   white-space: nowrap;
@@ -116,7 +148,7 @@
 }
 
 .kenar-kullanici-rol {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--metin-cok-soluk);
 }
 
@@ -124,47 +156,53 @@
 .kenar-mobil-tetik {
   display: none;
   position: fixed;
-  bottom: 20px;
+  bottom: 24px;
   left: 20px;
   z-index: 998;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
+  background: var(--birincil);
   border: none;
   color: #fff;
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
-  transition: var(--gecis);
+  box-shadow: var(--parlama-birincil);
+  transition: transform var(--gecis-hiz);
 }
 
 .kenar-mobil-tetik:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .kenar-arka {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 999;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1050;
 }
 
 @media (max-width: 900px) {
   .kenar-cubugu {
     position: fixed;
-    left: -280px;
+    left: -300px;
     top: 0;
     height: 100vh;
-    z-index: 1000;
-    width: 260px;
-    transition: left 0.3s ease;
+    z-index: 1100;
+    width: 270px;
+    transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .kenar-cubugu.acik {
     left: 0;
+  }
+
+  .kenar-kapat-satir {
+    display: flex;
   }
 
   .kenar-mobil-tetik {

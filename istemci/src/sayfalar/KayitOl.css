@@ -8,7 +8,7 @@
   padding: 48px 20px;
   position: relative;
   overflow: hidden;
-  background-color: #000000;
+  background-color: var(--arkaplan);
 }
 
 .kayit-kart {
@@ -17,13 +17,13 @@
   padding: 44px 36px;
   position: relative;
   z-index: 1;
-  background: rgba(28, 28, 30, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--yuzey-cam-parlak);
+  border: 1px solid var(--sinir-parlak);
   border-radius: 24px;
   backdrop-filter: blur(40px) saturate(190%);
   -webkit-backdrop-filter: blur(40px) saturate(190%);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
-  animation: belirme 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--golge-buyuk);
+  animation: belirme 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .kayit-form {
@@ -64,7 +64,7 @@
   flex: 1;
   height: 4px;
   border-radius: 980px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--yuzey-secili);
   transition: background-color var(--gecis-hiz);
 }
 

@@ -27,13 +27,13 @@
 /* giris bolumu */
 .kahraman {
   position: relative;
-  min-height: 88vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 100px 24px 80px;
   overflow: hidden;
-  background-color: #000000;
+  background-color: var(--arkaplan);
 }
 
 .kahraman-arkaplan {
@@ -62,7 +62,7 @@
   height: 600px;
   border-radius: 50%;
   filter: blur(140px);
-  opacity: 0.12;
+  opacity: 0.14;
   pointer-events: none;
 }
 
@@ -76,8 +76,8 @@
 .kahraman-isik-2 {
   bottom: -200px;
   right: 15%;
-  background: #5e5ce6;
-  opacity: 0.08;
+  background: var(--ikincil);
+  opacity: 0.1;
 }
 
 /* yuzen ikonlar */
@@ -91,7 +91,7 @@
 
 .yuzen-ikon {
   position: absolute;
-  color: rgba(255, 255, 255, 0.12);
+  color: var(--sinir-parlak);
   animation: yuz ease-in-out infinite alternate;
 }
 
@@ -113,9 +113,9 @@
   gap: 8px;
   padding: 6px 16px;
   border-radius: var(--yuvarlatma-tam);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  background: var(--yuzey-cam);
+  border: 1px solid var(--sinir-parlak);
+  color: var(--metin);
   font-size: 0.84rem;
   font-weight: 500;
   margin-bottom: 24px;
@@ -131,16 +131,16 @@
 }
 
 .kahraman-baslik {
-  font-size: clamp(2.8rem, 6vw, 4.4rem);
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
   font-weight: 800;
   letter-spacing: -0.04em;
-  line-height: 1.1;
+  line-height: 1.12;
   margin-bottom: 20px;
-  color: #f5f5f7;
+  color: var(--metin);
 }
 
 .kahraman-baslik-gradyan {
-  background: linear-gradient(135deg, #ffffff 40%, #a1a1a6 100%);
+  background: linear-gradient(135deg, var(--metin) 40%, var(--metin-soluk) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -149,7 +149,7 @@
 .kahraman-altbaslik {
   font-size: clamp(1.05rem, 2vw, 1.25rem);
   color: var(--metin-soluk);
-  line-height: 1.55;
+  line-height: 1.6;
   letter-spacing: -0.015em;
   max-width: 680px;
   margin: 0 auto 36px;
@@ -166,7 +166,7 @@
 /* ozellikler bolumu */
 .ozellikler {
   padding: 100px 24px;
-  background: #000000;
+  background: var(--arkaplan);
 }
 
 .bolum-baslik {
@@ -177,7 +177,7 @@
 
 .bolum-ust-etiket {
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--birincil);
@@ -188,14 +188,14 @@
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: #f5f5f7;
+  color: var(--metin);
   margin-bottom: 14px;
 }
 
 .bolum-aciklama {
   font-size: 1.05rem;
   color: var(--metin-soluk);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .ozellik-grid {
@@ -208,8 +208,8 @@
 
 .ozellik-kart {
   padding: 36px 28px;
-  background: rgba(28, 28, 30, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--yuzey-cam);
+  border: 1px solid var(--sinir);
   border-radius: 24px;
   backdrop-filter: blur(30px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
@@ -220,15 +220,16 @@
 
 .ozellik-kart:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(36, 36, 40, 0.75);
+  border-color: var(--sinir-parlak);
+  background: var(--yuzey-cam-parlak);
+  box-shadow: var(--golge);
 }
 
 .ozellik-ikon {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: rgba(0, 113, 227, 0.12);
+  background: var(--birincil-acik);
   color: var(--birincil);
   display: flex;
   align-items: center;
@@ -240,7 +241,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--metin);
   margin-bottom: 10px;
 }
 
@@ -253,9 +254,9 @@
 /* istatistikler bolumu */
 .istatistikler {
   padding: 80px 24px;
-  background: #000000;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--arkaplan-ikincil);
+  border-top: 1px solid var(--sinir);
+  border-bottom: 1px solid var(--sinir);
 }
 
 .istatistik-grid {
@@ -269,19 +270,28 @@
 .istatistik-oge {
   text-align: center;
   padding: 24px;
+  background: var(--yuzey-cam);
+  border: 1px solid var(--sinir);
+  border-radius: 20px;
+  transition: transform var(--gecis-hiz);
+}
+
+.istatistik-oge:hover {
+  transform: translateY(-3px);
+  border-color: var(--sinir-parlak);
 }
 
 .istatistik-deger {
-  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
   font-weight: 800;
   letter-spacing: -0.04em;
-  color: #ffffff;
+  color: var(--metin);
   margin-bottom: 6px;
   line-height: 1;
 }
 
 .istatistik-etiket {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--metin-soluk);
   letter-spacing: -0.01em;
 }
@@ -289,7 +299,7 @@
 /* nasil calisir bolumu */
 .nasil-calisir {
   padding: 100px 24px;
-  background: #000000;
+  background: var(--arkaplan);
 }
 
 .adimlar {
@@ -302,21 +312,28 @@
 
 .adim {
   padding: 36px 28px;
-  background: rgba(28, 28, 30, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--yuzey-cam);
+  border: 1px solid var(--sinir);
   border-radius: 20px;
   position: relative;
   display: flex;
   flex-direction: column;
+  transition: transform var(--gecis-hiz);
+}
+
+.adim:hover {
+  transform: translateY(-4px);
+  border-color: var(--sinir-parlak);
+  box-shadow: var(--golge);
 }
 
 .adim-numara {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  background: var(--birincil-acik);
+  border: 1px solid var(--sinir-parlak);
+  color: var(--birincil);
   font-weight: 700;
   font-size: 0.95rem;
   display: flex;
@@ -329,7 +346,7 @@
   font-size: 1.2rem;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--metin);
   margin-bottom: 10px;
 }
 
@@ -342,15 +359,15 @@
 /* son cagri (cta) bolumu */
 .son-cagri {
   padding: 80px 24px 120px;
-  background: #000000;
+  background: var(--arkaplan);
 }
 
 .son-cagri-icerik {
   max-width: 1080px;
   margin: 0 auto;
   padding: 64px 36px;
-  background: linear-gradient(135deg, rgba(0, 113, 227, 0.12), rgba(94, 92, 230, 0.08));
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, var(--birincil-acik), rgba(94, 92, 230, 0.08));
+  border: 1px solid var(--sinir-parlak);
   border-radius: 28px;
   text-align: center;
   backdrop-filter: blur(30px);
@@ -360,7 +377,7 @@
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: var(--metin);
   margin-bottom: 16px;
 }
 

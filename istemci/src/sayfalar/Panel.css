@@ -18,7 +18,7 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   margin-bottom: 6px;
-  color: #f5f5f7;
+  color: var(--metin);
 }
 
 .panel-karsilama p {
@@ -37,20 +37,21 @@
 
 .istatistik-kart {
   padding: 24px;
-  background: rgba(28, 28, 30, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--yuzey-cam);
+  border: 1px solid var(--sinir);
   border-radius: 20px;
   backdrop-filter: blur(30px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  transition: transform var(--gecis-hiz), border-color var(--gecis-hiz);
+  transition: transform var(--gecis-hiz), border-color var(--gecis-hiz), box-shadow var(--gecis-hiz);
 }
 
 .istatistik-kart:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: var(--sinir-parlak);
+  box-shadow: var(--golge-kucuk);
 }
 
 .istatistik-kart-ikon {
@@ -60,21 +61,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--yuzey-acik);
+  border: 1px solid var(--sinir);
   flex-shrink: 0;
+}
+
+.istatistik-kart-ikon.birincil {
+  background: var(--birincil-acik);
+  color: var(--birincil);
+}
+
+.istatistik-kart-ikon.uyari {
+  background: var(--uyari-acik);
+  color: var(--uyari);
+}
+
+.istatistik-kart-ikon.ikincil {
+  background: var(--basari-acik);
+  color: var(--basari);
 }
 
 .istatistik-kart-bilgi {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .istatistik-kart-deger {
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: var(--metin);
   line-height: 1.1;
 }
 
@@ -84,97 +101,205 @@
   margin-top: 4px;
 }
 
-/* panel izgarasi */
-.panel-izgara {
+.istatistik-kart-degisim {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.istatistik-kart-degisim.artis {
+  color: var(--basari);
+}
+
+.istatistik-kart-degisim.azalis {
+  color: var(--tehlike);
+}
+
+/* panel alt izgarasi (tehditler + dagilim) */
+.panel-alt-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 24px;
+  margin-bottom: 24px;
 }
 
-.panel-kart {
-  padding: 28px;
-  background: rgba(28, 28, 30, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-}
-
-.panel-kart-baslik {
+.panel-tablo-baslik {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--sinir);
 }
 
-.panel-kart-baslik h3 {
-  font-size: 1.15rem;
+.panel-tablo-baslik h3 {
+  font-size: 1.1rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--metin);
 }
 
-/* hizli erisim araclari */
-.hizli-araclar-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+.panel-tablo-govde {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.hizli-arac-kart {
-  padding: 18px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  text-decoration: none;
+.tehdit-satir {
   display: flex;
   align-items: center;
-  gap: 14px;
-  transition: all var(--gecis-hiz);
-}
-
-.hizli-arac-kart:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.14);
-  transform: translateY(-2px);
-}
-
-.hizli-arac-ikon {
-  width: 40px;
-  height: 40px;
+  justify-content: space-between;
+  padding: 10px 14px;
   border-radius: 12px;
-  background: rgba(0, 113, 227, 0.12);
-  color: var(--birincil);
+  background: var(--yuzey-acik);
+  border: 1px solid var(--sinir);
+  gap: 12px;
+  transition: transform var(--gecis-hiz);
+}
+
+.tehdit-satir:hover {
+  transform: translateX(3px);
+  border-color: var(--sinir-parlak);
+}
+
+.tehdit-ikon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.hizli-arac-bilgi h4 {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 2px;
+.tehdit-ikon.yuksek {
+  background: var(--tehlike-acik);
+  color: var(--tehlike);
 }
 
-.hizli-arac-bilgi p {
-  font-size: 0.78rem;
+.tehdit-ikon.orta {
+  background: var(--uyari-acik);
+  color: var(--uyari);
+}
+
+.tehdit-ikon.dusuk {
+  background: var(--basari-acik);
+  color: var(--basari);
+}
+
+.tehdit-bilgi {
+  flex: 1;
+  min-width: 0;
+}
+
+.tehdit-ad {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--metin);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tehdit-zaman {
+  font-size: 0.74rem;
+  color: var(--metin-cok-soluk);
+}
+
+/* tehdit dagilimi */
+.tehdit-dagilim {
+  padding: 24px;
+}
+
+.tehdit-dagilim-baslik {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--metin);
+  margin-bottom: 20px;
+}
+
+.dagilim-cubuk-kapsayici {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dagilim-cubuk-satir {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dagilim-cubuk-ust {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.dagilim-cubuk-etiket {
   color: var(--metin-soluk);
 }
 
-@media (max-width: 860px) {
+.dagilim-cubuk-deger {
+  font-weight: 700;
+}
+
+.dagilim-cubuk {
+  height: 6px;
+  background: var(--yuzey-acik);
+  border-radius: 980px;
+  overflow: hidden;
+}
+
+.dagilim-cubuk-dolgu {
+  height: 100%;
+  border-radius: 980px;
+  transition: width 0.6s ease;
+}
+
+/* hizli islemler */
+.hizli-islemler {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+}
+
+.hizli-islem-buton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--yuzey-acik);
+  border: 1px solid var(--sinir);
+  border-radius: 14px;
+  color: var(--metin);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--gecis-hiz);
+}
+
+.hizli-islem-buton:hover {
+  background: var(--yuzey-secili);
+  border-color: var(--birincil);
+  color: var(--birincil);
+  transform: translateY(-2px);
+}
+
+.hizli-islem-buton svg {
+  color: var(--birincil);
+  flex-shrink: 0;
+}
+
+@media (max-width: 960px) {
   .panel-istatistikler {
     grid-template-columns: 1fr;
   }
 
-  .panel-izgara {
-    grid-template-columns: 1fr;
-  }
-
-  .hizli-araclar-grid {
+  .panel-alt-grid {
     grid-template-columns: 1fr;
   }
 }

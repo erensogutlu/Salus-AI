@@ -347,7 +347,7 @@ a:hover {
   border: 1px solid rgba(100, 210, 255, 0.25);
 }
 
-/* yukleme animasyonu */
+/* animasyonlar */
 @keyframes dondur {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -356,6 +356,16 @@ a:hover {
 @keyframes belirme {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes yukari-kaydir {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nabiz {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
 .yukleyici {
@@ -372,6 +382,128 @@ a:hover {
   width: 16px;
   height: 16px;
   border-width: 2px;
+}
+
+/* form ikon & hata yardimcilari */
+.form-girisi-ikon {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.form-girisi-ikon .form-girisi {
+  padding-left: 42px;
+}
+
+.form-girisi-ikon .ikon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--metin-cok-soluk);
+  pointer-events: none;
+  transition: color var(--gecis-hiz);
+}
+
+.form-girisi-ikon:focus-within .ikon {
+  color: var(--birincil);
+}
+
+.form-hata {
+  padding: 10px 14px;
+  background: var(--tehlike-acik);
+  border: 1px solid rgba(255, 69, 58, 0.25);
+  border-radius: var(--yuvarlatma-kucuk);
+  color: var(--tehlike);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* markdown zengin metin gorunumu */
+.markdown-icerik {
+  color: var(--metin);
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.markdown-icerik h1,
+.markdown-icerik h2,
+.markdown-icerik h3,
+.markdown-icerik h4 {
+  margin-top: 1.2em;
+  margin-bottom: 0.6em;
+  color: var(--metin);
+}
+
+.markdown-icerik p {
+  margin-bottom: 0.8em;
+  color: var(--metin);
+}
+
+.markdown-icerik ul,
+.markdown-icerik ol {
+  margin-bottom: 0.8em;
+  padding-left: 1.5em;
+}
+
+.markdown-icerik li {
+  margin-bottom: 0.3em;
+}
+
+.markdown-icerik code {
+  font-family: var(--font-kod);
+  font-size: 0.86em;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 6px;
+  color: var(--bilgi);
+}
+
+.markdown-icerik pre {
+  background: var(--yuzey-acik);
+  border: 1px solid var(--sinir);
+  border-radius: var(--yuvarlatma-kucuk);
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.markdown-icerik pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.markdown-icerik strong {
+  color: var(--metin);
+  font-weight: 600;
+}
+
+.markdown-icerik blockquote {
+  border-left: 3px solid var(--birincil);
+  padding-left: 14px;
+  margin: 1em 0;
+  color: var(--metin-soluk);
+}
+
+.markdown-icerik table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.markdown-icerik th,
+.markdown-icerik td {
+  padding: 8px 12px;
+  border: 1px solid var(--sinir);
+  text-align: left;
+}
+
+.markdown-icerik th {
+  background: var(--yuzey-acik);
 }
 
 /* kaydirma cubugu */
@@ -392,3 +524,4 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.28);
 }
+

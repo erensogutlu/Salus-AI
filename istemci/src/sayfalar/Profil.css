@@ -17,7 +17,7 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   margin-bottom: 8px;
-  color: #f5f5f7;
+  color: var(--metin);
 }
 
 .profil-baslik p {
@@ -40,8 +40,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: rgba(28, 28, 30, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--yuzey-cam);
+  border: 1px solid var(--sinir);
   border-radius: 20px;
   backdrop-filter: blur(30px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
@@ -54,8 +54,8 @@
   margin-bottom: 16px;
   border-radius: 50%;
   padding: 3px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.04));
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
+  box-shadow: var(--golge-kucuk);
 }
 
 .profil-avatar-resim {
@@ -63,8 +63,21 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  background: #1c1c1e;
-  border: 2px solid #000;
+  background: var(--yuzey-acik);
+  border: 2px solid var(--arkaplan);
+}
+
+.profil-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--birincil), var(--ikincil));
 }
 
 .profil-kullanici-adi {
@@ -72,7 +85,7 @@
   font-weight: 600;
   letter-spacing: -0.02em;
   margin-bottom: 4px;
-  color: #ffffff;
+  color: var(--metin);
 }
 
 .profil-eposta {
@@ -83,7 +96,7 @@
 
 .profil-hizli-istatistikler {
   width: 100%;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--sinir);
   padding-top: 20px;
   margin-top: 20px;
   display: flex;
@@ -103,18 +116,19 @@
   color: var(--metin-soluk);
   display: flex;
   align-items: center;
+  gap: 6px;
 }
 
 .profil-istatistik-satir span:last-child {
   font-weight: 600;
-  color: #ffffff;
+  color: var(--metin);
 }
 
 /* sag sutun form alani */
 .profil-sag-kart {
   padding: 36px 32px;
-  background: rgba(28, 28, 30, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--yuzey-cam);
+  border: 1px solid var(--sinir);
   border-radius: 20px;
   backdrop-filter: blur(30px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
@@ -124,17 +138,21 @@
   margin-bottom: 36px;
 }
 
+.profil-form-bolumu:last-child {
+  margin-bottom: 0;
+}
+
 .profil-form-bolumu h3 {
   font-size: 1.15rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   margin-bottom: 20px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--sinir);
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #ffffff;
+  color: var(--metin);
 }
 
 .profil-form-satir {
@@ -155,13 +173,13 @@
 }
 
 .form-geribildirim.basarili {
-  background: rgba(48, 209, 88, 0.1);
+  background: var(--basari-acik);
   border: 1px solid rgba(48, 209, 88, 0.25);
   color: var(--basari);
 }
 
 .form-geribildirim.hata {
-  background: rgba(255, 69, 58, 0.1);
+  background: var(--tehlike-acik);
   border: 1px solid rgba(255, 69, 58, 0.25);
   color: var(--tehlike);
 }
@@ -172,7 +190,7 @@
   border: 1px solid rgba(255, 69, 58, 0.2);
   border-radius: 16px;
   padding: 24px;
-  background: rgba(255, 69, 58, 0.04);
+  background: var(--tehlike-acik);
 }
 
 .tehlike-bolgesi h3 {
