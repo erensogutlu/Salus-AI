@@ -74,10 +74,23 @@ const ipKorumaliMi = (ip) => {
 // hedef domain veya ip adresini ssrf'e karsi dogrula
 const hedefDogrula = async (hedef) => {
   if (!hedef || typeof hedef !== 'string') {
-    return { gecerli: false, hata: 'gecersiz hedef formatı' };
+    return { gecerli: false, hata: 'geçersiz hedef formatı' };
   }
   
-  const temizHedef = hedef.trim().toLowerCase();
+  let temizHedef = hedef.trim().toLowerCase();
+  
+  // url protokollerini (http://, https://) ve query/path/port kısımlarını temizle
+  if (temizHedef.includes('://')) {
+    try {
+      const urlObj = new URL(temizHedef);
+      temizHedef = urlObj.hostname;
+    } catch (e) {
+      temizHedef = temizHedef.replace(/^[a-z]+:\/\//i, '').split('/')[0].split('?')[0].split('#')[0].split(':')[0];
+    }
+  } else {
+    // path, query veya port varsa ayıkla (örn: example.com:8080/test -> example.com)
+    temizHedef = temizHedef.split('/')[0].split('?')[0].split('#')[0].split(':')[0].trim();
+  }
   
   // temel regex kontrolleri
   const domainRegex = /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,24}$/;
@@ -88,7 +101,7 @@ const hedefDogrula = async (hedef) => {
   const isIpv6 = temizHedef.includes(':') && (temizHedef === '::1' || temizHedef.startsWith('fe80'));
   
   if (!isDomain && !isIpv4 && !isIpv6) {
-    return { gecerli: false, hata: 'lutfen gecerli bir alan adi veya ip adresi girin (ozel karakter barindirmamalidir)' };
+    return { gecerli: false, hata: 'lütfen geçerli bir alan adı veya IP adresi girin (örn: example.com veya 8.8.8.8)' };
   }
   
   // ip ise dogrudan ozel ag kontrolu yap

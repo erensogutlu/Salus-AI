@@ -303,57 +303,57 @@ const GorselMetadata = () => {
               style={{ display: 'none' }}
             />
             <div
-              classname={`yukleme-alani ${surukleniyor ? 'surukleniyor' : ''}`}
-              onclick={() => dosyagirdiref.current?.click()}
-              ondragover={(e) => { e.preventdefault(); setsurukleniyor(true); }}
-              ondragleave={() => setsurukleniyor(false)}
-              ondrop={suruklebitti}
+              className={`yukleme-alani ${surukleniyor ? 'surukleniyor' : ''}`}
+              onClick={() => dosyaGirdiRef.current?.click()}
+              onDragOver={(e) => { e.preventDefault(); setSurukleniyor(true); }}
+              onDragLeave={() => setSurukleniyor(false)}
+              onDrop={surukleBitti}
             >
-              <uploadcloud size={44} classname="yukleme-ikon" />
-              <div style={{ fontweight: 600, fontsize: '1rem', color: 'var(--metin)' }}>
-                {dosya ? dosya.name : 'görseli buraya sürükleyin veya seçmek için tıklayın'}
+              <UploadCloud size={44} className="yukleme-ikon" />
+              <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--metin)' }}>
+                {dosya ? dosya.name : 'Görseli buraya sürükleyin veya seçmek için tıklayın'}
               </div>
-              <div style={{ fontsize: '0.82rem', color: 'var(--metin-soluk)' }}>
-                desteklenen formatlar: jpeg, png, webp, tıff, heıc (maksimum 15 mb)
+              <div style={{ fontSize: '0.82rem', color: 'var(--metin-soluk)' }}>
+                Desteklenen formatlar: JPEG, PNG, WEBP, TIFF, HEIC (Maksimum 15 MB)
               </div>
             </div>
           </div>
         )}
 
-        {girdimodu === 'url' && (
-          <div classname="form-grubu" style={{ marginbottom: 0 }}>
-            <label classname="form-etiketi">görsel url adresi</label>
-            <div classname="form-girisi-ikon">
-              <globe size={18} classname="ikon" />
+        {girdiModu === 'url' && (
+          <div className="form-grubu" style={{ marginBottom: 0 }}>
+            <label className="form-etiketi">Görsel URL Adresi</label>
+            <div className="form-girisi-ikon">
+              <Globe size={18} className="ikon" />
               <input
                 type="text"
-                classname="form-girisi"
+                className="form-girisi"
                 placeholder="https://ornek.com/fotograf.jpg"
-                value={girdiurl}
-                onchange={(e) => setgirdiurl(e.target.value)}
+                value={girdiUrl}
+                onChange={(e) => setGirdiUrl(e.target.value)}
               />
             </div>
           </div>
         )}
 
-        {girdimodu === 'ornek' && (
+        {girdiModu === 'ornek' && (
           <div>
-            <p style={{ fontsize: '0.88rem', color: 'var(--metin-soluk)', marginbottom: '12px' }}>
-              exıf ve gps analizini denemek için aşağıdaki hazır örneklerden birini seçin:
+            <p style={{ fontSize: '0.88rem', color: 'var(--metin-soluk)', marginBottom: '12px' }}>
+              EXIF ve GPS analizini denemek için aşağıdaki hazır örneklerden birini seçin:
             </p>
-            <div style={{ display: 'grid', gridtemplatecolumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
-              {ornek_metadata.map((o, idx) => (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+              {ORNEK_METADATA.map((o, idx) => (
                 <button
                   key={idx}
                   type="button"
-                  classname="buton buton-hayalet"
-                  onclick={() => orneksec(o)}
-                  style={{ justifycontent: 'flex-start', textalign: 'left', padding: '12px 14px' }}
+                  className="buton buton-hayalet"
+                  onClick={() => ornekSec(o)}
+                  style={{ justifyContent: 'flex-start', textAlign: 'left', padding: '12px 14px' }}
                 >
-                  <camera size={18} style={{ color: 'var(--birincil)' }} />
+                  <Camera size={18} style={{ color: 'var(--birincil)' }} />
                   <div>
-                    <div style={{ fontweight: 600 }}>{o.baslik}</div>
-                    <div style={{ fontsize: '0.75rem', color: 'var(--metin-soluk)' }}>{o.demoveri.seviye} gizlilik riski</div>
+                    <div style={{ fontWeight: 600 }}>{o.baslik}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--metin-soluk)' }}>{o.demoVeri.seviye} Gizlilik Riski</div>
                   </div>
                 </button>
               ))}
@@ -362,45 +362,45 @@ const GorselMetadata = () => {
         )}
 
         {hata && (
-          <div classname="giris-hata" style={{ margintop: '16px', marginbottom: 0 }}>
+          <div className="giris-hata" style={{ marginTop: '16px', marginBottom: 0 }}>
             {hata}
           </div>
         )}
 
-        {girdimodu !== 'ornek' && (
-          <div style={{ margintop: '20px', display: 'flex', gap: '12px', flexwrap: 'wrap' }}>
+        {girdiModu !== 'ornek' && (
+          <div style={{ marginTop: '20px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <button
               type="button"
-              classname="buton buton-birincil"
-              onclick={analizibaslat}
-              disabled={yukleniyor || (girdimodu === 'dosya' && !onizlemeurl) || (girdimodu === 'url' && !girdiurl)}
-              style={{ minwidth: '180px' }}
+              className="buton buton-birincil"
+              onClick={analiziBaslat}
+              disabled={yukleniyor || (girdiModu === 'dosya' && !onizlemeUrl) || (girdiModu === 'url' && !girdiUrl)}
+              style={{ minWidth: '180px' }}
             >
               {yukleniyor ? (
                 <>
-                  <span classname="yukleyici yukleyici-kucuk" style={{ bordertopcolor: '#000' }} />
-                  analiz ediliyor...
+                  <span className="yukleyici yukleyici-kucuk" style={{ borderTopColor: '#000' }} />
+                  Analiz Ediliyor...
                 </>
               ) : (
                 <>
-                  <search size={18} /> metadata analiz et
+                  <Search size={18} /> Metadata Analiz Et
                 </>
               )}
             </button>
 
-            {onizlemeurl && (
+            {onizlemeUrl && (
               <button
                 type="button"
-                classname="buton buton-hayalet"
-                onclick={() => {
-                  setdosya(null);
-                  setonizlemeurl(null);
-                  setgirdiurl('');
-                  setsonuc(null);
-                  setmarkdownrapor('');
+                className="buton buton-hayalet"
+                onClick={() => {
+                  setDosya(null);
+                  setOnizlemeUrl(null);
+                  setGirdiUrl('');
+                  setSonuc(null);
+                  setMarkdownRapor('');
                 }}
               >
-                <trash2 size={16} /> temizle
+                <Trash2 size={16} /> Temizle
               </button>
             )}
           </div>
