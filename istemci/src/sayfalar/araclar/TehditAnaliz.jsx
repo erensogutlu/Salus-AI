@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Search,
   Shield,
@@ -12,10 +13,12 @@ import {
   Info,
   Crosshair,
 } from 'lucide-react';
+import { useYetkilendirme } from '../../baglam/YetkilendirmeBaglami';
 import { tehditAnaliz, tehditKayitlari } from '../../servisler/apiServisi';
 import './TehditAnaliz.css';
 
 const TehditAnaliz = () => {
+  const { oturumAcikMi } = useYetkilendirme();
   const [hedef, setHedef] = useState('');
   const [yukleniyor, setYukleniyor] = useState(false);
   const [sonuc, setSonuc] = useState(null);
@@ -24,6 +27,7 @@ const TehditAnaliz = () => {
 
   useEffect(() => {
     const gecmisYukle = async () => {
+      if (!oturumAcikMi) return;
       try {
         const yanit = await tehditKayitlari();
         if (yanit.basarili && yanit.veri) {
@@ -418,6 +422,33 @@ const TehditAnaliz = () => {
                 ))}
               </div>
             )}
+
+            {!oturumAcikMi && (
+              <div style={{
+                marginTop: '20px',
+                padding: '14px 18px',
+                background: 'var(--birincil-acik)',
+                border: '1px solid rgba(0, 168, 232, 0.2)',
+                borderRadius: 'var(--yuvarlatma-kucuk)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '12px'
+              }}>
+                <div style={{ fontSize: '0.88rem', color: 'var(--metin)' }}>
+                  💡 <strong>Misafir Modu:</strong> Analiz raporunu hesabınıza kaydetmek ve ileride tekrar incelemek ister misiniz?
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <Link to="/giris" className="buton buton-birincil" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                    Giriş Yap
+                  </Link>
+                  <Link to="/kayit" className="buton buton-hayalet" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                    Kayıt Ol
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -436,23 +467,33 @@ const TehditAnaliz = () => {
               </tr>
             </thead>
             <tbody>
-              {gecmis.map((kayit) => (
-                <tr key={kayit.id}>
-                  <td style={{ fontFamily: 'var(--font-kod)', fontSize: '0.85rem', color: 'var(--birincil)' }}>
-                    {kayit.hedef}
+              {gecmis.length > 0 ? (
+                gecmis.map((kayit) => (
+                  <tr key={kayit.id}>
+                    <td style={{ fontFamily: 'var(--font-kod)', fontSize: '0.85rem', color: 'var(--birincil)' }}>
+                      {kayit.hedef}
+                    </td>
+                    <td>
+                      <span className={`rozet ${
+                        kayit.seviye === 'Tehlikeli' ? 'rozet-tehlike' :
+                        kayit.seviye === 'Orta' ? 'rozet-uyari' : 'rozet-basari'
+                      }`}>
+                        {kayit.seviye}
+                      </span>
+                    </td>
+                    <td style={{ fontWeight: 700, color: riskRenk(kayit.puan) }}>{kayit.puan}/100</td>
+                    <td style={{ color: 'var(--metin-soluk)', fontSize: '0.85rem' }}>{kayit.tarih}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} style={{ textAlign: 'center', padding: '24px', color: 'var(--metin-soluk)' }}>
+                    {!oturumAcikMi
+                      ? 'Raporlarınızı kalıcı olarak kaydetmek ve geçmişi görüntülemek için giriş yapabilirsiniz.'
+                      : 'Henüz kayıtlı analiz geçmişi bulunmuyor.'}
                   </td>
-                  <td>
-                    <span className={`rozet ${
-                      kayit.seviye === 'Tehlikeli' ? 'rozet-tehlike' :
-                      kayit.seviye === 'Orta' ? 'rozet-uyari' : 'rozet-basari'
-                    }`}>
-                      {kayit.seviye}
-                    </span>
-                  </td>
-                  <td style={{ fontWeight: 700, color: riskRenk(kayit.puan) }}>{kayit.puan}/100</td>
-                  <td style={{ color: 'var(--metin-soluk)', fontSize: '0.85rem' }}>{kayit.tarih}</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

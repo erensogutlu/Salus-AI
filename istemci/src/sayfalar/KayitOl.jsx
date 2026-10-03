@@ -118,7 +118,7 @@ const KayitOl = () => {
             <div className="form-grubu">
               <label className="form-etiketi">Tam Ad</label>
               <div className="form-girisi-ikon">
-                <User size={18} className="giris-ikon" />
+                <User size={18} className="ikon" />
                 <input
                   type="text"
                   name="tamAd"
@@ -133,7 +133,7 @@ const KayitOl = () => {
             <div className="form-grubu">
               <label className="form-etiketi">Kullanıcı Adı</label>
               <div className="form-girisi-ikon">
-                <AtSign size={18} className="giris-ikon" />
+                <AtSign size={18} className="ikon" />
                 <input
                   type="text"
                   name="kullaniciAdi"
@@ -149,7 +149,7 @@ const KayitOl = () => {
           <div className="form-grubu">
             <label className="form-etiketi">E-posta</label>
             <div className="form-girisi-ikon">
-              <Mail size={18} className="giris-ikon" />
+              <Mail size={18} className="ikon" />
               <input
                 type="email"
                 name="eposta"
@@ -165,7 +165,7 @@ const KayitOl = () => {
           <div className="form-grubu">
             <label className="form-etiketi">Şifre</label>
             <div className="form-girisi-ikon">
-              <Lock size={18} className="giris-ikon" />
+              <Lock size={18} className="ikon" />
               <input
                 type={sifreGoster ? 'text' : 'password'}
                 name="sifre"
@@ -204,7 +204,7 @@ const KayitOl = () => {
           <div className="form-grubu">
             <label className="form-etiketi">Şifre Tekrar</label>
             <div className="form-girisi-ikon">
-              <Lock size={18} className="giris-ikon" />
+              <Lock size={18} className="ikon" />
               <input
                 type="password"
                 name="sifreTekrar"

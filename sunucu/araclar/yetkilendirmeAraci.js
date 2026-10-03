@@ -1,12 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-// yetkilendirme ara katmanı - bearer token doğrulama
+// yetkilendirme ara katmanı - zorunlu bearer token doğrulama
 const yetkilendirmeAraci = (istek, yanit, sonraki) => {
   try {
-    // authorization başlığını al
     const yetkilendirmeBasligi = istek.headers.authorization;
 
-    // başlık yoksa hata döndür
     if (!yetkilendirmeBasligi) {
       return yanit.status(401).json({
         basarili: false,
@@ -14,7 +12,6 @@ const yetkilendirmeAraci = (istek, yanit, sonraki) => {
       });
     }
 
-    // bearer token formatını kontrol et
     if (!yetkilendirmeBasligi.startsWith('Bearer ')) {
       return yanit.status(401).json({
         basarili: false,
@@ -22,22 +19,18 @@ const yetkilendirmeAraci = (istek, yanit, sonraki) => {
       });
     }
 
-    // jetonu ayıkla
     const jeton = yetkilendirmeBasligi.split(' ')[1];
-
-    // jetonu doğrula
     const cozumlenmisVeri = jwt.verify(jeton, process.env.JWT_GIZLI_ANAHTAR);
 
-    // kullanıcı bilgisini isteğe ekle
     istek.kullanici = {
       kullanici_id: cozumlenmisVeri.kullanici_id,
       kullanici_adi: cozumlenmisVeri.kullanici_adi,
-      eposta: cozumlenmisVeri.eposta
+      eposta: cozumlenmisVeri.eposta,
+      rol: cozumlenmisVeri.rol
     };
 
     sonraki();
   } catch (hata) {
-    // jeton süresi dolmuşsa
     if (hata.name === 'TokenExpiredError') {
       return yanit.status(401).json({
         basarili: false,
@@ -45,7 +38,6 @@ const yetkilendirmeAraci = (istek, yanit, sonraki) => {
       });
     }
 
-    // geçersiz jeton
     return yanit.status(401).json({
       basarili: false,
       mesaj: 'geçersiz jeton'
@@ -53,4 +45,36 @@ const yetkilendirmeAraci = (istek, yanit, sonraki) => {
   }
 };
 
+// isteğe bağlı yetkilendirme ara katmanı - token varsa kullanıcıyı ekler, yoksa misafir olarak devam ettirir
+const istegeBagliYetkilendirme = (istek, yanit, sonraki) => {
+  try {
+    const yetkilendirmeBasligi = istek.headers.authorization;
+
+    if (!yetkilendirmeBasligi || !yetkilendirmeBasligi.startsWith('Bearer ')) {
+      istek.kullanici = null;
+      return sonraki();
+    }
+
+    const jeton = yetkilendirmeBasligi.split(' ')[1];
+    if (!jeton) {
+      istek.kullanici = null;
+      return sonraki();
+    }
+
+    const cozumlenmisVeri = jwt.verify(jeton, process.env.JWT_GIZLI_ANAHTAR);
+    istek.kullanici = {
+      kullanici_id: cozumlenmisVeri.kullanici_id,
+      kullanici_adi: cozumlenmisVeri.kullanici_adi,
+      eposta: cozumlenmisVeri.eposta,
+      rol: cozumlenmisVeri.rol
+    };
+  } catch (hata) {
+    istek.kullanici = null;
+  }
+  sonraki();
+};
+
 module.exports = yetkilendirmeAraci;
+module.exports.yetkilendirmeAraci = yetkilendirmeAraci;
+module.exports.istegeBagliYetkilendirme = istegeBagliYetkilendirme;
+

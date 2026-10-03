@@ -66,7 +66,7 @@ const hesapSil = async (istek, yanit, sonraki) => {
 // panel (dashboard) verisi getir (knex ve optimize edilmiş sorgular ile)
 const panelVerisi = async (istek, yanit, sonraki) => {
   try {
-    const kullaniciId = istek.kullanici.kullanici_id;
+    const kullaniciId = istek.kullanici ? istek.kullanici.kullanici_id : null;
     const veri = await kullaniciServis.panelVerisiGetir(kullaniciId);
     yanit.status(200).json({
       basarili: true,

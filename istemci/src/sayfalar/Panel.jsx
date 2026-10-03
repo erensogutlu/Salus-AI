@@ -50,14 +50,25 @@ const Panel = () => {
     return <div className="panel-sayfa"><YuklemeSpinner boyut="buyuk" metin="Panel yükleniyor..." /></div>;
   }
 
-  const veri = panelVeri;
+  const varsayilanVeri = {
+    toplamTarama: 0,
+    taramaDegisim: 0,
+    tespitEdilenTehdit: 0,
+    tehditDegisim: 0,
+    aktifAraclar: 8,
+    kritikTehditler: 0,
+    sonTehditler: [],
+    tehditDagilim: { kritik: 0, yuksek: 0, orta: 0, dusuk: 100 }
+  };
+
+  const veri = panelVeri || varsayilanVeri;
 
   return (
     <div className="panel-sayfa">
       {/* karşılama banner */}
       <div className="panel-karsilama">
         <h1>
-          Hoş geldin, <span className="gradyan-metin">{kullanici?.tam_ad || kullanici?.kullanici_adi || 'Kullanıcı'}</span>
+          Hoş geldin, <span className="gradyan-metin">{kullanici?.tam_ad || kullanici?.kullanici_adi || 'Misafir Kullanıcı'}</span>
         </h1>
         <p>Sistem aktivitelerinize ve tehdit istatistiklerine genel bakış.</p>
       </div>

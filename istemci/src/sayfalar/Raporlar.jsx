@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   FileText,
   Trash2,
@@ -8,20 +9,29 @@ import {
   Server,
   AlertTriangle,
   CheckCircle,
-  Globe
+  Globe,
+  LogIn,
+  UserPlus
 } from 'lucide-react';
+import { useYetkilendirme } from '../baglam/YetkilendirmeBaglami';
 import { tehditKayitlari, tehditKayitSil } from '../servisler/apiServisi';
 import YuklemeSpinner from '../bilesenler/YuklemeSpinner';
 import './Raporlar.css';
 
 const Raporlar = () => {
+  const { oturumAcikMi } = useYetkilendirme();
   const [raporlar, setRaporlar] = useState([]);
-  const [yukleniyor, setYukleniyor] = useState(true);
+  const [yukleniyor, setYukleniyor] = useState(oturumAcikMi);
   const [silinecekId, setSilinecekId] = useState(null);
   const [silOnayModalAcik, setSilOnayModalAcik] = useState(false);
 
   // raporları yükle
   const raporlariYukle = async () => {
+    if (!oturumAcikMi) {
+      setYukleniyor(false);
+      return;
+    }
+
     try {
       setYukleniyor(true);
       const yanit = await tehditKayitlari();
@@ -51,7 +61,7 @@ const Raporlar = () => {
 
   useEffect(() => {
     raporlariYukle();
-  }, []);
+  }, [oturumAcikMi]);
 
   // rapor sil butonuna tıklandığında
   const silButonunaTiklandi = (id) => {
@@ -92,6 +102,36 @@ const Raporlar = () => {
       minute: '2-digit'
     });
   };
+
+  if (!oturumAcikMi) {
+    return (
+      <div className="raporlar-sayfa">
+        <div className="raporlar-sayfa-baslik">
+          <h1>
+            <span className="gradyan-metin">Güvenlik</span> Raporları
+          </h1>
+          <p>Tüm analiz ve tarama geçmişinizi kaydetmek için oturum açın</p>
+        </div>
+
+        <div className="raporlar-bos cam-kart" style={{ padding: '48px 24px', maxWidth: '560px', margin: '0 auto', textAlign: 'center' }}>
+          <Shield size={56} className="raporlar-bos-ikon" style={{ color: 'var(--birincil)', marginBottom: '16px' }} />
+          <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Rapor Kaydetme ve Geçmiş Erişimi</h3>
+          <p style={{ color: 'var(--metin-soluk)', marginBottom: '24px', fontSize: '0.92rem', lineHeight: '1.6' }}>
+            Salus AI güvenlik araçlarını ve yapay zeka asistanını kayıt olmadan ücretsiz kullanabilirsiniz.
+            Taramalarınızdan elde edilen raporları hesabınıza kalıcı olarak kaydetmek ve geçmişi incelemek için lütfen giriş yapın veya kayıt olun.
+          </p>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <Link to="/giris" className="buton buton-birincil" style={{ padding: '10px 20px' }}>
+              <LogIn size={16} /> Giriş Yap
+            </Link>
+            <Link to="/kayit" className="buton buton-hayalet" style={{ padding: '10px 20px' }}>
+              <UserPlus size={16} /> Kayıt Ol
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="raporlar-sayfa">

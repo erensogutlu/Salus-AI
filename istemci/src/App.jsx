@@ -108,23 +108,25 @@ function UygulamaIcerik() {
             <Route path="/kayit" element={<KayitOl />} />
           </Route>
 
+          {/* herkese açık araçlar ve paneller (kayıt/giriş olmadan kullanılabilir) */}
+          <Route path="/panel" element={<Panel />} />
+          <Route path="/ai-sohbet" element={<AiSohbet />} />
+          <Route path="/tehdit-analiz" element={<TehditAnaliz />} />
+          <Route path="/ag-tarama" element={<AgTarama />} />
+          <Route path="/log-analiz" element={<LogAnaliz />} />
+          <Route path="/raporlar" element={<Raporlar />} />
+          
+          {/* siber araç rotaları */}
+          <Route path="/araclar/sifre" element={<SifreAraclari />} />
+          <Route path="/araclar/kripto" element={<HashBase64 />} />
+          <Route path="/araclar/ip-sorgu" element={<IpSorgu />} />
+          <Route path="/araclar/subdomain" element={<SubdomainBulucu />} />
+          <Route path="/araclar/header" element={<HeaderAnalizi />} />
+
           {/* korumalı rotalar (oturum açmış olmalı) */}
           <Route element={<KorumaliRota />}>
-            <Route path="/panel" element={<Panel />} />
-            <Route path="/ai-sohbet" element={<AiSohbet />} />
-            <Route path="/tehdit-analiz" element={<TehditAnaliz />} />
-            <Route path="/ag-tarama" element={<AgTarama />} />
-            <Route path="/log-analiz" element={<LogAnaliz />} />
-            <Route path="/raporlar" element={<Raporlar />} />
             <Route path="/profil" element={<Profil />} />
             <Route path="/ayarlar" element={<Ayarlar />} />
-            
-            {/* siber araç rotaları */}
-            <Route path="/araclar/sifre" element={<SifreAraclari />} />
-            <Route path="/araclar/kripto" element={<HashBase64 />} />
-            <Route path="/araclar/ip-sorgu" element={<IpSorgu />} />
-            <Route path="/araclar/subdomain" element={<SubdomainBulucu />} />
-            <Route path="/araclar/header" element={<HeaderAnalizi />} />
           </Route>
 
           {/* yönetici rotaları */}

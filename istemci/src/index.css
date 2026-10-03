@@ -260,7 +260,12 @@ a:hover {
   padding-left: 38px;
 }
 
-.form-girisi-ikon .ikon {
+.form-girisi-ikon:has(.sifre-goster) .form-girisi {
+  padding-right: 38px;
+}
+
+.form-girisi-ikon .ikon,
+.form-girisi-ikon .giris-ikon {
   position: absolute;
   left: 12px;
   top: 50%;
@@ -269,7 +274,8 @@ a:hover {
   pointer-events: none;
 }
 
-.form-girisi-ikon:focus-within .ikon {
+.form-girisi-ikon:focus-within .ikon,
+.form-girisi-ikon:focus-within .giris-ikon {
   color: var(--birincil);
 }
 

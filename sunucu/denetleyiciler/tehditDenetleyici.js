@@ -50,11 +50,13 @@ const detaylarOlustur = (cikti) => ({
 const hedefAnaliz = async (istek, yanit, sonraki) => {
   try {
     const { hedef } = istek.body;
-    const kullaniciId = istek.kullanici.kullanici_id;
+    const kullaniciId = istek.kullanici ? istek.kullanici.kullanici_id : null;
 
-    // 24 saatten eski kayıtları sil
-    await havuz.query(`DELETE FROM tehdit_kayitlari WHERE olusturulma_tarihi < NOW() - INTERVAL '24 hours'`);
-    await havuz.query(`DELETE FROM tarama_sonuclari WHERE tarama_tarihi < NOW() - INTERVAL '24 hours'`);
+    if (kullaniciId) {
+      // 24 saatten eski kayıtları sil
+      await havuz.query(`DELETE FROM tehdit_kayitlari WHERE olusturulma_tarihi < NOW() - INTERVAL '24 hours'`);
+      await havuz.query(`DELETE FROM tarama_sonuclari WHERE tarama_tarihi < NOW() - INTERVAL '24 hours'`);
+    }
 
     // hedef kontrolü ve ssrf koruması
     const dogrulama = await hedefDogrula(hedef);
@@ -91,19 +93,21 @@ const hedefAnaliz = async (istek, yanit, sonraki) => {
     // detayları python'dan gelen gerçek verilerle doldur
     const detaylar = detaylarOlustur(pythonCiktisi);
 
-    // tehdit kaydını veritabanına kaydet
-    await havuz.query(
-      `INSERT INTO tehdit_kayitlari (kullanici_id, hedef, tehdit_tipi, tehdit_seviyesi, detaylar)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [kullaniciId, pythonCiktisi.hedef, pythonCiktisi.tehditTipi, pythonCiktisi.tehditSeviyesi, JSON.stringify(detaylar)]
-    );
+    // sadece oturum açmış kullanıcıların raporunu veritabanına kaydet
+    if (kullaniciId) {
+      await havuz.query(
+        `INSERT INTO tehdit_kayitlari (kullanici_id, hedef, tehdit_tipi, tehdit_seviyesi, detaylar)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [kullaniciId, pythonCiktisi.hedef, pythonCiktisi.tehditTipi, pythonCiktisi.tehditSeviyesi, JSON.stringify(detaylar)]
+      );
 
-    // tarama sonuçlarını da kaydet
-    await havuz.query(
-      `INSERT INTO tarama_sonuclari (kullanici_id, hedef_ip, acik_portlar, zafiyetler)
-       VALUES ($1, $2, $3, $4)`,
-      [kullaniciId, pythonCiktisi.gercek_ip, JSON.stringify(pythonCiktisi.acikPortlar), JSON.stringify(pythonCiktisi.tesbitEdilenZafiyetler)]
-    );
+      // tarama sonuçlarını da kaydet
+      await havuz.query(
+        `INSERT INTO tarama_sonuclari (kullanici_id, hedef_ip, acik_portlar, zafiyetler)
+         VALUES ($1, $2, $3, $4)`,
+        [kullaniciId, pythonCiktisi.gercek_ip, JSON.stringify(pythonCiktisi.acikPortlar), JSON.stringify(pythonCiktisi.tesbitEdilenZafiyetler)]
+      );
+    }
 
     yanit.status(200).json({
       basarili: true,
@@ -118,7 +122,10 @@ const hedefAnaliz = async (istek, yanit, sonraki) => {
 // tehdit kayıtlarını getir
 const kayitlariGetir = async (istek, yanit, sonraki) => {
   try {
-    const kullaniciId = istek.kullanici.kullanici_id;
+    const kullaniciId = istek.kullanici ? istek.kullanici.kullanici_id : null;
+    if (!kullaniciId) {
+      return yanit.status(401).json({ basarili: false, mesaj: 'oturum açılmamış' });
+    }
 
     // 24 saatten eski tehdit kayıtlarını sil
     await havuz.query(`DELETE FROM tehdit_kayitlari WHERE olusturulma_tarihi < NOW() - INTERVAL '24 hours'`);
@@ -144,7 +151,18 @@ const kayitlariGetir = async (istek, yanit, sonraki) => {
 // tehdit istatistiklerini getir (son 30 gün)
 const istatistikGetir = async (istek, yanit, sonraki) => {
   try {
-    const kullaniciId = istek.kullanici.kullanici_id;
+    const kullaniciId = istek.kullanici ? istek.kullanici.kullanici_id : null;
+
+    if (!kullaniciId) {
+      return yanit.status(200).json({
+        basarili: true,
+        veri: {
+          seviyeDagilimi: {},
+          toplamTarama: 0,
+          gunlukTarama: []
+        }
+      });
+    }
 
     // 24 saatten eski tehdit kayıtlarını sil
     await havuz.query(`DELETE FROM tehdit_kayitlari WHERE olusturulma_tarihi < NOW() - INTERVAL '24 hours'`);
@@ -252,7 +270,7 @@ const kayitSil = async (istek, yanit, sonraki) => {
 const logAnaliz = async (istek, yanit, sonraki) => {
   try {
     const { logMetni } = istek.body;
-    const kullaniciId = istek.kullanici.kullanici_id;
+    const kullaniciId = istek.kullanici ? istek.kullanici.kullanici_id : null;
 
     if (!logMetni || logMetni.trim().length === 0) {
       return yanit.status(400).json({
@@ -285,18 +303,19 @@ const logAnaliz = async (istek, yanit, sonraki) => {
 
     const detaylar = detaylarOlustur(pythonCiktisi);
 
-    // raporlara kaydet
-    const kayitSorgusu = await havuz.query(
-      `INSERT INTO tehdit_kayitlari (kullanici_id, hedef, tehdit_tipi, tehdit_seviyesi, detaylar)
-       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-      [kullaniciId, pythonCiktisi.hedef, pythonCiktisi.tehditTipi, pythonCiktisi.tehditSeviyesi, JSON.stringify(detaylar)]
-    );
-
-    detaylar.id = kayitSorgusu.rows[0].id;
+    // oturum açmış kullanıcı ise raporlara kaydet
+    if (kullaniciId) {
+      const kayitSorgusu = await havuz.query(
+        `INSERT INTO tehdit_kayitlari (kullanici_id, hedef, tehdit_tipi, tehdit_seviyesi, detaylar)
+         VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+        [kullaniciId, pythonCiktisi.hedef, pythonCiktisi.tehditTipi, pythonCiktisi.tehditSeviyesi, JSON.stringify(detaylar)]
+      );
+      detaylar.id = kayitSorgusu.rows[0].id;
+    }
 
     yanit.status(200).json({
       basarili: true,
-      mesaj: 'Log analizi başarıyla tamamlandı ve raporlara eklendi',
+      mesaj: kullaniciId ? 'Log analizi başarıyla tamamlandı ve raporlara eklendi' : 'Log analizi başarıyla tamamlandı',
       veri: detaylar
     });
   } catch (hata) {
@@ -305,3 +324,4 @@ const logAnaliz = async (istek, yanit, sonraki) => {
 };
 
 module.exports = { hedefAnaliz, kayitlariGetir, istatistikGetir, taramalariGetir, kayitSil, logAnaliz };
+

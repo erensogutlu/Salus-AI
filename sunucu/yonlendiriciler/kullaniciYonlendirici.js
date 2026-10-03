@@ -1,21 +1,19 @@
 const express = require('express');
 const yonlendirici = express.Router();
-const { profilGuncelle, sifreDegistir, panelVerisi , hesapSil } = require('../denetleyiciler/kullaniciDenetleyici');
-const yetkilendirmeAraci = require('../araclar/yetkilendirmeAraci');
+const { profilGuncelle, sifreDegistir, panelVerisi, hesapSil } = require('../denetleyiciler/kullaniciDenetleyici');
+const { yetkilendirmeAraci, istegeBagliYetkilendirme } = require('../araclar/yetkilendirmeAraci');
 
-// tüm rotalar korumalıdır
-yonlendirici.use(yetkilendirmeAraci);
+// panel verisi getir - get /api/kullanici/panel (misafirler için de genel panel verisi sağlar)
+yonlendirici.get('/panel', istegeBagliYetkilendirme, panelVerisi);
 
-// profil güncelle - put /api/kullanici/profil
-yonlendirici.put('/profil', profilGuncelle);
+// profil güncelle - put /api/kullanici/profil (korumalı)
+yonlendirici.put('/profil', yetkilendirmeAraci, profilGuncelle);
 
-// şifre değiştir - put /api/kullanici/sifre
-yonlendirici.put('/sifre', sifreDegistir);
+// şifre değiştir - put /api/kullanici/sifre (korumalı)
+yonlendirici.put('/sifre', yetkilendirmeAraci, sifreDegistir);
 
-// hesabı sil - delete /api/kullanici/sil
-yonlendirici.delete('/sil', hesapSil);
-
-// panel verisi getir - get /api/kullanici/panel
-yonlendirici.get('/panel', panelVerisi);
+// hesabı sil - delete /api/kullanici/sil (korumalı)
+yonlendirici.delete('/sil', yetkilendirmeAraci, hesapSil);
 
 module.exports = yonlendirici;
+

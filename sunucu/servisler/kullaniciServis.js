@@ -197,6 +197,31 @@ class KullaniciServis {
 
   // panel istatistikleri ve grafik verilerini getir
   async panelVerisiGetir(kullaniciId) {
+    if (!kullaniciId) {
+      let aktifAraclar = 8;
+      try {
+        const modulesDir = path.join(__dirname, '../yapay_zeka/moduller');
+        const files = fs.readdirSync(modulesDir);
+        aktifAraclar = files.filter(f => f.endsWith('.py') && f !== '__init__.py').length;
+      } catch (err) {
+        aktifAraclar = 10;
+      }
+
+      return {
+        toplamTarama: 0,
+        taramaDegisim: 0,
+        tespitEdilenTehdit: 0,
+        tehditDegisim: 0,
+        kritikTehdit: 0,
+        toplamSohbet: 0,
+        guvenlikPuani: 100,
+        guvenlikSeviyesi: 'iyi',
+        sonTehditler: [],
+        tehditDagilim: { kritik: 0, yuksek: 0, orta: 0, dusuk: 100 },
+        aktifAraclar
+      };
+    }
+
     // toplam tarama sayisi
     const toplamTaramaRes = await knex('tarama_sonuclari')
       .where({ kullanici_id: kullaniciId })

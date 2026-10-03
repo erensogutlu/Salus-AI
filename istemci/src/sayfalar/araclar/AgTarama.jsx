@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Terminal,
   Play,
@@ -12,10 +13,12 @@ import {
   Clock,
   Globe,
 } from 'lucide-react';
+import { useYetkilendirme } from '../../baglam/YetkilendirmeBaglami';
 import { agTaramaBaslat, taramaSonuclari } from '../../servisler/apiServisi';
 import './AgTarama.css';
 
 const AgTarama = () => {
+  const { oturumAcikMi } = useYetkilendirme();
   const [hedef, setHedef] = useState('');
   const [taramaAktif, setTaramaAktif] = useState(false);
   const [tamamlandi, setTamamlandi] = useState(false);
@@ -28,6 +31,7 @@ const AgTarama = () => {
 
   // tarama geçmişini yükle
   const gecmisYukle = async () => {
+    if (!oturumAcikMi) return;
     try {
       const yanit = await taramaSonuclari();
       if (yanit.basarili && yanit.veri) {
@@ -40,7 +44,7 @@ const AgTarama = () => {
 
   useEffect(() => {
     gecmisYukle();
-  }, []);
+  }, [oturumAcikMi]);
 
   // log ekleme
   const logEkle = (metin, tip = 'bilgi') => {
@@ -369,8 +373,10 @@ const AgTarama = () => {
                 })
               ) : (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: 'center', color: 'var(--metin-soluk)', padding: '20px' }}>
-                    Henüz ağ taraması yapılmamış.
+                  <td colSpan="4" style={{ textAlign: 'center', color: 'var(--metin-soluk)', padding: '24px' }}>
+                    {!oturumAcikMi
+                      ? 'Ağ tarama raporlarınızın ve geçmişinizin kaydedilmesi için giriş yapabilirsiniz.'
+                      : 'Henüz kayıtlı ağ taraması yapılmamış.'}
                   </td>
                 </tr>
               )}

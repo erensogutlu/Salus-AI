@@ -72,7 +72,7 @@ const yanitBul = (mesaj) => {
 const mesajGonder = async (istek, yanit, sonraki) => {
   try {
     const { mesaj, oturumId } = istek.body;
-    const kullaniciId = istek.kullanici.kullanici_id;
+    const kullaniciId = istek.kullanici ? istek.kullanici.kullanici_id : null;
     const guncelOturumId = oturumId || Date.now().toString();
 
     // mesaj kontrolü
@@ -119,21 +119,23 @@ const mesajGonder = async (istek, yanit, sonraki) => {
           
           // çok turlu konuşma bağlamı: son 5 mesajı gemini'ye gönder
           let konusmaBaglami = [];
-          try {
-            const gecmisSorgusu = await havuz.query(
-              `SELECT mesaj, yanit FROM sohbet_gecmisi
-               WHERE kullanici_id = $1 AND oturum_id = $2
-               ORDER BY olusturulma_tarihi DESC LIMIT 5`,
-              [kullaniciId, guncelOturumId]
-            );
-            // eski mesajları kronolojik sıraya çevir
-            const gecmisMesajlar = gecmisSorgusu.rows.reverse();
-            gecmisMesajlar.forEach(m => {
-              konusmaBaglami.push({ role: 'user', parts: [{ text: m.mesaj }] });
-              konusmaBaglami.push({ role: 'model', parts: [{ text: m.yanit }] });
-            });
-          } catch (baglamHatasi) {
-            console.warn('Konuşma bağlamı alınamadı:', baglamHatasi.message);
+          if (kullaniciId) {
+            try {
+              const gecmisSorgusu = await havuz.query(
+                `SELECT mesaj, yanit FROM sohbet_gecmisi
+                 WHERE kullanici_id = $1 AND oturum_id = $2
+                 ORDER BY olusturulma_tarihi DESC LIMIT 5`,
+                [kullaniciId, guncelOturumId]
+              );
+              // eski mesajları kronolojik sıraya çevir
+              const gecmisMesajlar = gecmisSorgusu.rows.reverse();
+              gecmisMesajlar.forEach(m => {
+                konusmaBaglami.push({ role: 'user', parts: [{ text: m.mesaj }] });
+                konusmaBaglami.push({ role: 'model', parts: [{ text: m.yanit }] });
+              });
+            } catch (baglamHatasi) {
+              console.warn('Konuşma bağlamı alınamadı:', baglamHatasi.message);
+            }
           }
 
           // mevcut mesajı ekle
@@ -178,20 +180,31 @@ const mesajGonder = async (istek, yanit, sonraki) => {
       aiYaniti = yanitBul(mesaj);
     }
 
-    // 24 saatten eski mesajları sil
-    await havuz.query(`DELETE FROM sohbet_gecmisi WHERE olusturulma_tarihi < NOW() - INTERVAL '24 hours'`);
+    // kullanıcı giriş yapmışsa sohbet geçmişine kaydet
+    let yanitVerisi = {
+      id: Date.now(),
+      oturum_id: guncelOturumId,
+      mesaj: mesaj.trim(),
+      yanit: aiYaniti,
+      olusturulma_tarihi: new Date().toISOString()
+    };
 
-    // sohbet geçmişine kaydet
-    const kaydedilmisVeri = await havuz.query(
-      `INSERT INTO sohbet_gecmisi (kullanici_id, oturum_id, mesaj, yanit)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, oturum_id, mesaj, yanit, olusturulma_tarihi`,
-      [kullaniciId, guncelOturumId, mesaj.trim(), aiYaniti]
-    );
+    if (kullaniciId) {
+      // 24 saatten eski mesajları sil
+      await havuz.query(`DELETE FROM sohbet_gecmisi WHERE olusturulma_tarihi < NOW() - INTERVAL '24 hours'`);
+
+      const kaydedilmisVeri = await havuz.query(
+        `INSERT INTO sohbet_gecmisi (kullanici_id, oturum_id, mesaj, yanit)
+         VALUES ($1, $2, $3, $4)
+         RETURNING id, oturum_id, mesaj, yanit, olusturulma_tarihi`,
+        [kullaniciId, guncelOturumId, mesaj.trim(), aiYaniti]
+      );
+      yanitVerisi = kaydedilmisVeri.rows[0];
+    }
 
     yanit.status(200).json({
       basarili: true,
-      veri: kaydedilmisVeri.rows[0]
+      veri: yanitVerisi
     });
   } catch (hata) {
     sonraki(hata);
@@ -201,7 +214,15 @@ const mesajGonder = async (istek, yanit, sonraki) => {
 // sohbet geçmişini getir
 const gecmisGetir = async (istek, yanit, sonraki) => {
   try {
-    const kullaniciId = istek.kullanici.kullanici_id;
+    const kullaniciId = istek.kullanici ? istek.kullanici.kullanici_id : null;
+
+    if (!kullaniciId) {
+      return yanit.status(200).json({
+        basarili: true,
+        toplam: 0,
+        veri: []
+      });
+    }
 
     // 24 saatten eski mesajları sil
     await havuz.query(`DELETE FROM sohbet_gecmisi WHERE olusturulma_tarihi < NOW() - INTERVAL '24 hours'`);
