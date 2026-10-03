@@ -80,8 +80,8 @@ uygulama.use(genelHizSiniri);
 uygulama.use(zamanAsimiAraci(15000));
 
 // istek gövdesi ayrıştırma
-uygulama.use(express.json({ limit: '500kb' }));
-uygulama.use(express.urlencoded({ limit: '500kb', extended: true }));
+uygulama.use(express.json({ limit: '25mb' }));
+uygulama.use(express.urlencoded({ limit: '25mb', extended: true }));
 
 // istek günlüğü
 uygulama.use(morgan('dev'));

@@ -3,31 +3,42 @@ const path = require('path');
 const cacheYonetici = require('../araclar/cacheYonetici');
 const { hedefDogrula } = require('../araclar/guvenlikAraci');
 
-// güvenli python çalıştırıcı (spawn ile - command injection koruması)
-const pythonCalistir = (scriptYolu, arglar = []) => {
+// güvenli ve çoklu platform destekli python çalıştırıcı
+const pythonCalistir = (scriptYolu, arglar = [], timeoutMs = 60000) => {
   return new Promise((resolve, reject) => {
-    const islem = spawn('python', [scriptYolu, ...arglar], {
-      env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
-      timeout: 60000 // subdomain gibi uzun süreçler için 60 saniyeye çıkarıldı
-    });
+    const anaKomut = process.env.PYTHON_PATH || (process.platform === 'win32' ? 'python' : 'python3');
+    
+    const calistir = (cmd) => {
+      const islem = spawn(cmd, [scriptYolu, ...arglar], {
+        env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
+        timeout: timeoutMs
+      });
 
-    let stdout = '';
-    let stderr = '';
+      let stdout = '';
+      let stderr = '';
 
-    islem.stdout.on('data', (veri) => { stdout += veri.toString('utf8'); });
-    islem.stderr.on('data', (veri) => { stderr += veri.toString('utf8'); });
+      islem.stdout.on('data', (veri) => { stdout += veri.toString('utf8'); });
+      islem.stderr.on('data', (veri) => { stderr += veri.toString('utf8'); });
 
-    islem.on('close', (kod) => {
-      if (kod === 0) {
-        resolve(stdout);
-      } else {
-        reject(new Error(`Python çıkış kodu: ${kod}, hata: ${stderr}`));
-      }
-    });
+      islem.on('close', (kod) => {
+        if (kod === 0) {
+          resolve(stdout);
+        } else {
+          reject(new Error(`Python çıkış kodu: ${kod}, hata: ${stderr}`));
+        }
+      });
 
-    islem.on('error', (hata) => {
-      reject(hata);
-    });
+      islem.on('error', (hata) => {
+        if (hata.code === 'ENOENT' && cmd === 'python') {
+          return calistir('python3');
+        } else if (hata.code === 'ENOENT' && cmd === 'python3') {
+          return calistir('python');
+        }
+        reject(hata);
+      });
+    };
+
+    calistir(anaKomut);
   });
 };
 
@@ -43,7 +54,7 @@ const araciCalistir = async (istek, yanit, sonraki) => {
     }
 
     // girdi uzunlugu kontrolu (dos korumasi - gorsel analizi haric)
-    const maxUzunluk = aracTipi === 'gorselMetadata' ? 15 * 1024 * 1024 : 2000;
+    const maxUzunluk = aracTipi === 'gorselMetadata' ? 20 * 1024 * 1024 : 5000;
     if (veri.length > maxUzunluk) {
       return yanit.status(400).json({
         basarili: false,
@@ -52,7 +63,7 @@ const araciCalistir = async (istek, yanit, sonraki) => {
     }
 
     // ssrf korumasi gerektiren araclar
-    let temizVeri = veri.trim().toLowerCase();
+    let temizVeri = typeof veri === 'string' ? veri.trim().toLowerCase() : '';
     const hostGerektirenAraclar = ['headerAnalizi', 'ipSorgu', 'subdomainBulucu', 'dnsSorgulayici', 'whoisAnalizi'];
     if (hostGerektirenAraclar.includes(aracTipi)) {
       const dogrulama = await hedefDogrula(veri);
@@ -66,7 +77,7 @@ const araciCalistir = async (istek, yanit, sonraki) => {
     }
 
     // önbellek (cache) kontrolü
-    const cacheAnahtari = aracTipi === 'gorselMetadata'
+    const cacheAnahtari = (aracTipi === 'gorselMetadata' || !temizVeri)
       ? null
       : `arac:${aracTipi}:${temizVeri}`;
     
@@ -152,18 +163,18 @@ const araciCalistir = async (istek, yanit, sonraki) => {
       sonuc: sonucMarkdown
     };
 
-    // işlem başarılıysa sonucu 12 saat (43200 saniye) boyunca önbelleğe al
-    if (islendi) {
+    // işlem başarılıysa ve geçerli bir anahtar varsa önbelleğe al
+    if (islendi && cacheAnahtari) {
       await cacheYonetici.set(cacheAnahtari, responseData, 43200);
     }
 
-    yanit.status(200).json(responseData);
+    return yanit.status(200).json(responseData);
 
   } catch (hata) {
     console.error('Araç çalıştırma hatası:', hata.message);
-    yanit.status(500).json({
+    return yanit.status(500).json({
       basarili: false,
-      mesaj: 'Araç çalıştırılırken bir sunucu hatası oluştu.'
+      mesaj: 'Araç çalıştırılırken bir sunucu hatası oluştu: ' + hata.message
     });
   }
 };

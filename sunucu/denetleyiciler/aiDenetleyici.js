@@ -3,31 +3,42 @@ const path = require('path');
 const { spawn } = require('child_process');
 const { siberGuvenlikYanitlari, varsayilanYanit } = require('../yapilandirma/siberGuvenlikSablonlari');
 
-// güvenli python çalıştırıcı
-const pythonCalistir = (scriptYolu, arglar = []) => {
+// güvenli ve çoklu platform destekli python çalıştırıcı
+const pythonCalistir = (scriptYolu, arglar = [], maxSure = 20000) => {
   return new Promise((resolve, reject) => {
-    const islem = spawn('python', [scriptYolu, ...arglar], {
-      env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
-      timeout: 15000 // sohbet için 15 saniye maksimum
-    });
+    const anaKomut = process.env.PYTHON_PATH || (process.platform === 'win32' ? 'python' : 'python3');
+    
+    const calistir = (cmd) => {
+      const islem = spawn(cmd, [scriptYolu, ...arglar], {
+        env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
+        timeout: maxSure
+      });
 
-    let stdout = '';
-    let stderr = '';
+      let stdout = '';
+      let stderr = '';
 
-    islem.stdout.on('data', (veri) => { stdout += veri.toString('utf8'); });
-    islem.stderr.on('data', (veri) => { stderr += veri.toString('utf8'); });
+      islem.stdout.on('data', (veri) => { stdout += veri.toString('utf8'); });
+      islem.stderr.on('data', (veri) => { stderr += veri.toString('utf8'); });
 
-    islem.on('close', (kod) => {
-      if (kod === 0) {
-        resolve(stdout);
-      } else {
-        reject(new Error(`Python çıkış kodu: ${kod}, hata: ${stderr}`));
-      }
-    });
+      islem.on('close', (kod) => {
+        if (kod === 0) {
+          resolve(stdout);
+        } else {
+          reject(new Error(`Python çıkış kodu: ${kod}, hata: ${stderr}`));
+        }
+      });
 
-    islem.on('error', (hata) => {
-      reject(hata);
-    });
+      islem.on('error', (hata) => {
+        if (hata.code === 'ENOENT' && cmd === 'python') {
+          return calistir('python3');
+        } else if (hata.code === 'ENOENT' && cmd === 'python3') {
+          return calistir('python');
+        }
+        reject(hata);
+      });
+    };
+
+    calistir(anaKomut);
   });
 };
 
