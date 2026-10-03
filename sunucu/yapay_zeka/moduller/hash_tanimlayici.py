@@ -1,12 +1,12 @@
 """
-Salus AI - Gelişmiş Hash Tipi Tanımlayıcı (40+ Algoritma)
+salus aı - gelişmiş hash tipi tanımlayıcı (40+ algoritma)
 =========================================================
-Bu modül, verilen bir kriptografik hash değerini (veya tuzlanmış hash dizgesini)
+bu modül, verilen bir kriptografik hash değerini (veya tuzlanmış hash dizgesini)
 regex desen eşleşmesi, uzunluk analizi ve yapısal önek (prefix) kontrolleriyle
-analiz eder. 40'tan fazla popüler hash algoritmasını (MD5, SHA ailesi, Bcrypt, Argon2,
-Cisco, MS-SQL vb.) tanır.
+analiz eder. 40'tan fazla popüler hash algoritmasını (md5, sha ailesi, bcrypt, argon2,
+cisco, ms-sql vb.) tanır.
 
-Çakışan ham hex hash yapıları için (örn: 32 karakter MD5 mi NTLM mi?) olasılık
+çakışan ham hex hash yapıları için (örn: 32 karakter md5 mi ntlm mi?) olasılık
 (güven) skoru hesaplar ve güvenlik tavsiyeleri verir.
 """
 
@@ -30,13 +30,13 @@ AUTHOR: str = "Salus AI"
 
 
 def can_handle(message: str) -> bool:
-    """Modülün gelen hash tanımlama isteklerini işleyip işlemeyeceğini kontrol eder.
+    """modülün gelen hash tanımlama isteklerini işleyip işlemeyeceğini kontrol eder.
 
-    Args:
-        message (str): Kullanıcı mesajı.
+    args:
+        message (str): kullanıcı mesajı.
 
-    Returns:
-        bool: Eşleşme durumunda True.
+    returns:
+        bool: eşleşme durumunda true.
     """
     msg = message.lower().strip()
     return "hash" in msg and any(x in msg for x in ["tan", "analiz", "nedir", "türü"])
@@ -88,13 +88,13 @@ HASH_YAPILARI: List[Tuple[str, str, str]] = [
 
 
 def analiz_et(hash_metni: str) -> Tuple[List[Dict[str, str]], str]:
-    """Verilen hash değerini regex listesiyle karşılaştırıp olası algoritmaları belirler.
+    """verilen hash değerini regex listesiyle karşılaştırıp olası algoritmaları belirler.
 
-    Args:
-        hash_metni (str): Analiz edilecek ham hash metni.
+    args:
+        hash_metni (str): analiz edilecek ham hash metni.
 
-    Returns:
-        Tuple[List[Dict[str, str]], str]: Tespit edilen algoritmalar ve tuz uyarısı.
+    returns:
+        tuple[list[dict[str, str]], str]: tespit edilen algoritmalar ve tuz uyarısı.
     """
     sonuclar: List[Dict[str, str]] = []
     tuz_uyarisi = ""
@@ -149,13 +149,13 @@ def analiz_et(hash_metni: str) -> Tuple[List[Dict[str, str]], str]:
 
 
 def execute(message: str) -> str:
-    """Komutu ayrıştırır, girdileri alır ve hash analiz raporunu markdown olarak sunar.
+    """komutu ayrıştırır, girdileri alır ve hash analiz raporunu markdown olarak sunar.
 
-    Args:
-        message (str): Kullanıcı mesajı.
+    args:
+        message (str): kullanıcı mesajı.
 
-    Returns:
-        str: Markdown formatında analiz raporu.
+    returns:
+        str: markdown formatında analiz raporu.
     """
     parcalar = message.split()
     

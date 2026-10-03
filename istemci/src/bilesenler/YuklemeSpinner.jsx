@@ -1,4 +1,3 @@
-import React from 'react';
 
 const YuklemeSpinner = ({ boyut = 'normal', metin = 'Yükleniyor...', tamSayfa = false }) => {
   // boyut tanımları

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileCode, GlobeLock, Cpu } from 'lucide-react';
+import { FileCode, GlobeLock } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { aracCagir } from '../../servisler/apiServisi';
@@ -77,13 +77,34 @@ const HeaderAnalizi = () => {
       )}
 
       {yukleniyor && (
-        <div className="analiz-sonuc">
+        <div className="analiz-sonuc cam-kart" style={{ padding: 0 }}>
           <div className="tarama-animasyon">
-            <div className="tarama-ilerleme-bar">
-              <div className="tarama-ilerleme-cizgi" style={{ width: '70%', animation: 'nabiz 1.5s infinite' }} />
+            <div className="tarama-durum-rozet">
+              <span className="tarama-durum-nokta" />
+              HTTP & SSL/TLS GÜVENLİK ANALİZİ
             </div>
-            <div className="tarama-mesaj">
-              Güvenlik başlıkları ve <strong>çerez politikaları</strong> inceleniyor...
+
+            <div className="tarama-radar-kapsayici">
+              <div className="tarama-radar-halka" />
+              <div className="tarama-radar-halka-2" />
+              <div className="tarama-radar-merkez">
+                <Shield size={22} />
+              </div>
+            </div>
+
+            <div className="tarama-mesaj-kapsayici">
+              <div className="tarama-mesaj">
+                Güvenlik başlıkları, <strong>çerez politikaları</strong> ve SSL sertifikası denetleniyor...
+              </div>
+              <div className="tarama-alt-mesaj">
+                Hedef: {girdi} • Standartlar: OWASP Secure Headers / HSTS / CSP
+              </div>
+            </div>
+
+            <div className="tarama-ilerleme-kapsayici">
+              <div className="tarama-ilerleme-bar">
+                <div className="tarama-ilerleme-cizgi" style={{ width: '80%' }} />
+              </div>
             </div>
           </div>
         </div>

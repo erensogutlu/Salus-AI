@@ -1,16 +1,16 @@
 """
-Salus AI - Görsel Metadata ve EXIF Güvenlik/Gizlilik Analiz Modülü
+salus aı - görsel metadata ve exıf güvenlik/gizlilik analiz modülü
 ==================================================================
-Bu modül, JPEG, PNG, WEBP ve TIFF formatındaki görsellerin EXIF metadata,
-kamera donanım bilgileri, çekim parametreleri, GPS coğrafi konum bilgileri ve
-güvenlik/gizlilik risklerini (OSINT analizi) tespit eder.
+bu modül, jpeg, png, webp ve tıff formatındaki görsellerin exıf metadata,
+kamera donanım bilgileri, çekim parametreleri, gps coğrafi konum bilgileri ve
+güvenlik/gizlilik risklerini (osınt analizi) tespit eder.
 
-Özellikler:
-- Saf Python ile bağımsız JPEG EXIF (APP1/TIFF/IFD0/ExifIFD/GPSIFD) ayrıştırıcı
-- PNG metadata (IHDR, tEXt, zTXt, iTXt, eXIf, pHYs, tIME) ayrıştırıcı
-- GPS koordinatlarını ondalık dereceye (Decimals) dönüştürme ve harita bağlantısı
-- Gizlilik ve OSINT risk analizi (Konum sızıntısı, Cihaz parmak izi tespiti)
-- Dosya sonu ek veri (Trailing bytes / Steganografi ipucu) tespiti
+özellikler:
+- saf python ile bağımsız jpeg exıf (app1/tıff/ıfd0/exifıfd/gpsıfd) ayrıştırıcı
+- png metadata (ıhdr, text, ztxt, itxt, exıf, phys, tıme) ayrıştırıcı
+- gps koordinatlarını ondalık dereceye (decimals) dönüştürme ve harita bağlantısı
+- gizlilik ve osınt risk analizi (konum sızıntısı, cihaz parmak izi tespiti)
+- dosya sonu ek veri (trailing bytes / steganografi ipucu) tespiti
 """
 
 import sys
@@ -89,13 +89,13 @@ GPS_TAGS = {
 
 
 def can_handle(message: str) -> bool:
-    """Mesajın görsel analiz isteği olup olmadığını kontrol eder."""
+    """mesajın görsel analiz isteği olup olmadığını kontrol eder."""
     msg = message.lower().strip()
     return any(msg.startswith(t) for t in TETIKLEYICILER)
 
 
 def _dms_to_decimal(dms: List[float], ref: str) -> Optional[float]:
-    """DMS (Derece, Dakika, Saniye) formatını ondalık koordinata dönüştürür."""
+    """dms (derece, dakika, saniye) formatını ondalık koordinata dönüştürür."""
     try:
         if not dms or len(dms) < 3:
             return None
@@ -109,7 +109,7 @@ def _dms_to_decimal(dms: List[float], ref: str) -> Optional[float]:
 
 
 def parse_tiff_ifd(data: bytes, offset: int, endian: str) -> Tuple[Dict[str, Any], Optional[int], Optional[int]]:
-    """TIFF IFD bloğunu ayrıştırır."""
+    """tıff ıfd bloğunu ayrıştırır."""
     tags: Dict[str, Any] = {}
     exif_offset: Optional[int] = None
     gps_offset: Optional[int] = None
@@ -127,12 +127,12 @@ def parse_tiff_ifd(data: bytes, offset: int, endian: str) -> Tuple[Dict[str, Any
         tag, tag_type, count, val_or_offset = struct.unpack(endian + 'HHII', data[curr:curr+12])
         curr += 12
 
-        # Değeri çıkar
+        # değeri çıkar
         val = None
         tag_name = TAG_NAMES.get(tag, f"Tag_0x{tag:04X}")
 
         try:
-            if tag_type == 2:  # ASCII string
+            if tag_type == 2:  # ascıı string
                 if count <= 4:
                     raw = struct.pack(endian + 'I', val_or_offset)[:count]
                     val = raw.split(b'\x00')[0].decode('utf-8', errors='ignore')
@@ -140,15 +140,15 @@ def parse_tiff_ifd(data: bytes, offset: int, endian: str) -> Tuple[Dict[str, Any
                     if val_or_offset + count <= len(data):
                         raw = data[val_or_offset:val_or_offset+count]
                         val = raw.split(b'\x00')[0].decode('utf-8', errors='ignore')
-            elif tag_type == 3:  # SHORT
+            elif tag_type == 3:  # short
                 val = val_or_offset & 0xFFFF
-            elif tag_type == 4:  # LONG
+            elif tag_type == 4:  # long
                 val = val_or_offset
-            elif tag_type == 5:  # RATIONAL (num, den)
+            elif tag_type == 5:  # ratıonal (num, den)
                 if val_or_offset + 8 <= len(data):
                     num, den = struct.unpack(endian + 'II', data[val_or_offset:val_or_offset+8])
                     val = round(num / den, 4) if den != 0 else 0
-            elif tag_type == 10: # SRATIONAL (signed)
+            elif tag_type == 10: # sratıonal (signed)
                 if val_or_offset + 8 <= len(data):
                     num, den = struct.unpack(endian + 'ii', data[val_or_offset:val_or_offset+8])
                     val = round(num / den, 4) if den != 0 else 0
@@ -167,7 +167,7 @@ def parse_tiff_ifd(data: bytes, offset: int, endian: str) -> Tuple[Dict[str, Any
 
 
 def parse_gps_ifd(data: bytes, offset: int, endian: str) -> Dict[str, Any]:
-    """GPS IFD bloğunu ayrıştırır."""
+    """gps ıfd bloğunu ayrıştırır."""
     gps_info: Dict[str, Any] = {}
     if offset + 2 > len(data):
         return gps_info
@@ -185,7 +185,7 @@ def parse_gps_ifd(data: bytes, offset: int, endian: str) -> Dict[str, Any]:
         tag_name = GPS_TAGS.get(tag, f"GPS_0x{tag:04X}")
 
         try:
-            if tag_type == 2:  # ASCII
+            if tag_type == 2:  # ascıı
                 if count <= 4:
                     raw = struct.pack(endian + 'I', val_or_offset)[:count]
                     gps_info[tag_name] = raw.split(b'\x00')[0].decode('utf-8', errors='ignore').strip()
@@ -193,8 +193,8 @@ def parse_gps_ifd(data: bytes, offset: int, endian: str) -> Dict[str, Any]:
                     if val_or_offset + count <= len(data):
                         raw = data[val_or_offset:val_or_offset+count]
                         gps_info[tag_name] = raw.split(b'\x00')[0].decode('utf-8', errors='ignore').strip()
-            elif tag_type == 5:  # RATIONAL
-                if count == 3:  # DMS
+            elif tag_type == 5:  # ratıonal
+                if count == 3:  # dms
                     dms = []
                     for i in range(3):
                         p = val_or_offset + (i * 8)
@@ -213,7 +213,7 @@ def parse_gps_ifd(data: bytes, offset: int, endian: str) -> Dict[str, Any]:
 
 
 def parse_jpeg_exif(raw_bytes: bytes) -> Dict[str, Any]:
-    """JPEG baytlarından EXIF ve segment bilgilerini ayrıştırır."""
+    """jpeg baytlarından exıf ve segment bilgilerini ayrıştırır."""
     result: Dict[str, Any] = {
         "format": "JPEG",
         "boyut_bayt": len(raw_bytes),
@@ -236,7 +236,7 @@ def parse_jpeg_exif(raw_bytes: bytes) -> Dict[str, Any]:
         marker = raw_bytes[idx + 1]
         idx += 2
 
-        # Standalone markers
+        # standalone markers
         if marker in [0xD8, 0xD9, 0x00] or (0xD0 <= marker <= 0xD7):
             continue
 
@@ -246,7 +246,7 @@ def parse_jpeg_exif(raw_bytes: bytes) -> Dict[str, Any]:
         seg_len = struct.unpack('>H', raw_bytes[idx:idx+2])[0]
         seg_data = raw_bytes[idx+2 : idx+seg_len]
 
-        # APP1 (EXIF)
+        # app1 (exıf)
         if marker == 0xE1 and seg_data.startswith(b'Exif\x00\x00'):
             result["exif_bulundu"] = True
             tiff_data = seg_data[6:]
@@ -269,18 +269,18 @@ def parse_jpeg_exif(raw_bytes: bytes) -> Dict[str, Any]:
                     gps_tags = parse_gps_ifd(tiff_data, gps_offset, endian)
                     result["gps"].update(gps_tags)
 
-        # SOF (Dimensions)
+        # sof (dimensions)
         elif marker in [0xC0, 0xC1, 0xC2]:
             if len(seg_data) >= 5:
                 precision, height, width = struct.unpack('>BHH', seg_data[:5])
                 result["etiketler"]["ImageWidth"] = width
                 result["etiketler"]["ImageHeight"] = height
 
-        # APP13 (Photoshop IPTC)
+        # app13 (photoshop ıptc)
         elif marker == 0xED and b'Photoshop' in seg_data:
             result["etiketler"]["SoftwareNote"] = "Adobe Photoshop IPTC Metadata Tespit Edildi"
 
-        # COM (Comment)
+        # com (comment)
         elif marker == 0xFE:
             try:
                 result["etiketler"]["Comment"] = seg_data.decode('utf-8', errors='ignore')
@@ -289,7 +289,7 @@ def parse_jpeg_exif(raw_bytes: bytes) -> Dict[str, Any]:
 
         idx += seg_len
 
-    # Dosya sonu ek veri (Trailing / Stego) kontrolü
+    # dosya sonu ek veri (trailing / stego) kontrolü
     eoi_pos = raw_bytes.rfind(b'\xFF\xD9')
     if eoi_pos != -1 and eoi_pos < length - 2:
         ek_bayt_sayisi = length - (eoi_pos + 2)
@@ -302,7 +302,7 @@ def parse_jpeg_exif(raw_bytes: bytes) -> Dict[str, Any]:
 
 
 def parse_png_metadata(raw_bytes: bytes) -> Dict[str, Any]:
-    """PNG baytlarından metadata ve chunk bilgilerini ayrıştırır."""
+    """png baytlarından metadata ve chunk bilgilerini ayrıştırır."""
     result: Dict[str, Any] = {
         "format": "PNG",
         "boyut_bayt": len(raw_bytes),
@@ -363,11 +363,11 @@ def parse_png_metadata(raw_bytes: bytes) -> Dict[str, Any]:
 
 
 def analiz_yap(girdi: str) -> Dict[str, Any]:
-    """Base64 veya URL halindeki görsel verisini çözer ve ayrıntılı analiz üretir."""
+    """base64 veya url halindeki görsel verisini çözer ve ayrıntılı analiz üretir."""
     raw_data: Optional[bytes] = None
     kaynak_adi = "Yüklenen Görsel"
 
-    # 1. URL mi?
+    # 1. url mi?
     if girdi.startswith("http://") or girdi.startswith("https://"):
         kaynak_adi = girdi.split("?")[0].split("/")[-1] or "web_gorseli.jpg"
         try:
@@ -380,7 +380,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
         except Exception as e:
             return {"basarili": False, "hata": f"Görsel URL'den indirilemedi: {str(e)}"}
 
-    # 2. Data URL veya Base64 mü?
+    # 2. data url veya base64 mü?
     elif "base64," in girdi:
         b64_str = girdi.split("base64,")[1]
         try:
@@ -388,7 +388,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
         except Exception:
             return {"basarili": False, "hata": "Geçersiz Base64 görsel verisi."}
     else:
-        # Doğrudan base64 denemesi
+        # doğrudan base64 denemesi
         try:
             raw_data = base64.b64decode(girdi)
         except Exception:
@@ -397,7 +397,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
     if not raw_data:
         return {"basarili": False, "hata": "Boş görsel verisi."}
 
-    # Format tespit ve çözümleme
+    # format tespit ve çözümleme
     if raw_data.startswith(b'\xFF\xD8'):
         analiz = parse_jpeg_exif(raw_data)
     elif raw_data.startswith(b'\x89PNG'):
@@ -407,7 +407,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
     else:
         return {"basarili": False, "hata": "Desteklenmeyen veya bozuk görsel formatı (JPEG/PNG/WEBP desteklenir)."}
 
-    # GPS Koordinat Hesaplama
+    # gps koordinat hesaplama
     gps_dict = analiz.get("gps", {})
     lat_dms = gps_dict.get("GPSLatitude")
     lat_ref = gps_dict.get("GPSLatitudeRef", "N")
@@ -418,7 +418,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
     decimal_lat = _dms_to_decimal(lat_dms, lat_ref) if lat_dms else None
     decimal_lon = _dms_to_decimal(lon_dms, lon_ref) if lon_dms else None
 
-    # Gizlilik & Güvenlik Risk Skoru Hesaplama (0 = Tamamen Güvenli, 100 = Kritik Risk)
+    # gizlilik & güvenlik risk skoru hesaplama (0 = tamamen güvenli, 100 = kritik risk)
     risk_puani = 0
     risk_faktorleri: List[str] = []
 
@@ -446,7 +446,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
     risk_puani = min(100, risk_puani)
     seviye = "Kritik" if risk_puani >= 70 else "Yüksek" if risk_puani >= 50 else "Orta" if risk_puani >= 30 else "Düşük (Güvenli)"
 
-    # Markdown Çıktısı Üretimi
+    # markdown çıktısı üretimi
     cikti = [
         f"# Görsel Metadata & Adli Bilişim Raporu: `{kaynak_adi}`\n",
         f"**Dosya Formatı:** {analiz['format']} | **Boyut:** {round(analiz['boyut_bayt'] / 1024, 2)} KB | **EXIF Verisi:** {'Mevcut' if analiz['exif_bulundu'] else 'Bulunamadı/Temiz'}",
@@ -460,7 +460,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
     else:
         cikti.append("[+] Görselde hassas konum, yazar veya cihaz bilgisi tespit edilmedi (Gizlilik güvenli).")
 
-    # GPS Bölümü
+    # gps bölümü
     if decimal_lat and decimal_lon:
         maps_link = f"https://www.google.com/maps?q={decimal_lat},{decimal_lon}"
         osm_link = f"https://www.openstreetmap.org/?mlat={decimal_lat}&mlon={decimal_lon}#map=16/{decimal_lat}/{decimal_lon}"
@@ -471,7 +471,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
             cikti.append(f"- **Rakım (Altitude):** `{altitude}` metre")
         cikti.append(f"- **Harita Bağlantıları:** [Google Maps'te Aç]({maps_link}) | [OpenStreetMap'te Aç]({osm_link})")
 
-    # Kamera & Cihaz Parametreleri
+    # kamera & cihaz parametreleri
     tags = analiz["etiketler"]
     cikti.append("\n### Cihaz & Kamera Parametreleri")
     cikti.append(f"| Özellik | Değer |")
@@ -488,7 +488,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
     cikti.append(f"| **ISO Değeri** | {tags.get('ISOSpeedRatings', '-')} |")
     cikti.append(f"| **Odak Uzaklığı** | {focal_str} |")
 
-    # Öneriler
+    # öneriler
     cikti.append("\n###  Güvenlik & Gizlilik Tavsiyeleri")
     if decimal_lat:
         cikti.append("1. **Konum Gizliliği:** İnternette veya sosyal medyada fotoğraf paylaşmadan önce kameranızın GPS konum etiketleme özelliğini kapatın.")
@@ -514,7 +514,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
 
 
 def execute(message: str) -> Dict[str, Any]:
-    """Python modül yöneticisi yürütme fonksiyonu."""
+    """python modül yöneticisi yürütme fonksiyonu."""
     temiz = message.strip()
     for t in TETIKLEYICILER:
         if temiz.lower().startswith(t):

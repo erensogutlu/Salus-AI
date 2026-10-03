@@ -1,15 +1,15 @@
 """
-Salus AI - Siber Güvenlik Veri Kodlama/Çözme ve İçerik Güvenlik Analiz Modülü
+salus aı - siber güvenlik veri kodlama/çözme ve içerik güvenlik analiz modülü
 =============================================================================
-Bu modül, Base64, URL (Percent-Encoding), HTML Entity (Named, Decimal, Hexadecimal),
-Hexadecimal ve Binary kodlama/çözme işlemlerini yürütür.
+bu modül, base64, url (percent-encoding), html entity (named, decimal, hexadecimal),
+hexadecimal ve binary kodlama/çözme işlemlerini yürütür.
 
-Özellikler:
-- Çok katmanlı otomatik Base64 zincir çözücü
-- HTML Entity Encoder/Decoder (Named & Numeric & Hexadecimal)
-- URL Encoder/Decoder (RFC 3986, component & full URI)
-- Hex & Binary dönüşümleri
-- Gerçek zamanlı siber güvenlik saldırı payload tarayıcısı (XSS, SQLi, LFI, RCE)
+özellikler:
+- çok katmanlı otomatik base64 zincir çözücü
+- html entity encoder/decoder (named & numeric & hexadecimal)
+- url encoder/decoder (rfc 3986, component & full urı)
+- hex & binary dönüşümleri
+- gerçek zamanlı siber güvenlik saldırı payload tarayıcısı (xss, sqli, lfı, rce)
 """
 
 import sys
@@ -42,13 +42,13 @@ TETIKLEYICILER: List[str] = [
 
 
 def can_handle(message: str) -> bool:
-    """Modülün kodlama/çözme isteklerini sahiplenip sahiplenmeyeceğini denetler."""
+    """modülün kodlama/çözme isteklerini sahiplenip sahiplenmeyeceğini denetler."""
     msg = message.lower().strip()
     return any(msg.startswith(t) for t in TETIKLEYICILER)
 
 
 def guvenlik_taramasi(metin: str) -> List[str]:
-    """Çözülen veri içeriğinde olası zafiyet ve siber saldırı kalıplarını (payload) arar."""
+    """çözülen veri içeriğinde olası zafiyet ve siber saldırı kalıplarını (payload) arar."""
     bulgular: List[str] = []
     metin_lower = metin.lower()
     
@@ -85,13 +85,13 @@ def guvenlik_taramasi(metin: str) -> List[str]:
 
 
 def padding_ekle(b64_str: str) -> str:
-    """Eksik dolgu (padding '=') karakterlerini ekleyerek Base64 dizgesini tamamlar."""
+    """eksik dolgu (padding '=') karakterlerini ekleyerek base64 dizgesini tamamlar."""
     b64_str = b64_str.strip()
     return b64_str + '=' * (-len(b64_str) % 4)
 
 
 def zincir_coz_base64(b64_str: str, max_derinlik: int = 3) -> List[str]:
-    """İç içe kodlanmış Base64 zincirini derinlemesine çözer."""
+    """iç içe kodlanmış base64 zincirini derinlemesine çözer."""
     mevcut = b64_str.strip()
     adimlar: List[str] = []
     
@@ -122,7 +122,7 @@ def zincir_coz_base64(b64_str: str, max_derinlik: int = 3) -> List[str]:
 
 
 def html_entity_kodla(metin: str, mod: str = "named") -> Dict[str, str]:
-    """HTML Entity formatında kodlama yapar."""
+    """html entity formatında kodlama yapar."""
     # named entity dönüşümü
     named = html.escape(metin, quote=True)
     
@@ -144,13 +144,13 @@ def html_entity_kodla(metin: str, mod: str = "named") -> Dict[str, str]:
 
 
 def html_entity_coz(metin: str) -> str:
-    """HTML Entity (named, decimal, hex) kodunu çözer."""
+    """html entity (named, decimal, hex) kodunu çözer."""
     # html entity çözme
     return html.unescape(metin)
 
 
 def execute(message: str) -> str:
-    """Kodlama/Çözme komutunu işler ve markdown formatında sonuçları sunar."""
+    """kodlama/çözme komutunu işler ve markdown formatında sonuçları sunar."""
     msg_lower = message.lower().strip()
     komut = ""
     veri = ""

@@ -1,8 +1,8 @@
 """
-Salus AI - Ortak Yardımcı Metotlar Modülü
+salus aı - ortak yardımcı metotlar modülü
 =========================================
-Bu modül, siber güvenlik araçlarının ortak olarak kullandığı domain/URL ayıklama,
-IP/Host çözümleme, UTF-8 G/Ç yapılandırması ve Base64 çözme metotlarını barındırır.
+bu modül, siber güvenlik araçlarının ortak olarak kullandığı domain/url ayıklama,
+ıp/host çözümleme, utf-8 g/ç yapılandırması ve base64 çözme metotlarını barındırır.
 """
 
 import sys
@@ -14,14 +14,14 @@ import re
 from typing import Tuple, Optional
 
 def reconfigure_utf8() -> None:
-    """Standart çıktıyı (stdout) UTF-8 karakter kodlaması ile yeniden yapılandırır."""
+    """standart çıktıyı (stdout) utf-8 karakter kodlaması ile yeniden yapılandırır."""
     if hasattr(sys.stdout, 'reconfigure'):
         sys.stdout.reconfigure(encoding='utf-8')
     else:
         sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def clean_domain_or_ip(message_or_url: str, keyword: Optional[str] = None) -> str:
-    """Gelen mesaj veya URL içeriğinden sadece domain veya IP kısmını temizleyerek ayıklar."""
+    """gelen mesaj veya url içeriğinden sadece domain veya ıp kısmını temizleyerek ayıklar."""
     parcalar = message_or_url.split()
     if keyword and message_or_url.lower().startswith(keyword.lower()):
         # anahtar kelimeyi ve sonrasındaki komut kısmını geç
@@ -47,7 +47,7 @@ def clean_domain_or_ip(message_or_url: str, keyword: Optional[str] = None) -> st
     return hedef
 
 def b64_coz(metin: str) -> str:
-    """Base64 kodlu verileri eksik dolgu (padding) karakterlerini tamamlayarak güvenli şekilde çözer."""
+    """base64 kodlu verileri eksik dolgu (padding) karakterlerini tamamlayarak güvenli şekilde çözer."""
     cleaned = metin.strip()
     # base64 olabilecek karakterleri ve uzunluğu doğrula
     if re.match(r'^[A-Za-z0-9+/]+={0,2}$', cleaned) and len(cleaned) > 4:
@@ -61,7 +61,7 @@ def b64_coz(metin: str) -> str:
     return metin
 
 def host_cozumle(hedef: str) -> Tuple[str, Optional[str]]:
-    """Gelen ham hedef adresinden domain ayıklar ve IP adresine çözümler."""
+    """gelen ham hedef adresinden domain ayıklar ve ıp adresine çözümler."""
     clean_target = clean_domain_or_ip(hedef)
     try:
         # ıp adresi mi kontrol et

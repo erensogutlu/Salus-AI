@@ -1,10 +1,10 @@
 """
-Salus AI - WHOIS Sorgulama Modülü
+salus aı - whoıs sorgulama modülü
 =================================
-Bu modül, alan adlarının WHOIS bilgilerini doğrudan IANA ve ilgili alan adı
-kayıt otoritesi WHOIS sunucularından TCP Port 43 bağlantısı kurarak çeker.
+bu modül, alan adlarının whoıs bilgilerini doğrudan ıana ve ilgili alan adı
+kayıt otoritesi whoıs sunucularından tcp port 43 bağlantısı kurarak çeker.
 
-Harici kütüphane bağımlılığı bulunmamaktadır.
+harici kütüphane bağımlılığı bulunmamaktadır.
 """
 
 import sys
@@ -27,17 +27,17 @@ DESCRIPTION: str = "TCP Port 43 üzerinden domain tescil ve sahiplik (WHOIS) sor
 AUTHOR: str = "Salus AI"
 
 def can_handle(message: str) -> bool:
-    """Modülün gelen WHOIS isteklerini işleyip işlemeyeceğini kontrol eder."""
+    """modülün gelen whoıs isteklerini işleyip işlemeyeceğini kontrol eder."""
     msg = message.lower().strip()
     return msg.startswith("whois ") or msg.startswith("whois sorgula")
 
 def domain_ayikla(message: str) -> str:
-    """Gelen mesajdan alan adını temizler."""
+    """gelen mesajdan alan adını temizler."""
     keyword = "whois sorgula" if message.lower().startswith("whois sorgula") else "whois"
     return salus_common.clean_domain_or_ip(message, keyword)
 
 def raw_whois_sorgu(domain: str) -> str:
-    """IANA sunucusuna sorgu atar, referans WHOIS sunucusunu bulup detaylı bilgiyi sorgular."""
+    """ıana sunucusuna sorgu atar, referans whoıs sunucusunu bulup detaylı bilgiyi sorgular."""
     server = "whois.iana.org"
     try:
         # 1. aşama: ıana sorgusu
@@ -103,7 +103,7 @@ def raw_whois_sorgu(domain: str) -> str:
         return f"Hata: {str(e)}"
 
 def parsed_whois_verisi(whois_text: str) -> Dict[str, Any]:
-    """Ham WHOIS metninden önemli kayıt verilerini regex ile ayıklar."""
+    """ham whoıs metninden önemli kayıt verilerini regex ile ayıklar."""
     detaylar = {
         "kayit_kurulusu": "Bilinmiyor",
         "olusturma_tarihi": "Bilinmiyor",
@@ -149,7 +149,7 @@ def parsed_whois_verisi(whois_text: str) -> Dict[str, Any]:
     return detaylar
 
 def execute(message: str) -> str:
-    """WHOIS sorgusunu çalıştırır ve raporu markdown tablosu biçiminde döndürür."""
+    """whoıs sorgusunu çalıştırır ve raporu markdown tablosu biçiminde döndürür."""
     domain = domain_ayikla(message)
     if not domain or "." not in domain:
         return "Lütfen sorgulanacak geçerli bir domain belirtin. Örnek: `whois github.com`"

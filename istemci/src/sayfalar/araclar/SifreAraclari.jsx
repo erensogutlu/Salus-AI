@@ -98,13 +98,34 @@ const SifreAraclari = () => {
       )}
 
       {yukleniyor && (
-        <div className="analiz-sonuc">
+        <div className="analiz-sonuc cam-kart" style={{ padding: 0 }}>
           <div className="tarama-animasyon">
-            <div className="tarama-ilerleme-bar">
-              <div className="tarama-ilerleme-cizgi" style={{ width: '70%', animation: 'nabiz 1.5s infinite' }} />
+            <div className="tarama-durum-rozet">
+              <span className="tarama-durum-nokta" />
+              PAROLA GÜVENLİK & ENTROPİ MOTORU
             </div>
-            <div className="tarama-mesaj">
-              <strong>Yapay zeka modülü</strong> çalışıyor...
+
+            <div className="tarama-radar-kapsayici">
+              <div className="tarama-radar-halka" />
+              <div className="tarama-radar-halka-2" />
+              <div className="tarama-radar-merkez">
+                <Cpu size={22} />
+              </div>
+            </div>
+
+            <div className="tarama-mesaj-kapsayici">
+              <div className="tarama-mesaj">
+                <strong>Kombinatoryal entropi</strong> ve sızdırılmış veri tabanı kalıpları denetleniyor...
+              </div>
+              <div className="tarama-alt-mesaj">
+                Mod: {aktifSekme === 'analiz' ? 'Kaba Kuvvet (Brute-Force) Simülasyonu' : 'Kriptografik Güvenli RNG Üretimi'}
+              </div>
+            </div>
+
+            <div className="tarama-ilerleme-kapsayici">
+              <div className="tarama-ilerleme-bar">
+                <div className="tarama-ilerleme-cizgi" style={{ width: '85%' }} />
+              </div>
             </div>
           </div>
         </div>

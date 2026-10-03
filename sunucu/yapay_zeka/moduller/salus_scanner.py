@@ -8,11 +8,11 @@ import concurrent.futures
 import salus_common
 
 def host_cozumle(hedef):
-    """Hedef URL veya domain/IP adresini temizler ve IP adresini çözer."""
+    """hedef url veya domain/ıp adresini temizler ve ıp adresini çözer."""
     return salus_common.host_cozumle(hedef)
 
 def banner_yakala(ip, port):
-    """Açık porta bağlanıp servis versiyonunu / banner bilgisini almaya çalışır."""
+    """açık porta bağlanıp servis versiyonunu / banner bilgisini almaya çalışır."""
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(1.2)
     banner = ""
@@ -49,7 +49,7 @@ def banner_yakala(ip, port):
     return banner
 
 def portlari_tara_paralel(ip, portlar=None):
-    """ThreadPoolExecutor kullanarak belirtilen IP adresindeki portları hızlıca tarar."""
+    """threadpoolexecutor kullanarak belirtilen ıp adresindeki portları hızlıca tarar."""
     if portlar is None:
         portlar = [21, 22, 23, 25, 53, 80, 110, 139, 143, 443, 445, 1433, 3306, 3389, 5432, 6379, 8080, 9200]
         
@@ -103,7 +103,7 @@ def portlari_tara_paralel(ip, portlar=None):
     return sorted(acik_portlar, key=lambda x: x["port"])
 
 def web_baslik_analizi(domain):
-    """Hedef web sitesinin HTTP başlıklarını ve SSL/TLS durumunu sorgular."""
+    """hedef web sitesinin http başlıklarını ve ssl/tls durumunu sorgular."""
     url = f"https://{domain}" if not domain.startswith(("http://", "https://")) else domain
     start_time = time.time()
     
@@ -157,7 +157,7 @@ def web_baslik_analizi(domain):
     return analiz
 
 def tarama_yap(hedef):
-    """Alan adı çözümlemesi, port tarama ve web başlık analizi adımlarını birleştirerek gerçek tarama gerçekleştirir."""
+    """alan adı çözümlemesi, port tarama ve web başlık analizi adımlarını birleştirerek gerçek tarama gerçekleştirir."""
     domain, ip = host_cozumle(hedef)
     
     if not ip:

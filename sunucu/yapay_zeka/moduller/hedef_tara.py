@@ -1,11 +1,11 @@
 """
-Salus AI - Canlı Hedef Tarama Modülü
+salus aı - canlı hedef tarama modülü
 ====================================
-Bu modül, kullanıcıdan gelen "hedefi tara" gibi doğal dil komutlarını yakalar,
-domain/IP adresini ayıklar ve `salus_scanner` modülünü kullanarak canlı
+bu modül, kullanıcıdan gelen "hedefi tara" gibi doğal dil komutlarını yakalar,
+domain/ıp adresini ayıklar ve `salus_scanner` modülünü kullanarak canlı
 port ve web başlık analizi gerçekleştirir.
 
-Node.js sunucusu ve Python modül yöneticisi ile uyumludur.
+node.js sunucusu ve python modül yöneticisi ile uyumludur.
 """
 
 import re
@@ -20,26 +20,26 @@ AUTHOR: str = "Salus AI"
 
 
 def can_handle(message: str) -> bool:
-    """Mesajın tarama komutu içerip içermediğini kontrol eder.
+    """mesajın tarama komutu içerip içermediğini kontrol eder.
 
-    Args:
-        message (str): Kullanıcı mesajı.
+    args:
+        message (str): kullanıcı mesajı.
 
-    Returns:
-        bool: Eşleşme durumunda True.
+    returns:
+        bool: eşleşme durumunda true.
     """
     msg = message.lower()
     return ("tara" in msg or "scan" in msg) and ("." in msg or "hedef" in msg or "site" in msg)
 
 
 def execute(message: str) -> str:
-    """Canlı hedef taramasını yürütür ve markdown raporu döndürür.
+    """canlı hedef taramasını yürütür ve markdown raporu döndürür.
 
-    Args:
-        message (str): Kullanıcı komutu.
+    args:
+        message (str): kullanıcı komutu.
 
-    Returns:
-        str: Markdown formatında tarama sonuç raporu.
+    returns:
+        str: markdown formatında tarama sonuç raporu.
     """
     # mesaj içindeki potansiyel domain/ıp adresini ayıkla
     words = message.replace(":", " ").replace(",", " ").split()

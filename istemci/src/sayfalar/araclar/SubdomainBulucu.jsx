@@ -77,13 +77,46 @@ const SubdomainBulucu = () => {
       )}
 
       {yukleniyor && (
-        <div className="analiz-sonuc">
+        <div className="analiz-sonuc cam-kart" style={{ padding: 0 }}>
           <div className="tarama-animasyon">
-            <div className="tarama-ilerleme-bar">
-              <div className="tarama-ilerleme-cizgi" style={{ width: '70%', animation: 'nabiz 1.5s infinite' }} />
+            <div className="tarama-durum-rozet">
+              <span className="tarama-durum-nokta" />
+              CANLI İSTİHBARAT TARAMASI
             </div>
-            <div className="tarama-mesaj">
-              Sertifika günlükleri (CT) ve <strong>DNS kayıtları</strong> taranıyor...
+
+            <div className="tarama-radar-kapsayici">
+              <div className="tarama-radar-halka" />
+              <div className="tarama-radar-halka-2" />
+              <div className="tarama-radar-merkez">
+                <Globe size={22} />
+              </div>
+            </div>
+
+            <div className="tarama-mesaj-kapsayici">
+              <div className="tarama-mesaj">
+                Sertifika günlükleri (CT) ve <strong>DNS kayıtları</strong> taranıyor...
+              </div>
+              <div className="tarama-alt-mesaj">
+                Hedef: {girdi} • Protokol: TLS / DNS / HTTP • Kaynak: crt.sh & Yerel DNS
+              </div>
+            </div>
+
+            <div className="tarama-ilerleme-kapsayici">
+              <div className="tarama-ilerleme-bar">
+                <div className="tarama-ilerleme-cizgi" style={{ width: '80%' }} />
+              </div>
+            </div>
+
+            <div className="tarama-adimlar">
+              <span className="tarama-adim tamamlandi">
+                <Activity size={14} /> Sertifika Logları (CT)
+              </span>
+              <span className="tarama-adim aktif">
+                <Server size={14} /> DNS & CNAME Çözümleme
+              </span>
+              <span className="tarama-adim">
+                <Globe size={14} /> Takeover & Durum Tespiti
+              </span>
             </div>
           </div>
         </div>

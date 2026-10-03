@@ -1,4 +1,4 @@
-import { Calendar, Clock, ArrowRight, ShieldCheck, Tag } from 'lucide-react';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Profil.css';
 

@@ -1,11 +1,11 @@
 """
-Salus AI - Şifre Gücü ve Entropi Analiz Modülü
+salus aı - şifre gücü ve entropi analiz modülü
 ==============================================
-Bu modül, verilen bir şifrenin siber güvenlik standartlarına uygunluğunu analiz eder.
-Karakter seti havuzunun genişliğini, teorik ve pratik entropi (bilgi belirsizliği) bit değerini hesaplar,
+bu modül, verilen bir şifrenin siber güvenlik standartlarına uygunluğunu analiz eder.
+karakter seti havuzunun genişliğini, teorik ve pratik entropi (bilgi belirsizliği) bit değerini hesaplar,
 l33tspeak dönüşümlerini çözerek sözlük tabanlı tarama yapar ve klavye örüntülerini analiz eder.
 
-Modern 8x RTX 4090 GPU kümeleri gibi yüksek performanslı kaba kuvvet (brute-force) donanımları
+modern 8x rtx 4090 gpu kümeleri gibi yüksek performanslı kaba kuvvet (brute-force) donanımları
 referans alınarak çevrimdışı kırılma süresi tahminleri üretilir.
 """
 
@@ -57,26 +57,26 @@ L33T_MAP: Dict[str, str] = {
 
 
 def can_handle(message: str) -> bool:
-    """Bu modülün şifre analiz isteklerini sahiplenip sahiplenmeyeceğini kontrol eder.
+    """bu modülün şifre analiz isteklerini sahiplenip sahiplenmeyeceğini kontrol eder.
 
-    Args:
-        message (str): Gelen kullanıcı mesajı.
+    args:
+        message (str): gelen kullanıcı mesajı.
 
-    Returns:
-        bool: Eşleşme durumunda True.
+    returns:
+        bool: eşleşme durumunda true.
     """
     msg = message.lower().strip()
     return msg.startswith("şifre analiz") or msg.startswith("sifre analiz")
 
 
 def normalizasyon_l33t(sifre: str) -> str:
-    """Şifre içindeki l33tspeak karakterleri standart harflere dönüştürür.
+    """şifre içindeki l33tspeak karakterleri standart harflere dönüştürür.
 
-    Args:
-        sifre (str): Orijinal şifre.
+    args:
+        sifre (str): orijinal şifre.
 
-    Returns:
-        str: Normalize edilmiş küçük harfli şifre.
+    returns:
+        str: normalize edilmiş küçük harfli şifre.
     """
     sonuc = sifre.lower()
     for k, v in L33T_MAP.items():
@@ -85,13 +85,13 @@ def normalizasyon_l33t(sifre: str) -> str:
 
 
 def desen_kontrol(sifre: str) -> List[str]:
-    """Şifre içindeki tekrarlanan, sıralı ve klavye örüntülerini kontrol eder.
+    """şifre içindeki tekrarlanan, sıralı ve klavye örüntülerini kontrol eder.
 
-    Args:
-        sifre (str): Analiz edilecek şifre.
+    args:
+        sifre (str): analiz edilecek şifre.
 
-    Returns:
-        List[str]: Tespit edilen zayıf örüntü uyarıları.
+    returns:
+        list[str]: tespit edilen zayıf örüntü uyarıları.
     """
     uyarilar: List[str] = []
     kucuk = sifre.lower()
@@ -118,13 +118,13 @@ def desen_kontrol(sifre: str) -> List[str]:
 
 
 def sure_formatla(saniye: float) -> str:
-    """Saniye cinsinden süreyi okunabilir zaman birimlerine dönüştürür.
+    """saniye cinsinden süreyi okunabilir zaman birimlerine dönüştürür.
 
-    Args:
-        saniye (float): Zaman farkı (saniye).
+    args:
+        saniye (float): zaman farkı (saniye).
 
-    Returns:
-        str: Okunabilir zaman etiketi.
+    returns:
+        str: okunabilir zaman etiketi.
     """
     if saniye < 1:
         return "Anında (Saliseler içinde)"
@@ -148,13 +148,13 @@ def sure_formatla(saniye: float) -> str:
 
 
 def execute(message: str) -> str:
-    """Gelen şifre analiz isteğini yürütür ve detaylı raporu oluşturur.
+    """gelen şifre analiz isteğini yürütür ve detaylı raporu oluşturur.
 
-    Args:
-        message (str): Ham kullanıcı girdisi.
+    args:
+        message (str): ham kullanıcı girdisi.
 
-    Returns:
-        str: Analiz sonuçlarını barındıran markdown tablosu.
+    returns:
+        str: analiz sonuçlarını barındıran markdown tablosu.
     """
     parcalar = message.split(maxsplit=2)
     if len(parcalar) < 3:

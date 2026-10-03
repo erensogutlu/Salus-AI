@@ -1,4 +1,4 @@
-import { BookOpen, Terminal, Shield, Zap, Search, Key } from 'lucide-react';
+import { Terminal, Shield, Search, Key } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Profil.css';
 

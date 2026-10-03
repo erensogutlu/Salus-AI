@@ -1,10 +1,10 @@
 """
-Salus AI - DNS Sorgulama Modülü
+salus aı - dns sorgulama modülü
 ===============================
-Bu modül, alan adlarının A, AAAA, MX, NS, CNAME ve TXT DNS kayıtlarını sorgular.
-Ayrıca SPF ve DMARC gibi e-posta güvenlik kayıtlarının varlığını analiz eder.
+bu modül, alan adlarının a, aaaa, mx, ns, cname ve txt dns kayıtlarını sorgular.
+ayrıca spf ve dmarc gibi e-posta güvenlik kayıtlarının varlığını analiz eder.
 
-Node.js sunucusu ve Python modül yöneticisi ile uyumludur.
+node.js sunucusu ve python modül yöneticisi ile uyumludur.
 """
 
 import sys
@@ -25,18 +25,18 @@ DESCRIPTION: str = "Kapsamlı DNS kayıtları sorgulayıcı ve güvenlik analizi
 AUTHOR: str = "Salus AI"
 
 def can_handle(message: str) -> bool:
-    """Modülün gelen DNS sorgulama isteklerini işleyip işlemeyeceğini kontrol eder."""
+    """modülün gelen dns sorgulama isteklerini işleyip işlemeyeceğini kontrol eder."""
     msg = message.lower().strip()
     return msg.startswith("dns ") or msg.startswith("dns sorgula")
 
 def domain_ayikla(message: str) -> str:
-    """Gelen mesajdan domain adını temizleyerek ayıklar."""
+    """gelen mesajdan domain adını temizleyerek ayıklar."""
     keyword = "dns sorgula" if message.lower().startswith("dns sorgula") else "dns"
     return salus_common.clean_domain_or_ip(message, keyword)
 
 def dns_sorgula_sistem(domain: str, kayit_tipi: str) -> List[str]:
-    """Python'ın standart socket kütüphanesini kullanarak temel A/AAAA/MX/NS/TXT kayıtlarını sorgular.
-    Herhangi bir harici kütüphane (dnspython vb.) gerektirmez, böylece sistem bağımsız çalışır.
+    """python'ın standart socket kütüphanesini kullanarak temel a/aaaa/mx/ns/txt kayıtlarını sorgular.
+    herhangi bir harici kütüphane (dnspython vb.) gerektirmez, böylece sistem bağımsız çalışır.
     """
     sonuclar = []
     try:
@@ -59,7 +59,7 @@ def dns_sorgula_sistem(domain: str, kayit_tipi: str) -> List[str]:
     return sonuclar
 
 def execute(message: str) -> str:
-    """DNS sorgulamasını yürütür ve markdown formatında rapor üretir."""
+    """dns sorgulamasını yürütür ve markdown formatında rapor üretir."""
     domain = domain_ayikla(message)
     if not domain or "." not in domain:
         return "Lütfen sorgulanacak geçerli bir domain belirtin. Örnek: `dns sorgula google.com`"

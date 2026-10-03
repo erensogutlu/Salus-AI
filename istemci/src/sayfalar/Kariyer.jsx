@@ -1,4 +1,4 @@
-import { Briefcase, MapPin, Clock, ArrowRight, Sparkles } from 'lucide-react';
+import { MapPin, Clock, ArrowRight, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Profil.css';
 

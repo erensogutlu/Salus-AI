@@ -1,10 +1,10 @@
 """
-Salus AI - Kriptografik Güvenli Şifre ve Passphrase Üretici
+salus aı - kriptografik güvenli şifre ve passphrase üretici
 ===========================================================
-Bu modül, kriptografik olarak güvenli sözde rastgele sayı üreteci (secrets modülü)
+bu modül, kriptografik olarak güvenli sözde rastgele sayı üreteci (secrets modülü)
 kullanarak yüksek entropili şifreler ve hatırlanabilir parola cümleleri (passphrase) üretir.
 
-Olası brute-force saldırılarına dayanıklı, çeşitli uzunluklarda ve karakter
+olası brute-force saldırılarına dayanıklı, çeşitli uzunluklarda ve karakter
 kümesi seçenekleriyle 3 farklı alternatif sunar.
 """
 
@@ -53,27 +53,27 @@ TURKCE_KELIMELER: List[str] = [
 
 
 def can_handle(message: str) -> bool:
-    """Modülün şifre üretme isteklerini sahiplenip sahiplenmeyeceğini kontrol eder.
+    """modülün şifre üretme isteklerini sahiplenip sahiplenmeyeceğini kontrol eder.
 
-    Args:
-        message (str): Kullanıcı mesajı.
+    args:
+        message (str): kullanıcı mesajı.
 
-    Returns:
-        bool: Eşleşme durumunda True.
+    returns:
+        bool: eşleşme durumunda true.
     """
     msg = message.lower().strip()
     return any(msg.startswith(t) for t in TETIKLEYICILER) or "hatırlanabilir şifre" in msg or "passphrase" in msg
 
 
 def rastgele_sifre_uret(uzunluk: int, ozel_haric: bool) -> Tuple[str, float]:
-    """Kriptografik güvenli rastgele şifre üretir ve entropisini hesaplar.
+    """kriptografik güvenli rastgele şifre üretir ve entropisini hesaplar.
 
-    Args:
-        uzunluk (int): Şifre karakter uzunluğu.
-        ozel_haric (bool): True ise özel karakter eklenmez.
+    args:
+        uzunluk (int): şifre karakter uzunluğu.
+        ozel_haric (bool): true ise özel karakter eklenmez.
 
-    Returns:
-        Tuple[str, float]: Üretilen şifre ve hesaplanan entropi (bit).
+    returns:
+        tuple[str, float]: üretilen şifre ve hesaplanan entropi (bit).
     """
     harfler_kucuk = string.ascii_lowercase
     harfler_buyuk = string.ascii_uppercase
@@ -105,13 +105,13 @@ def rastgele_sifre_uret(uzunluk: int, ozel_haric: bool) -> Tuple[str, float]:
 
 
 def passphrase_uret(kelime_sayisi: int) -> Tuple[str, float]:
-    """Türkçe kelime havuzunu kullanarak kriptografik güvenli parola cümlesi (passphrase) üretir.
+    """türkçe kelime havuzunu kullanarak kriptografik güvenli parola cümlesi (passphrase) üretir.
 
-    Args:
-        kelime_sayisi (int): Cümlede yer alacak kelime sayısı.
+    args:
+        kelime_sayisi (int): cümlede yer alacak kelime sayısı.
 
-    Returns:
-        Tuple[str, float]: Üretilen passphrase ve hesaplanan entropi (bit).
+    returns:
+        tuple[str, float]: üretilen passphrase ve hesaplanan entropi (bit).
     """
     secilenler = [secrets.choice(TURKCE_KELIMELER) for _ in range(kelime_sayisi)]
     
@@ -127,13 +127,13 @@ def passphrase_uret(kelime_sayisi: int) -> Tuple[str, float]:
 
 
 def seviye_belirle(entropi: float) -> str:
-    """Entropi değerine göre şifre güvenlik sınıflandırmasını belirler.
+    """entropi değerine göre şifre güvenlik sınıflandırmasını belirler.
 
-    Args:
-        entropi (float): Şifre bilgi belirsizliği (bit).
+    args:
+        entropi (float): şifre bilgi belirsizliği (bit).
 
-    Returns:
-        str: Güvenlik seviyesi etiketi.
+    returns:
+        str: güvenlik seviyesi etiketi.
     """
     if entropi < 40:
         return "Zayıf"
@@ -145,13 +145,13 @@ def seviye_belirle(entropi: float) -> str:
 
 
 def execute(message: str) -> str:
-    """Şifre/Passphrase üretme komutunu işler ve yanıt oluşturur.
+    """şifre/passphrase üretme komutunu işler ve yanıt oluşturur.
 
-    Args:
-        message (str): Kullanıcıdan gelen komut mesajı.
+    args:
+        message (str): kullanıcıdan gelen komut mesajı.
 
-    Returns:
-        str: Markdown formatında şifre listesi.
+    returns:
+        str: markdown formatında şifre listesi.
     """
     msg_lower = message.lower()
     

@@ -351,13 +351,34 @@ const HashBase64 = () => {
 
       {/* yapay zeka yükleme durumu */}
       {aiYukleniyor && (
-        <div className="analiz-sonuc">
+        <div className="analiz-sonuc cam-kart" style={{ padding: 0 }}>
           <div className="tarama-animasyon">
-            <div className="tarama-ilerleme-bar">
-              <div className="tarama-ilerleme-cizgi" style={{ width: '80%', animation: 'nabiz 1.5s infinite' }} />
+            <div className="tarama-durum-rozet">
+              <span className="tarama-durum-nokta" />
+              KRİPTOGRAFİK & HEURİSTİK ANALİZ
             </div>
-            <div className="tarama-mesaj">
-              <strong>Yapay zeka güvenlik motoru</strong> kalıpları analiz ediyor...
+
+            <div className="tarama-radar-kapsayici">
+              <div className="tarama-radar-halka" />
+              <div className="tarama-radar-halka-2" />
+              <div className="tarama-radar-merkez">
+                <Cpu size={22} />
+              </div>
+            </div>
+
+            <div className="tarama-mesaj-kapsayici">
+              <div className="tarama-mesaj">
+                <strong>Yapay zeka güvenlik motoru</strong> entropi ve saldırı kalıplarını inceliyor...
+              </div>
+              <div className="tarama-alt-mesaj">
+                Mod: {aktifSekme === 'hash' ? 'Hash Algoritma Tespiti' : 'Payload & Zafiyet İmzası Taraması'}
+              </div>
+            </div>
+
+            <div className="tarama-ilerleme-kapsayici">
+              <div className="tarama-ilerleme-bar">
+                <div className="tarama-ilerleme-cizgi" style={{ width: '85%' }} />
+              </div>
             </div>
           </div>
         </div>

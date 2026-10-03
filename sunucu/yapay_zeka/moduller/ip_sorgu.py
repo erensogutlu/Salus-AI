@@ -1,8 +1,8 @@
 """
-Salus AI - IP Coğrafi Konum ve Tehdit İstihbaratı Sorgulama Modülü
+salus aı - ıp coğrafi konum ve tehdit istihbaratı sorgulama modülü
 ===================================================================
-Bu modül, verilen bir IPv4, IPv6 adresi veya Domain adının coğrafi konumunu (enlem, boylam, şehir, ülke),
-ISP ve ASN ağ bilgilerini, Ters DNS (PTR) kaydını ve VPN/Proxy/Tor gibi gizlilik ve tehdit durumlarını sorgular.
+bu modül, verilen bir ıpv4, ıpv6 adresi veya domain adının coğrafi konumunu (enlem, boylam, şehir, ülke),
+ısp ve asn ağ bilgilerini, ters dns (ptr) kaydını ve vpn/proxy/tor gibi gizlilik ve tehdit durumlarını sorgular.
 """
 
 import sys
@@ -27,13 +27,13 @@ AUTHOR: str = "Salus AI"
 
 
 def can_handle(message: str) -> bool:
-    """Modülün IP sorgulama isteklerini sahiplenip sahiplenmeyeceğini denetler."""
+    """modülün ıp sorgulama isteklerini sahiplenip sahiplenmeyeceğini denetler."""
     msg = message.lower().strip()
     return msg.startswith("ip sorgula") or msg.startswith("ip nedir") or msg.startswith("ip bilgi") or msg.startswith("ip konum")
 
 
 def reverse_dns_getir(ip: str) -> Optional[str]:
-    """Verilen IP adresi için Ters DNS (PTR) kaydını sorgular."""
+    """verilen ıp adresi için ters dns (ptr) kaydını sorgular."""
     try:
         return socket.gethostbyaddr(ip)[0]
     except (socket.herror, Exception):
@@ -41,7 +41,7 @@ def reverse_dns_getir(ip: str) -> Optional[str]:
 
 
 def host_coz_ip(hedef: str) -> Optional[str]:
-    """Domain adını IP adresine dönüştürür veya IP'yi doğrular."""
+    """domain adını ıp adresine dönüştürür veya ıp'yi doğrular."""
     hedef = hedef.replace("https://", "").replace("http://", "").split("/")[0].strip()
     try:
         return socket.gethostbyname(hedef)
@@ -50,7 +50,7 @@ def host_coz_ip(hedef: str) -> Optional[str]:
 
 
 def api_sorgula(ip: str) -> Tuple[Optional[str], Optional[Dict[str, Any]]]:
-    """Yedekli ve hata toleranslı IP istihbaratı API sorgulaması yapar."""
+    """yedekli ve hata toleranslı ıp istihbaratı apı sorgulaması yapar."""
     # 1. öncelikli kaynak: ipwho.is (enlem, boylam, vpn/tor detayı içerir)
     url_1 = f"https://ipwho.is/{ip}"
     try:
@@ -88,7 +88,7 @@ def api_sorgula(ip: str) -> Tuple[Optional[str], Optional[Dict[str, Any]]]:
 
 
 def execute(message: str) -> str:
-    """IP sorgulama komutunu çalıştırır ve rapor döndürür."""
+    """ıp sorgulama komutunu çalıştırır ve rapor döndürür."""
     parcalar = message.split()
     
     # ip sorgula <ip> veya sadece ip sorgula (boşsa kendi ip)

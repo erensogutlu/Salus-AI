@@ -1,12 +1,12 @@
 """
-Salus AI - Web Güvenlik Başlıkları ve SSL/TLS Analiz Modülü
+salus aı - web güvenlik başlıkları ve ssl/tls analiz modülü
 ===========================================================
-Bu modül, hedef web sitesinin HTTP yanıt güvenlik başlıklarını (HSTS, CSP, X-Frame-Options vb.),
-CORS ve Çerez (Cookie) yapılandırmalarını ve SSL/TLS sertifika parametrelerini inceler.
+bu modül, hedef web sitesinin http yanıt güvenlik başlıklarını (hsts, csp, x-frame-options vb.),
+cors ve çerez (cookie) yapılandırmalarını ve ssl/tls sertifika parametrelerini inceler.
 
-Güvenlik başlıklarının durumuna göre 100 üzerinden bir güvenlik puanı hesaplar,
-bilgi sızıntılarını (Server banner, X-Powered-By vb.) raporlar ve eksik güvenlik başlıkları için
-Nginx ve Apache web sunucusu konfigürasyon önerileri sunar.
+güvenlik başlıklarının durumuna göre 100 üzerinden bir güvenlik puanı hesaplar,
+bilgi sızıntılarını (server banner, x-powered-by vb.) raporlar ve eksik güvenlik başlıkları için
+nginx ve apache web sunucusu konfigürasyon önerileri sunar.
 """
 
 import sys
@@ -107,26 +107,26 @@ GUVENLIK_BASLIKLARI: Dict[str, Dict[str, Any]] = {
 
 
 def can_handle(message: str) -> bool:
-    """Modülün gelen site analiz isteklerini sahiplenip sahiplenmeyeceğini kontrol eder.
+    """modülün gelen site analiz isteklerini sahiplenip sahiplenmeyeceğini kontrol eder.
 
-    Args:
-        message (str): Kullanıcı mesajı.
+    args:
+        message (str): kullanıcı mesajı.
 
-    Returns:
-        bool: Eşleşme durumunda True.
+    returns:
+        bool: eşleşme durumunda true.
     """
     msg = message.lower().strip()
     return msg.startswith("site analiz") or msg.startswith("header analiz")
 
 
 def ssl_sertifika_getir(hostname: str) -> Dict[str, Any]:
-    """Hedef alan adının SSL sertifikasını ve TLS bağlantı parametrelerini analiz eder.
+    """hedef alan adının ssl sertifikasını ve tls bağlantı parametrelerini analiz eder.
 
-    Args:
-        hostname (str): Hedef domain.
+    args:
+        hostname (str): hedef domain.
 
-    Returns:
-        Dict[str, Any]: SSL sertifikasının geçerlilik durumu ve detayları.
+    returns:
+        dict[str, any]: ssl sertifikasının geçerlilik durumu ve detayları.
     """
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
@@ -173,13 +173,13 @@ def ssl_sertifika_getir(hostname: str) -> Dict[str, Any]:
 
 
 def url_temizle(hedef: str) -> Tuple[str, str]:
-    """Komut girdisindeki URL adresini temizler ve domain adını ayırır.
+    """komut girdisindeki url adresini temizler ve domain adını ayırır.
 
-    Args:
-        hedef (str): Ham komut girdisi.
+    args:
+        hedef (str): ham komut girdisi.
 
-    Returns:
-        Tuple[str, str]: Standartlaştırılmış tam URL ve alan adı (domain).
+    returns:
+        tuple[str, str]: standartlaştırılmış tam url ve alan adı (domain).
     """
     hedef = hedef.lower().strip()
     if hedef.startswith("site analiz "):
@@ -197,13 +197,13 @@ def url_temizle(hedef: str) -> Tuple[str, str]:
 
 
 def execute(message: str) -> str:
-    """Web analiz komutunu çalıştırır ve detaylı markdown raporunu üretir.
+    """web analiz komutunu çalıştırır ve detaylı markdown raporunu üretir.
 
-    Args:
-        message (str): Kullanıcı komutu.
+    args:
+        message (str): kullanıcı komutu.
 
-    Returns:
-        str: Güvenlik başlığı, çerez ve SSL detaylarını içeren markdown metni.
+    returns:
+        str: güvenlik başlığı, çerez ve ssl detaylarını içeren markdown metni.
     """
     url, domain = url_temizle(message)
     if not domain or "." not in domain:

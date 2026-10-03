@@ -1,4 +1,4 @@
-import { Shield, Target, Award, Users, CheckCircle2 } from 'lucide-react';
+import { Shield, Target, Award, CheckCircle2 } from 'lucide-react';
 import './Profil.css';
 
 const Hakkimizda = () => {

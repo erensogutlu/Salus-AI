@@ -1,10 +1,10 @@
 """
-Salus AI - Python Modül Yöneticisi
+salus aı - python modül yöneticisi
 ==================================
-Bu modül, gelen siber güvenlik araç isteklerini karşılar, ilgili alt modülleri
+bu modül, gelen siber güvenlik araç isteklerini karşılar, ilgili alt modülleri
 dinamik olarak yükler ve yürütür.
 
-Tüm işlemler JSON tabanlı girdi/çıktı protokolü ile Node.js sunucusuyla haberleşir.
+tüm işlemler json tabanlı girdi/çıktı protokolü ile node.js sunucusuyla haberleşir.
 """
 
 import sys
@@ -34,7 +34,7 @@ else:
 
 
 def modul_yukle(modul_adi: str, modul_yolu: str) -> Optional[ModuleType]:
-    """Bir Python modülünü belirtilen yoldan dinamik olarak yükler."""
+    """bir python modülünü belirtilen yoldan dinamik olarak yükler."""
     try:
         spec = importlib.util.spec_from_file_location(modul_adi, modul_yolu)
         if spec is None or spec.loader is None:
@@ -50,7 +50,7 @@ def modul_yukle(modul_adi: str, modul_yolu: str) -> Optional[ModuleType]:
 
 
 def main() -> None:
-    """Modül yöneticisinin ana giriş noktası."""
+    """modül yöneticisinin ana giriş noktası."""
     start_time = time.perf_counter()
 
     if len(sys.argv) < 2:

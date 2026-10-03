@@ -1,12 +1,12 @@
 """
-Salus AI - Gelişmiş Log Analiz Modülü
+salus aı - gelişmiş log analiz modülü
 ====================================
-Bu modül, Nmap veya Masscan tarama loglarını analiz ederek açık portları,
-çalışan servisleri, işletim sistemini, SSL/TLS durumunu ve olası güvenlik
-zafiyetlerini ayrıştırır. Bulunan verilere göre kapsamlı bir risk puanı ve
+bu modül, nmap veya masscan tarama loglarını analiz ederek açık portları,
+çalışan servisleri, işletim sistemini, ssl/tls durumunu ve olası güvenlik
+zafiyetlerini ayrıştırır. bulunan verilere göre kapsamlı bir risk puanı ve
 tehdit raporu üretir.
 
-Node.js sunucusu ile JSON standardı üzerinden entegre çalışır.
+node.js sunucusu ile json standardı üzerinden entegre çalışır.
 """
 
 import sys
@@ -62,13 +62,13 @@ RISKLI_SERVISLER: Dict[int, Tuple[str, str, str]] = {
 
 
 def b64_coz(log_metni: str) -> str:
-    """Eğer girdi base64 formatındaysa çözer, değilse olduğu gibi döndürür.
+    """eğer girdi base64 formatındaysa çözer, değilse olduğu gibi döndürür.
 
-    Args:
-        log_metni (str): Analiz edilecek ham veya base64 kodlu log metni.
+    args:
+        log_metni (str): analiz edilecek ham veya base64 kodlu log metni.
 
-    Returns:
-        str: UTF-8 formatında çözülmüş log metni.
+    returns:
+        str: utf-8 formatında çözülmüş log metni.
     """
     cleaned = log_metni.strip()
     # base64 regex kontrolü (güvenli, sınırlı uzunluk eşleşmeli)
@@ -81,13 +81,13 @@ def b64_coz(log_metni: str) -> str:
 
 
 def nmap_port_ayristir(log: str) -> List[Dict[str, Any]]:
-    """Nmap standart port tarama çıktısını regex ile ayrıştırır.
+    """nmap standart port tarama çıktısını regex ile ayrıştırır.
 
-    Args:
-        log (str): Nmap log içeriği.
+    args:
+        log (str): nmap log içeriği.
 
-    Returns:
-        List[Dict[str, Any]]: Ayrıştırılmış port bilgileri listesi.
+    returns:
+        list[dict[str, any]]: ayrıştırılmış port bilgileri listesi.
     """
     portlar: List[Dict[str, Any]] = []
     # nmap port regex'i (redos korumalı ve optimize edilmiş)
@@ -115,13 +115,13 @@ def nmap_port_ayristir(log: str) -> List[Dict[str, Any]]:
 
 
 def masscan_port_ayristir(log: str) -> List[Dict[str, Any]]:
-    """Masscan tarama çıktısını regex ile ayrıştırır.
+    """masscan tarama çıktısını regex ile ayrıştırır.
 
-    Args:
-        log (str): Masscan log içeriği.
+    args:
+        log (str): masscan log içeriği.
 
-    Returns:
-        List[Dict[str, Any]]: Ayrıştırılmış port bilgileri listesi.
+    returns:
+        list[dict[str, any]]: ayrıştırılmış port bilgileri listesi.
     """
     portlar: List[Dict[str, Any]] = []
     # örnek: discovered open port 80/tcp on 192.168.1.1
@@ -142,13 +142,13 @@ def masscan_port_ayristir(log: str) -> List[Dict[str, Any]]:
 
 
 def os_ve_cihaz_ayristir(log: str) -> str:
-    """Nmap çıktısından İşletim Sistemi (OS) veya cihaz bilgilerini ayrıştırır.
+    """nmap çıktısından işletim sistemi (os) veya cihaz bilgilerini ayrıştırır.
 
-    Args:
-        log (str): Log içeriği.
+    args:
+        log (str): log içeriği.
 
-    Returns:
-        str: Tespit edilen işletim sistemi adı veya "Bilinmiyor".
+    returns:
+        str: tespit edilen işletim sistemi adı veya "bilinmiyor".
     """
     # os tespiti
     os_match = re.search(r"OS details:\s*([^\r\n]+)", log, re.IGNORECASE)
@@ -164,13 +164,13 @@ def os_ve_cihaz_ayristir(log: str) -> str:
 
 
 def ssl_ve_nse_ayristir(log: str) -> Tuple[str, List[Dict[str, str]]]:
-    """NSE script çıktılarından SSL durumunu ve zafiyet raporlarını ayrıştırır.
+    """nse script çıktılarından ssl durumunu ve zafiyet raporlarını ayrıştırır.
 
-    Args:
-        log (str): Log içeriği.
+    args:
+        log (str): log içeriği.
 
-    Returns:
-        Tuple[str, List[Dict[str, str]]]: SSL Durum metni ve bulunan zafiyetlerin listesi.
+    returns:
+        tuple[str, list[dict[str, str]]]: ssl durum metni ve bulunan zafiyetlerin listesi.
     """
     zafiyetler: List[Dict[str, str]] = []
     ssl_durumu = "Bilinmiyor"
@@ -199,7 +199,7 @@ def ssl_ve_nse_ayristir(log: str) -> Tuple[str, List[Dict[str, str]]]:
 
 
 def main() -> None:
-    """Log analizinin ana yürütme fonksiyonu."""
+    """log analizinin ana yürütme fonksiyonu."""
     if len(sys.argv) < 2:
         print(json.dumps({
             "basarili": False,

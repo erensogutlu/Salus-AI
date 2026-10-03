@@ -1,11 +1,11 @@
 """
-Salus AI - CVE Zafiyet Sorgulama Modülü
+salus aı - cve zafiyet sorgulama modülü
 ========================================
-Bu modül, kritik siber güvenlik açıklarını (CVE) sorgulamak, CVSS risk puanlarını
+bu modül, kritik siber güvenlik açıklarını (cve) sorgulamak, cvss risk puanlarını
 ve iyileştirme adımlarını sunmak için yerleşik bir bilgi tabanı ve arama
 motoru sağlar.
 
-Node.js ve Python modül yöneticisi entegrasyonuna uygundur.
+node.js ve python modül yöneticisi entegrasyonuna uygundur.
 """
 
 import sys
@@ -110,12 +110,12 @@ CVE_DATABASE: Dict[str, Dict[str, Any]] = {
 }
 
 def can_handle(message: str) -> bool:
-    """Modülün gelen CVE sorgu komutlarını işleyip işlemeyeceğini kontrol eder."""
+    """modülün gelen cve sorgu komutlarını işleyip işlemeyeceğini kontrol eder."""
     msg = message.lower().strip()
     return msg.startswith("cve ") or msg.startswith("cve sorgula") or msg.startswith("zafiyet sorgula")
 
 def terim_ayikla(message: str) -> str:
-    """Komuttan aranacak CVE kodunu veya terimini ayıklar."""
+    """komuttan aranacak cve kodunu veya terimini ayıklar."""
     parcalar = message.split()
     if message.lower().startswith("cve sorgula"):
         hedef = " ".join(parcalar[2:])
@@ -126,7 +126,7 @@ def terim_ayikla(message: str) -> str:
     return hedef.strip()
 
 def execute(message: str) -> str:
-    """CVE sorgulamasını yürütür ve markdown formatında rapor üretir."""
+    """cve sorgulamasını yürütür ve markdown formatında rapor üretir."""
     terim = terim_ayikla(message)
     if not terim:
         return "Lütfen sorgulanacak CVE kodunu veya yazılım adını belirtin. Örnek: `cve CVE-2021-44228` veya `cve apache`"

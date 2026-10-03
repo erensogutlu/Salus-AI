@@ -1,12 +1,12 @@
 """
-Salus AI - Subdomain Keşif ve Alt Alan Adı Devralma (Takeover) Tespiti
+salus aı - subdomain keşif ve alt alan adı devralma (takeover) tespiti
 ====================================================================
-Bu modül, hedef domain'e ait alt alan adlarını (subdomain) crt.sh (Certificate Transparency)
-günlükleri üzerinden ve yedekli olarak HackerTarget API'si üzerinden keşfeder.
+bu modül, hedef domain'e ait alt alan adlarını (subdomain) crt.sh (certificate transparency)
+günlükleri üzerinden ve yedekli olarak hackertarget apı'si üzerinden keşfeder.
 
-Keşfedilen her alt alan adı için DNS çözümlemesi yapar, CNAME kayıtlarını sorgulayarak
-bulut sağlayıcılara (AWS, GitHub Pages, Netlify vb.) yönlenmiş sahipsiz subdomain'leri (Takeover)
-tespit eder ve HTTP yanıt durum kodlarını inceler.
+keşfedilen her alt alan adı için dns çözümlemesi yapar, cname kayıtlarını sorgulayarak
+bulut sağlayıcılara (aws, github pages, netlify vb.) yönlenmiş sahipsiz subdomain'leri (takeover)
+tespit eder ve http yanıt durum kodlarını inceler.
 """
 
 import sys
@@ -59,26 +59,26 @@ TAKEOVER_IMZALARI: Dict[str, str] = {
 
 
 def can_handle(message: str) -> bool:
-    """Modülün subdomain keşif isteklerini sahiplenip sahiplenmeyeceğini kontrol eder.
+    """modülün subdomain keşif isteklerini sahiplenip sahiplenmeyeceğini kontrol eder.
 
-    Args:
-        message (str): Gelen mesaj.
+    args:
+        message (str): gelen mesaj.
 
-    Returns:
-        bool: Eşleşme durumunda True.
+    returns:
+        bool: eşleşme durumunda true.
     """
     msg = message.lower().strip()
     return msg.startswith("subdomain") or msg.startswith("alt alan")
 
 
 def wildcard_dns_kontrolu(domain: str) -> bool:
-    """Hedef altyapıda Wildcard (*) DNS yapılandırması olup olmadığını tespit eder.
+    """hedef altyapıda wildcard (*) dns yapılandırması olup olmadığını tespit eder.
 
-    Args:
-        domain (str): Hedef ana alan adı.
+    args:
+        domain (str): hedef ana alan adı.
 
-    Returns:
-        bool: Wildcard DNS aktif ise True.
+    returns:
+        bool: wildcard dns aktif ise true.
     """
     rastgele_sub = secrets.token_hex(8) + "." + domain
     try:
@@ -89,13 +89,13 @@ def wildcard_dns_kontrolu(domain: str) -> bool:
 
 
 def cname_getir(subdomain: str) -> Optional[str]:
-    """Alt alan adının kanonik ismini (CNAME) soket katmanında çözümlemeye çalışır.
+    """alt alan adının kanonik ismini (cname) soket katmanında çözümlemeye çalışır.
 
-    Args:
-        subdomain (str): Çözümlenecek subdomain.
+    args:
+        subdomain (str): çözümlenecek subdomain.
 
-    Returns:
-        Optional[str]: CNAME hedef adresi veya yoksa None.
+    returns:
+        optional[str]: cname hedef adresi veya yoksa none.
     """
     try:
         # cname sorgusu
@@ -109,13 +109,13 @@ def cname_getir(subdomain: str) -> Optional[str]:
 
 
 def subdomain_dogrula(subdomain: str) -> Dict[str, Any]:
-    """Subdomain'i DNS çözümlemesinden geçirir, HTTP isteğiyle kontrol eder ve takeover riskini ölçer.
+    """subdomain'i dns çözümlemesinden geçirir, http isteğiyle kontrol eder ve takeover riskini ölçer.
 
-    Args:
-        subdomain (str): Doğrulanacak subdomain.
+    args:
+        subdomain (str): doğrulanacak subdomain.
 
-    Returns:
-        Dict[str, Any]: Durum, IP, CNAME ve Risk analiz verisi.
+    returns:
+        dict[str, any]: durum, ıp, cname ve risk analiz verisi.
     """
     ip = "-"
     durum = "Yanıtsız"
@@ -171,11 +171,11 @@ def subdomain_dogrula(subdomain: str) -> Dict[str, Any]:
 def crt_sh_sorgula(domain: str) -> Set[str]:
     """crt.sh veritabanını sorgulayarak sertifika şeffaflık kayıtlarından subdomain'leri çeker.
 
-    Args:
-        domain (str): Hedef alan adı.
+    args:
+        domain (str): hedef alan adı.
 
-    Returns:
-        Set[str]: Keşfedilen subdomain kümesi.
+    returns:
+        set[str]: keşfedilen subdomain kümesi.
     """
     bulunanlar: Set[str] = set()
     url = f"https://crt.sh/?q=%25.{domain}&output=json"
@@ -200,13 +200,13 @@ def crt_sh_sorgula(domain: str) -> Set[str]:
 
 
 def hackertarget_sorgula(domain: str) -> Set[str]:
-    """Yedek kaynak olarak HackerTarget API'sinden subdomain araması yapar.
+    """yedek kaynak olarak hackertarget apı'sinden subdomain araması yapar.
 
-    Args:
-        domain (str): Hedef domain.
+    args:
+        domain (str): hedef domain.
 
-    Returns:
-        Set[str]: Keşfedilen subdomain kümesi.
+    returns:
+        set[str]: keşfedilen subdomain kümesi.
     """
     bulunanlar: Set[str] = set()
     url = f"https://api.hackertarget.com/hostsearch/?q={domain}"
@@ -225,13 +225,13 @@ def hackertarget_sorgula(domain: str) -> Set[str]:
 
 
 def execute(message: str) -> str:
-    """Subdomain keşfini ve takeover analizini yürütür, markdown raporu üretir.
+    """subdomain keşfini ve takeover analizini yürütür, markdown raporu üretir.
 
-    Args:
-        message (str): Kullanıcı komutu.
+    args:
+        message (str): kullanıcı komutu.
 
-    Returns:
-        str: Keşif ve risk raporu tablosu.
+    returns:
+        str: keşif ve risk raporu tablosu.
     """
     parcalar = message.split()
     if len(parcalar) < 2:

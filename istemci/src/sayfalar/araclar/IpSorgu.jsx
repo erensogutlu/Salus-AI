@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, MapPin, ShieldAlert, Wifi, Globe, Copy, Check, Compass, Radio } from 'lucide-react';
+import { Search, MapPin, Copy, Check, Compass, Radio } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { aracCagir } from '../../servisler/apiServisi';
@@ -116,13 +116,34 @@ const IpSorgu = () => {
       )}
 
       {yukleniyor && (
-        <div className="analiz-sonuc">
+        <div className="analiz-sonuc cam-kart" style={{ padding: 0 }}>
           <div className="tarama-animasyon">
-            <div className="tarama-ilerleme-bar">
-              <div className="tarama-ilerleme-cizgi" style={{ width: '75%', animation: 'nabiz 1.5s infinite' }} />
+            <div className="tarama-durum-rozet">
+              <span className="tarama-durum-nokta" />
+              GEO-IP & ASN İSTİHBARATI
             </div>
-            <div className="tarama-mesaj">
-              <strong>Global coğrafi istihbarat</strong> sorgulanıyor...
+
+            <div className="tarama-radar-kapsayici">
+              <div className="tarama-radar-halka" />
+              <div className="tarama-radar-halka-2" />
+              <div className="tarama-radar-merkez">
+                <Compass size={22} />
+              </div>
+            </div>
+
+            <div className="tarama-mesaj-kapsayici">
+              <div className="tarama-mesaj">
+                <strong>Global coğrafi istihbarat</strong> ve BGP rotaları sorgulanıyor...
+              </div>
+              <div className="tarama-alt-mesaj">
+                Hedef: {girdi || 'Kendi IP Adresiniz'} • Veritabanı: MaxMind / ip-api / RIPE
+              </div>
+            </div>
+
+            <div className="tarama-ilerleme-kapsayici">
+              <div className="tarama-ilerleme-bar">
+                <div className="tarama-ilerleme-cizgi" style={{ width: '85%' }} />
+              </div>
             </div>
           </div>
         </div>

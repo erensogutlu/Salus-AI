@@ -23,7 +23,6 @@ import {
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { aracCagir } from '../../servisler/apiServisi';
-import YuklemeSpinner from '../../bilesenler/YuklemeSpinner';
 import './GorselMetadata.css';
 
 const ORNEK_METADATA = [
@@ -103,7 +102,7 @@ const GorselMetadata = () => {
 
   const dosyaGirdiRef = useRef(null);
 
-  // Dosya seçildiğinde
+  // dosya seçildiğinde
   const dosyaSecildi = (e) => {
     const secilenDosya = e.target.files?.[0];
     if (!secilenDosya) return;
@@ -128,7 +127,7 @@ const GorselMetadata = () => {
     reader.readAsDataURL(file);
   };
 
-  // Sürükle bırak olayları
+  // sürükle bırak olayları
   const surukleBitti = (e) => {
     e.preventDefault();
     setSurukleniyor(false);
@@ -137,7 +136,7 @@ const GorselMetadata = () => {
     }
   };
 
-  // Analizi çalıştır
+  // analizi çalıştır
   const analiziBaslat = async () => {
     setHata('');
     setYukleniyor(true);
@@ -168,7 +167,7 @@ const GorselMetadata = () => {
 
       if (yanit.basarili) {
         setMarkdownRapor(yanit.sonuc);
-        // İstemci tarafında hızlı görsel veri özeti oluştur
+        // istemci tarafında hızlı görsel veri özeti oluştur
         let sonucVerisi = {
           format: dosya?.type?.split('/')[1]?.toUpperCase() || 'JPEG',
           boyut_kb: dosya ? Math.round(dosya.size / 1024) : 250,
@@ -179,7 +178,7 @@ const GorselMetadata = () => {
           anomaliler: []
         };
 
-        // Eğer python raporundan GPS / Make / Model bilgileri geldiyse parse et
+        // eğer python raporundan gps / make / model bilgileri geldiyse parse et
         const md = yanit.sonuc || '';
         if (md.includes('Enlem (Latitude):') || md.includes('GPS')) {
           const latMatch = md.match(/Enlem \(Latitude\):\s*`([^`]+)`/);
@@ -217,7 +216,7 @@ const GorselMetadata = () => {
     }
   };
 
-  // Örnek Seçimi
+  // örnek seçimi
   const ornekSec = (ornek) => {
     setOnizlemeUrl(ornek.url);
     setSonuc(ornek.demoVeri);
@@ -226,7 +225,7 @@ const GorselMetadata = () => {
     setTemizlemeBasarili(false);
   };
 
-  // Metadata Temizleyici (EXIF Stripper & Güvenli İndir)
+  // metadata temizleyici (exıf stripper & güvenli indir)
   const metadataTemizleVeIndir = () => {
     if (!onizlemeUrl) return;
 
@@ -270,7 +269,7 @@ const GorselMetadata = () => {
         </p>
       </div>
 
-      {/* Giriş Modu Seçimi */}
+      {/* giriş modu seçimi */}
       <div className="sekme-butonlar" style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
         <button
           className={`sekme-buton ${girdiModu === 'dosya' ? 'aktif' : ''}`}
@@ -292,7 +291,7 @@ const GorselMetadata = () => {
         </button>
       </div>
 
-      {/* Girdi Alanı */}
+      {/* girdi alanı */}
       <div className="cam-kart" style={{ padding: '24px', marginBottom: '24px' }}>
         {girdiModu === 'dosya' && (
           <div>
@@ -304,57 +303,57 @@ const GorselMetadata = () => {
               style={{ display: 'none' }}
             />
             <div
-              className={`yukleme-alani ${surukleniyor ? 'surukleniyor' : ''}`}
-              onClick={() => dosyaGirdiRef.current?.click()}
-              onDragOver={(e) => { e.preventDefault(); setSurukleniyor(true); }}
-              onDragLeave={() => setSurukleniyor(false)}
-              onDrop={surukleBitti}
+              classname={`yukleme-alani ${surukleniyor ? 'surukleniyor' : ''}`}
+              onclick={() => dosyagirdiref.current?.click()}
+              ondragover={(e) => { e.preventdefault(); setsurukleniyor(true); }}
+              ondragleave={() => setsurukleniyor(false)}
+              ondrop={suruklebitti}
             >
-              <UploadCloud size={44} className="yukleme-ikon" />
-              <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--metin)' }}>
-                {dosya ? dosya.name : 'Görseli buraya sürükleyin veya seçmek için tıklayın'}
+              <uploadcloud size={44} classname="yukleme-ikon" />
+              <div style={{ fontweight: 600, fontsize: '1rem', color: 'var(--metin)' }}>
+                {dosya ? dosya.name : 'görseli buraya sürükleyin veya seçmek için tıklayın'}
               </div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--metin-soluk)' }}>
-                Desteklenen formatlar: JPEG, PNG, WEBP, TIFF, HEIC (Maksimum 15 MB)
+              <div style={{ fontsize: '0.82rem', color: 'var(--metin-soluk)' }}>
+                desteklenen formatlar: jpeg, png, webp, tıff, heıc (maksimum 15 mb)
               </div>
             </div>
           </div>
         )}
 
-        {girdiModu === 'url' && (
-          <div className="form-grubu" style={{ marginBottom: 0 }}>
-            <label className="form-etiketi">Görsel URL Adresi</label>
-            <div className="form-girisi-ikon">
-              <Globe size={18} className="ikon" />
+        {girdimodu === 'url' && (
+          <div classname="form-grubu" style={{ marginbottom: 0 }}>
+            <label classname="form-etiketi">görsel url adresi</label>
+            <div classname="form-girisi-ikon">
+              <globe size={18} classname="ikon" />
               <input
                 type="text"
-                className="form-girisi"
+                classname="form-girisi"
                 placeholder="https://ornek.com/fotograf.jpg"
-                value={girdiUrl}
-                onChange={(e) => setGirdiUrl(e.target.value)}
+                value={girdiurl}
+                onchange={(e) => setgirdiurl(e.target.value)}
               />
             </div>
           </div>
         )}
 
-        {girdiModu === 'ornek' && (
+        {girdimodu === 'ornek' && (
           <div>
-            <p style={{ fontSize: '0.88rem', color: 'var(--metin-soluk)', marginBottom: '12px' }}>
-              EXIF ve GPS analizini denemek için aşağıdaki hazır örneklerden birini seçin:
+            <p style={{ fontsize: '0.88rem', color: 'var(--metin-soluk)', marginbottom: '12px' }}>
+              exıf ve gps analizini denemek için aşağıdaki hazır örneklerden birini seçin:
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
-              {ORNEK_METADATA.map((o, idx) => (
+            <div style={{ display: 'grid', gridtemplatecolumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+              {ornek_metadata.map((o, idx) => (
                 <button
                   key={idx}
                   type="button"
-                  className="buton buton-hayalet"
-                  onClick={() => ornekSec(o)}
-                  style={{ justifyContent: 'flex-start', textAlign: 'left', padding: '12px 14px' }}
+                  classname="buton buton-hayalet"
+                  onclick={() => orneksec(o)}
+                  style={{ justifycontent: 'flex-start', textalign: 'left', padding: '12px 14px' }}
                 >
-                  <Camera size={18} style={{ color: 'var(--birincil)' }} />
+                  <camera size={18} style={{ color: 'var(--birincil)' }} />
                   <div>
-                    <div style={{ fontWeight: 600 }}>{o.baslik}</div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--metin-soluk)' }}>{o.demoVeri.seviye} Gizlilik Riski</div>
+                    <div style={{ fontweight: 600 }}>{o.baslik}</div>
+                    <div style={{ fontsize: '0.75rem', color: 'var(--metin-soluk)' }}>{o.demoveri.seviye} gizlilik riski</div>
                   </div>
                 </button>
               ))}
@@ -363,62 +362,90 @@ const GorselMetadata = () => {
         )}
 
         {hata && (
-          <div className="giris-hata" style={{ marginTop: '16px', marginBottom: 0 }}>
+          <div classname="giris-hata" style={{ margintop: '16px', marginbottom: 0 }}>
             {hata}
           </div>
         )}
 
-        {girdiModu !== 'ornek' && (
-          <div style={{ marginTop: '20px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+        {girdimodu !== 'ornek' && (
+          <div style={{ margintop: '20px', display: 'flex', gap: '12px', flexwrap: 'wrap' }}>
             <button
               type="button"
-              className="buton buton-birincil"
-              onClick={analiziBaslat}
-              disabled={yukleniyor || (girdiModu === 'dosya' && !onizlemeUrl) || (girdiModu === 'url' && !girdiUrl)}
-              style={{ minWidth: '180px' }}
+              classname="buton buton-birincil"
+              onclick={analizibaslat}
+              disabled={yukleniyor || (girdimodu === 'dosya' && !onizlemeurl) || (girdimodu === 'url' && !girdiurl)}
+              style={{ minwidth: '180px' }}
             >
               {yukleniyor ? (
                 <>
-                  <span className="yukleyici yukleyici-kucuk" style={{ borderTopColor: '#000' }} />
-                  Analiz Ediliyor...
+                  <span classname="yukleyici yukleyici-kucuk" style={{ bordertopcolor: '#000' }} />
+                  analiz ediliyor...
                 </>
               ) : (
                 <>
-                  <Search size={18} /> Metadata Analiz Et
+                  <search size={18} /> metadata analiz et
                 </>
               )}
             </button>
 
-            {onizlemeUrl && (
+            {onizlemeurl && (
               <button
                 type="button"
-                className="buton buton-hayalet"
-                onClick={() => {
-                  setDosya(null);
-                  setOnizlemeUrl(null);
-                  setGirdiUrl('');
-                  setSonuc(null);
-                  setMarkdownRapor('');
+                classname="buton buton-hayalet"
+                onclick={() => {
+                  setdosya(null);
+                  setonizlemeurl(null);
+                  setgirdiurl('');
+                  setsonuc(null);
+                  setmarkdownrapor('');
                 }}
               >
-                <Trash2 size={16} /> Temizle
+                <trash2 size={16} /> temizle
               </button>
             )}
           </div>
         )}
       </div>
 
-      {/* Analiz Yükleniyor Durumu */}
+      {/* analiz yükleniyor durumu */}
       {yukleniyor && (
-        <div style={{ margin: '40px 0' }}>
-          <YuklemeSpinner metin="Görsel EXIF etiketleri, GPS verisi ve güvenlik anomalileri taranıyor..." />
+        <div className="analiz-sonuc cam-kart" style={{ padding: 0, margin: '24px 0' }}>
+          <div className="tarama-animasyon">
+            <div className="tarama-durum-rozet">
+              <span className="tarama-durum-nokta" />
+              GÖRSEL ADLİ BİLİŞİM & METADATA
+            </div>
+
+            <div className="tarama-radar-kapsayici">
+              <div className="tarama-radar-halka" />
+              <div className="tarama-radar-halka-2" />
+              <div className="tarama-radar-merkez">
+                <Camera size={22} />
+              </div>
+            </div>
+
+            <div className="tarama-mesaj-kapsayici">
+              <div className="tarama-mesaj">
+                Görsel <strong>EXIF etiketleri</strong>, GPS koordinatları ve gizlilik anomalileri taranıyor...
+              </div>
+              <div className="tarama-alt-mesaj">
+                Modül: Pillow EXIF Parser • Güvenlik Kontrolü: Gizli Yazar & Konum İzi
+              </div>
+            </div>
+
+            <div className="tarama-ilerleme-kapsayici">
+              <div className="tarama-ilerleme-bar">
+                <div className="tarama-ilerleme-cizgi" style={{ width: '80%' }} />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Sonuç Alanı */}
+      {/* sonuç alanı */}
       {sonuc && !yukleniyor && (
         <div>
-          {/* Risk Durum Kartı */}
+          {/* risk durum kartı */}
           <div className={`risk-karti ${sonuc.seviye === 'Kritik' ? 'kritik' : sonuc.seviye === 'Orta' ? 'orta' : 'dusuk'}`}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               {sonuc.seviye === 'Kritik' ? (
@@ -441,7 +468,7 @@ const GorselMetadata = () => {
             </div>
           </div>
 
-          {/* Sekmeler */}
+          {/* sekmeler */}
           <div className="sonuc-sekmeler" style={{ marginBottom: '20px' }}>
             <button
               className={`sekme-buton ${aktifSekme === 'ozet' ? 'aktif' : ''}`}
@@ -474,7 +501,7 @@ const GorselMetadata = () => {
           </div>
 
           <div className="gorsel-metadata-grid">
-            {/* Sol Sütun: Görsel Önizleme & Temizleme Butonu */}
+            {/* sol sütun: görsel önizleme & temizleme butonu */}
             <div>
               <div className="cam-kart" style={{ padding: '20px' }}>
                 <h4 style={{ margin: '0 0 12px', fontSize: '1rem' }}>Görsel Önizleme</h4>
@@ -490,7 +517,7 @@ const GorselMetadata = () => {
                   <span><strong>EXIF:</strong> {Object.keys(sonuc.etiketler || {}).length > 0 ? 'Mevcut' : 'Temiz'}</span>
                 </div>
 
-                {/* Metadata Temizleyici Aksiyonu */}
+                {/* metadata temizleyici aksiyonu */}
                 <div className="temizle-buton-alani">
                   <div>
                     <div style={{ fontWeight: 600, color: 'var(--basari)', fontSize: '0.9rem' }}>
@@ -518,7 +545,7 @@ const GorselMetadata = () => {
               </div>
             </div>
 
-            {/* Sağ Sütun: Detaylı Bilgiler */}
+            {/* sağ sütun: detaylı bilgiler */}
             <div>
               {aktifSekme === 'ozet' && (
                 <div className="cam-kart" style={{ padding: '20px' }}>

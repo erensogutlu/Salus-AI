@@ -1,4 +1,4 @@
-import { ShieldCheck, Lock, Eye, Database } from 'lucide-react';
+import { Lock, Eye, Database } from 'lucide-react';
 import './Profil.css';
 
 const Gizlilik = () => {
