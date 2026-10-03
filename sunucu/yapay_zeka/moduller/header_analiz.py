@@ -209,7 +209,7 @@ def execute(message: str) -> str:
     if not domain or "." not in domain:
         return "Lütfen analiz edilecek geçerli bir alan adı girin. Örnek: `site analiz google.com`"
 
-    md = f"## 🌐 Kapsamlı Web Güvenlik Analizi: `{domain}`\n\n"
+    md = f"## Kapsamlı Web Güvenlik Analizi: `{domain}`\n\n"
 
     # ─── 1. http istek ve başlık ayrıştırma ───
     headers: Dict[str, str] = {}
@@ -235,7 +235,7 @@ def execute(message: str) -> str:
         hata_mesaji = str(e)
 
     if hata_mesaji:
-        return md + f"❌ **Bağlantı Hatası:** Hedefe ulaşılamadı. Sunucu kapalı veya istek zaman aşımına uğramış olabilir. (Detay: {hata_mesaji})"
+        return md + f"[-] **Bağlantı Hatası:** Hedefe ulaşılamadı. Sunucu kapalı veya istek zaman aşımına uğramış olabilir. (Detay: {hata_mesaji})"
 
     # ─── 2. ssl/tls güvenlik analizi ───
     ssl_bilgi = ssl_sertifika_getir(domain)
@@ -243,15 +243,15 @@ def execute(message: str) -> str:
     if ssl_bilgi["aktif"]:
         kalan = ssl_bilgi['kalan_gun']
         gun_str = f"({kalan} gün kaldı)" if kalan != -1 else ""
-        md += f"- **Durum:** ✅ Güvenli SSL/TLS Bağlantısı (HTTPS)\n"
+        md += f"- **Durum:** [+] Güvenli SSL/TLS Bağlantısı (HTTPS)\n"
         md += f"- **Protokol Sürümü:** `{ssl_bilgi.get('versiyon', 'Bilinmiyor')}`\n"
         md += f"- **Şifreleme Algoritması (Cipher):** `{ssl_bilgi.get('cipher', 'Bilinmiyor')}`\n"
         md += f"- **Sertifika Yayınlayıcısı:** `{ssl_bilgi.get('yayinlayici', 'Bilinmiyor')}` {gun_str}\n\n"
     else:
-        md += f"- **Durum:** ❌ SSL Tespiti Başarısız veya Bağlantı Şifresiz (HTTP - Kritik Risk!)\n\n"
+        md += f"- **Durum:** [-] SSL Tespiti Başarısız veya Bağlantı Şifresiz (HTTP - Kritik Risk!)\n\n"
 
     # ─── 3. http güvenlik başlıkları ve puanlama ───
-    md += "### 🛡️ HTTP Güvenlik Başlıkları Analizi\n"
+    md += "### HTTP Güvenlik Başlıkları Analizi\n"
     md += "| Güvenlik Başlığı | Durum | İçerik / Tavsiye |\n"
     md += "|:-----------------|:------|:-----------------|\n"
     
@@ -261,14 +261,14 @@ def execute(message: str) -> str:
     
     for key, bilgi in GUVENLIK_BASLIKLARI.items():
         if key in headers:
-            durum = "✅ Mevcut"
+            durum = "[+] Mevcut"
             puan += bilgi["puan"]
             icerik = headers[key]
             if len(icerik) > 50:
                 icerik = icerik[:47] + "..."
             aciklama = f"`{icerik}`"
         else:
-            durum = "❌ Eksik"
+            durum = "[-] Eksik"
             aciklama = f"*(Tavsiye: {bilgi['tavsiye']})*"
             if bilgi["puan"] > 0:  # puan değeri olan eksik başlıkları düzeltme rehberi için ayır
                 eksik_basliklar_detay.append((bilgi["isim"], bilgi["nginx"], bilgi["apache"]))
@@ -276,13 +276,13 @@ def execute(message: str) -> str:
         md += f"| **{bilgi['isim']}** | {durum} | {aciklama} |\n"
 
     # ─── 4. cors ve çerez (cookıe) analizi ───
-    md += "\n### 🍪 Çerez (Cookie) ve CORS Yapılandırması\n"
+    md += "\n### Çerez (Cookie) ve CORS Yapılandırması\n"
     cors_degeri = headers.get("access-control-allow-origin", "")
     
     if cors_degeri == "*":
-        md += "- ⚠️ **CORS Riski:** `Access-Control-Allow-Origin: *` olarak ayarlanmış. Herhangi bir dış kaynak verilerinize erişebilir.\n"
+        md += "- [!] **CORS Riski:** `Access-Control-Allow-Origin: *` olarak ayarlanmış. Herhangi bir dış kaynak verilerinize erişebilir.\n"
     elif cors_degeri:
-        md += f"- ✅ **CORS Yapılandırması:** Güvenli / Kısıtlı (`{cors_degeri}`)\n"
+        md += f"- [+] **CORS Yapılandırması:** Güvenli / Kısıtlı (`{cors_degeri}`)\n"
     else:
         md += "- **CORS Yapılandırması:** Belirtilmemiş (Varsayılan Aynı Köken Politikası - Same Origin Policy geçerli)\n"
 
@@ -292,39 +292,39 @@ def execute(message: str) -> str:
         secure = "secure" in cookie_degeri.lower()
         samesite = "samesite" in cookie_degeri.lower()
         
-        md += f"- 🍪 **Çerez Bayrakları:** "
-        md += f"{'✅ HttpOnly ' if httponly else '❌ HttpOnly Eksik (XSS Sızıntı Riski), '}"
-        md += f"{'✅ Secure ' if secure else '❌ Secure Eksik (Plaintext Sızıntı Riski), '}"
-        md += f"{'✅ SameSite' if samesite else '❌ SameSite Eksik (CSRF Riski)'}\n"
+        md += f"- **Çerez Bayrakları:** "
+        md += f"{'[+] HttpOnly ' if httponly else '[-] HttpOnly Eksik (XSS Sızıntı Riski), '}"
+        md += f"{'[+] Secure ' if secure else '[-] Secure Eksik (Plaintext Sızıntı Riski), '}"
+        md += f"{'[+] SameSite' if samesite else '[-] SameSite Eksik (CSRF Riski)'}\n"
     else:
         md += "- **Çerez Durumu:** Bu istekte çerez atanmadı (Set-Cookie yok).\n"
 
     # ─── 5. bilgi sızıntısı (ınformatıon dısclosure) ───
-    md += "\n### 🔎 Bilgi Sızıntısı Tespiti\n"
+    md += "\n### Bilgi Sızıntısı Tespiti\n"
     sunucu_bilgisi = headers.get("server", "")
     powered_by = headers.get("x-powered-by", "")
     asp_version = headers.get("x-aspnet-version", "")
     
     sizinti_var = False
     if sunucu_bilgisi:
-        md += f"- ⚠️ **Sunucu Başlığı Aktif:** `{sunucu_bilgisi}` (Saldırganlar sürüm zafiyetlerini tarayabilir)\n"
+        md += f"- [!] **Sunucu Başlığı Aktif:** `{sunucu_bilgisi}` (Saldırganlar sürüm zafiyetlerini tarayabilir)\n"
         puan = max(0, puan - 5)
         sizinti_var = True
     if powered_by:
-        md += f"- ⚠️ **Teknoloji Başlığı Sızıyor (X-Powered-By):** `{powered_by}`\n"
+        md += f"- [!] **Teknoloji Başlığı Sızıyor (X-Powered-By):** `{powered_by}`\n"
         puan = max(0, puan - 5)
         sizinti_var = True
     if asp_version:
-        md += f"- ⚠️ **Net Sürüm Bilgisi Sızıyor (X-AspNet-Version):** `{asp_version}`\n"
+        md += f"- [!] **Net Sürüm Bilgisi Sızıyor (X-AspNet-Version):** `{asp_version}`\n"
         puan = max(0, puan - 5)
         sizinti_var = True
         
     if not sizinti_var:
-        md += "- ✅ Sunucu veya arka plan altyapı sürüm bilgisi sızıntısı tespit edilmedi.\n"
+        md += "- [+] Sunucu veya arka plan altyapı sürüm bilgisi sızıntısı tespit edilmedi.\n"
 
     # ─── 6. düzeltme ve iyileştirme rehberi (confıguratıon recommendatıons) ───
     if eksik_basliklar_detay:
-        md += "\n### 🛠️ Sunucu İyileştirme ve Düzeltme Rehberi\n"
+        md += "\n### Sunucu İyileştirme ve Düzeltme Rehberi\n"
         md += "Eksik olan güvenlik başlıklarını düzeltmek için web sunucusu konfigürasyon dosyalarınıza aşağıdaki yönergeleri ekleyin:\n\n"
         
         for isim, nginx_cmd, apache_cmd in eksik_basliklar_detay:
@@ -337,18 +337,18 @@ def execute(message: str) -> str:
     # ─── 7. genel güvenlik notu hesaplama ───
     final_puan = min(100, int((puan / max_puan) * 100))
     if final_puan >= 90:
-        harf_notu = "A+ 🥇 (Mükemmel Güvenlik)"
+        harf_notu = "A+ (Mükemmel Güvenlik)"
     elif final_puan >= 80:
-        harf_notu = "A 🟢 (Güvenli / Çok İyi)"
+        harf_notu = "A (Güvenli / Çok İyi)"
     elif final_puan >= 65:
-        harf_notu = "B 🟡 (İyi / Geliştirilebilir)"
+        harf_notu = "B (İyi / Geliştirilebilir)"
     elif final_puan >= 50:
-        harf_notu = "C 🟠 (Orta / Zayıf Noktaları Var)"
+        harf_notu = "C (Orta / Zayıf Noktaları Var)"
     elif final_puan >= 35:
-        harf_notu = "D 🔴 (Güvensiz / Yüksek Risk)"
+        harf_notu = "D (Güvensiz / Yüksek Risk)"
     else:
-        harf_notu = "F ❌ (Kritik Risk Seviyesi)"
+        harf_notu = "F (Kritik Risk Seviyesi)"
 
-    md = f"> 🏆 **Web Güvenlik Derecesi:** **{harf_notu}** ({final_puan}/100)\n\n" + md
+    md = f"> **Web Güvenlik Derecesi:** **{harf_notu}** ({final_puan}/100)\n\n" + md
 
     return md

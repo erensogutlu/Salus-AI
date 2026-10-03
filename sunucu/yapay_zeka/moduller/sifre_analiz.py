@@ -139,11 +139,11 @@ def sure_formatla(saniye: float) -> str:
         
     yillar = int(saniye/31536000)
     if yillar > 1000000000:
-        return "Milyarlarca Yıl 🌌"
+        return "Milyarlarca Yıl"
     if yillar > 1000000:
-        return "Milyonlarca Yıl 🌌"
+        return "Milyonlarca Yıl"
     if yillar > 1000:
-        return "Binlerce Yıl 🏛️"
+        return "Binlerce Yıl"
     return f"{yillar} Yıl"
 
 
@@ -230,32 +230,32 @@ def execute(message: str) -> str:
     
     # güç seviyesi
     if entropi < 35:
-        seviye = "Zayıf 🔴"
+        seviye = "Zayıf"
     elif entropi < 60:
-        seviye = "Orta 🟠"
+        seviye = "Orta"
     elif entropi < 80:
-        seviye = "Güçlü 🟢"
+        seviye = "Güçlü"
     else:
-        seviye = "Kırılamaz / Ultra Güvenli 🛡️"
+        seviye = "Kırılamaz / Ultra Güvenli"
         
     # markdown çıktısını hazırlama
-    md = f"## 🔒 Kapsamlı Şifre Analiz Sonucu\n\n"
+    md = f"## Kapsamlı Şifre Analiz Sonucu\n\n"
     md += f"**Güvenlik Seviyesi:** {seviye}\n"
     md += f"**Şifre Uzunluğu:** {uzunluk} karakter\n"
     md += f"**Pratik Entropi:** {entropi:.1f} bit *(Teorik Entropi: {orijinal_entropi:.1f} bit)*\n\n"
     
-    md += "### ⏱️ Tahmini Parola Kırılma Süreleri\n"
-    md += f"- 🌐 **Çevrimiçi Saldırı (100 deneme/sn):** {sure_formatla(online_saniye)}\n"
+    md += "### Tahmini Parola Kırılma Süreleri\n"
+    md += f"- **Çevrimiçi Saldırı (100 deneme/sn):** {sure_formatla(online_saniye)}\n"
     md += f"- **Çevrimdışı GPU Saldırısı (100 Milyar deneme/sn - 8x RTX 4090):** {sure_formatla(gpu_saniye)}\n\n"
     
     md += "### Karakter Seti Analizi\n"
-    md += f"- Küçük Harf [a-z]: {'✅ Var' if kucuk_harf else '❌ Yok'}\n"
-    md += f"- Büyük Harf [A-Z]: {'✅ Var' if buyuk_harf else '❌ Yok'}\n"
-    md += f"- Rakamlar [0-9]: {'✅ Var' if rakam else '❌ Yok'}\n"
-    md += f"- Özel Karakterler/Semboller: {'✅ Var' if ozel_karakter else '❌ Yok'}\n\n"
+    md += f"- Küçük Harf [a-z]: {'[+] Var' if kucuk_harf else '[-] Yok'}\n"
+    md += f"- Büyük Harf [A-Z]: {'[+] Var' if buyuk_harf else '[-] Yok'}\n"
+    md += f"- Rakamlar [0-9]: {'[+] Var' if rakam else '[-] Yok'}\n"
+    md += f"- Özel Karakterler/Semboller: {'[+] Var' if ozel_karakter else '[-] Yok'}\n\n"
     
     if uyarilar:
-        md += "### ⚠️ Zafiyetler ve Güvenlik Açıkları\n"
+        md += "### Zafiyetler ve Güvenlik Açıkları\n"
         for uyari in sorted(list(set(uyarilar))):
             md += f"- {uyari}\n"
             

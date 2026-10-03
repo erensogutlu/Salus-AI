@@ -179,7 +179,7 @@ def ssl_ve_nse_ayristir(log: str) -> Tuple[str, List[Dict[str, str]]]:
     if "ssl-cert:" in log or "443/tcp open" in log or "8443/tcp open" in log:
         ssl_durumu = "Aktif (Hedefte SSL tespit edildi)"
         if "TLSv1.0" in log or "SSLv3" in log or "TLSv1.1" in log:
-            ssl_durumu += " - ⚠️ Uyarı: Eski ve zayıf protokoller (SSLv3/TLSv1.0/TLSv1.1) aktif."
+            ssl_durumu += " - [!] Uyarı: Eski ve zayıf protokoller (SSLv3/TLSv1.0/TLSv1.1) aktif."
             zafiyetler.append({
                 "cve": "Zayıf SSL/TLS Yapılandırması",
                 "aciklama": "Eski protokol kullanımı (POODLE, BEAST vb. MITM saldırı riskleri).",

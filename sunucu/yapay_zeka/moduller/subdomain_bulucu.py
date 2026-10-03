@@ -119,7 +119,7 @@ def subdomain_dogrula(subdomain: str) -> Dict[str, Any]:
     """
     ip = "-"
     durum = "Yanıtsız"
-    risk = "Düşük 🟢"
+    risk = "Düşük"
     cname_val = "-"
     
     # dns çözümleme
@@ -140,7 +140,7 @@ def subdomain_dogrula(subdomain: str) -> Dict[str, Any]:
         cname_val = cname
         for imza, saglayici in TAKEOVER_IMZALARI.items():
             if imza in cname:
-                risk = f"Kritik (Takeover: {saglayici} 🔴)"
+                risk = f"Kritik (Takeover: {saglayici})"
                 break
                 
     # http durum kontrolü
@@ -155,7 +155,7 @@ def subdomain_dogrula(subdomain: str) -> Dict[str, Any]:
         durum = str(e.code)
         # takeover kontrolü
         if e.code == 404 and "Kritik" not in risk:
-            risk = "Orta 🟠 (404 Potansiyel Risk)"
+            risk = "Orta  (404 Potansiyel Risk)"
     except Exception:
         pass
         
@@ -239,12 +239,12 @@ def execute(message: str) -> str:
         
     hedef = salus_common.clean_domain_or_ip(message, "subdomain" if message.lower().startswith("subdomain") else "alt alan")
 
-    md = f"## 🗺️ Gelişmiş Subdomain Keşif Raporu: `{hedef}`\n\n"
+    md = f"## Gelişmiş Subdomain Keşif Raporu: `{hedef}`\n\n"
     
     # wildcard dns kontrolü
     is_wildcard = wildcard_dns_kontrolu(hedef)
     if is_wildcard:
-        md += "> ⚠️ **Önemli Uyarı:** Hedef alan adında **Wildcard DNS (*)** tespit edilmiştir. Rasgele uydurulan alt alan adları bile bir varsayılan IP'ye çözümlenecektir. Bu nedenle aşağıdaki 'Aktif' IP sonuçları yönlendirme sunucusuna (catch-all) ait olabilir.\n\n"
+        md += "> [!] **Önemli Uyarı:** Hedef alan adında **Wildcard DNS (*)** tespit edilmiştir. Rasgele uydurulan alt alan adları bile bir varsayılan IP'ye çözümlenecektir. Bu nedenle aşağıdaki 'Aktif' IP sonuçları yönlendirme sunucusuna (catch-all) ait olabilir.\n\n"
 
     # alt alan adı toplama
     bulunanlar: Set[str] = set()
@@ -257,7 +257,7 @@ def execute(message: str) -> str:
         bulunanlar.update(f_ht.result())
 
     if not bulunanlar:
-        return md + "❌ **Arama Sonucu:** crt.sh ve yedek API servislerinden hedef alan adına ait herhangi bir alt alan adı kaydı çekilemedi."
+        return md + "[-] **Arama Sonucu:** crt.sh ve yedek API servislerinden hedef alan adına ait herhangi bir alt alan adı kaydı çekilemedi."
 
     # sonuç sınırlandırma
     bulunanlar_liste = list(bulunanlar)
@@ -297,7 +297,7 @@ def execute(message: str) -> str:
             
         md += f"| `{s['subdomain']}` | `{s['ip']}` | {s['durum']} | {s['risk']} | `{cname_kisa}` |\n"
 
-    md += "\n> 🛡️ **Subdomain Takeover (Alt Alan Adı Devralma) Nedir?**\n"
+    md += "\n> **Subdomain Takeover (Alt Alan Adı Devralma) Nedir?**\n"
     md += "> Bir subdomain CNAME kaydı ile bulut sağlayıcılara (örn: AWS S3, GitHub Pages, Netlify) yönlendirilmiş ancak buluttaki ilgili servis silinmiş/bırakılmışsa; bir saldırgan aynı isimle bulut sağlayıcı üzerinde hesap açıp bu alt alan adını kendi kontrolüne geçirebilir. Bu durum itibar kaybı ve kimlik avı saldırılarına yol açar."
     
     return md

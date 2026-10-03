@@ -54,12 +54,12 @@ def execute(message: str) -> str:
     if not target:
         return "Lütfen taranacak hedefi belirtin. Örnek: `hedefi tara: example.com`"
         
-    response = f"### 🔍 Salus Canlı Ağ Taraması: `{target}`\n\n"
+    response = f"### Salus Canlı Ağ Taraması: `{target}`\n\n"
     
     # hedef hostname'i çözümlüyoruz
     domain, ip = salus_scanner.host_cozumle(target)
     if not ip:
-        return response + f"❌ **{domain}** adresi çözümlenemedi veya hedef aktif değil."
+        return response + f"[-] **{domain}** adresi çözümlenemedi veya hedef aktif değil."
         
     response += f"**Çözümlenen IP:** `{ip}`\n\n"
     
@@ -68,21 +68,21 @@ def execute(message: str) -> str:
     web_analizi = salus_scanner.web_baslik_analizi(domain)
     
     # 1. web ve ssl analiz raporu
-    response += "#### 🌐 Web ve Başlık Analizi\n"
-    response += f"- **SSL/TLS Durumu:** {'✅ Aktif' if web_analizi['sslDurumu'] == 'aktif' else '❌ Pasif veya Geçersiz'}\n"
+    response += "#### Web ve Başlık Analizi\n"
+    response += f"- **SSL/TLS Durumu:** {'[+] Aktif' if web_analizi['sslDurumu'] == 'aktif' else '[-] Pasif veya Geçersiz'}\n"
     response += f"- **Sunucu Yazılımı:** `{web_analizi['sunucuTuru']}`\n"
-    response += f"- **HSTS:** {'✅ Var' if web_analizi['hsts'] else '❌ Yok (Eksik)'}\n"
-    response += f"- **CSP:** {'✅ Var' if web_analizi['csp'] else '❌ Yok (Eksik)'}\n"
+    response += f"- **HSTS:** {'[+] Var' if web_analizi['hsts'] else '[-] Yok (Eksik)'}\n"
+    response += f"- **CSP:** {'[+] Var' if web_analizi['csp'] else '[-] Yok (Eksik)'}\n"
     response += f"- **Yanıt Süresi:** `{web_analizi.get('yanitSuresi', 'Bilinmiyor')}`\n\n"
     
     # 2. açık port raporu
-    response += "#### 🚪 Açık Portlar\n"
+    response += "#### Açık Portlar\n"
     if not acik_portlar:
         response += "Temel güvenlik taramasında dışarı açık popüler port bulunamadı.\n"
     else:
         response += "| Port | Servis | Risk Durumu |\n|---|---|---|\n"
         for p in acik_portlar:
-            risk_emoji = "🔴" if p['risk'] == "kritik" else "🟠" if p['risk'] == "yüksek" else "🟡" if p['risk'] == "orta" else "🟢"
+            risk_emoji = "[KRİTİK]" if p['risk'] == "kritik" else "[YÜKSEK]" if p['risk'] == "yüksek" else "[ORTA]" if p['risk'] == "orta" else "[DÜŞÜK]"
             response += f"| **{p['port']}** | {p['servis']} | {risk_emoji} {p['risk'].capitalize()} |\n"
             
     response += "\n\n> *Not: Bu tarama Salus güvenlik altyapısı tarafından canlı olarak yapılmıştır. Daha detaylı sonuçlar için **Ağ Taraması** sayfasını kullanabilirsiniz.*"

@@ -154,11 +154,11 @@ def execute(message: str) -> str:
     if not domain or "." not in domain:
         return "Lütfen sorgulanacak geçerli bir domain belirtin. Örnek: `whois github.com`"
         
-    md = f"## 🗺️ Domain Kayıt Bilgisi (WHOIS): `{domain}`\n\n"
+    md = f"## Domain Kayıt Bilgisi (WHOIS): `{domain}`\n\n"
     
     raw_text = raw_whois_sorgu(domain)
     if raw_text.startswith("Hata:"):
-        return md + f"❌ **WHOIS Çekilemedi:** Sunucuya erişim sağlanamadı veya sorgu engellendi."
+        return md + f"[-] **WHOIS Çekilemedi:** Sunucuya erişim sağlanamadı veya sorgu engellendi."
         
     veriler = parsed_whois_verisi(raw_text)
     
@@ -183,7 +183,7 @@ def execute(message: str) -> str:
     bitis = tarih_duzenle(veriler["bitis_tarihi"])
     
     # markdown tablosu oluştur
-    md += "### 📋 Alan Adı Tescil Bilgileri\n"
+    md += "### Alan Adı Tescil Bilgileri\n"
     md += "| Parametre | Değer |\n"
     md += "|:---|:---|\n"
     md += f"| **Alan Adı** | `{domain}` |\n"
@@ -195,7 +195,7 @@ def execute(message: str) -> str:
         ns_str = ", ".join([f"`{ns}`" for ns in veriler["nameservers"][:4]])
         md += f"| **Nameserver (NS) Sunucuları** | {ns_str} |\n"
         
-    md += f"\n### 📝 Detaylı WHOIS Ham Çıktısı\n"
+    md += f"\n### Detaylı WHOIS Ham Çıktısı\n"
     md += "<details>\n<summary>Ham WHOIS verilerini görmek için tıklayın</summary>\n\n"
     md += f"```text\n{raw_text[:3000]}\n"
     if len(raw_text) > 3000:

@@ -64,13 +64,13 @@ def execute(message: str) -> str:
     if not domain or "." not in domain:
         return "Lütfen sorgulanacak geçerli bir domain belirtin. Örnek: `dns sorgula google.com`"
         
-    md = f"## 📡 DNS Kayıtları ve Güvenlik Raporu: `{domain}`\n\n"
+    md = f"##  DNS Kayıtları ve Güvenlik Raporu: `{domain}`\n\n"
     
     # ip kayıtları
     a_kayitlari = dns_sorgula_sistem(domain, "A")
     aaaa_kayitlari = dns_sorgula_sistem(domain, "AAAA")
     
-    md += "### 🌐 IP Adresi Kayıtları\n"
+    md += "###  IP Adresi Kayıtları\n"
     if a_kayitlari:
         md += f"- **IPv4 Adresleri (A):**\n"
         for ip in a_kayitlari:
@@ -84,7 +84,7 @@ def execute(message: str) -> str:
             md += f"  - `{ip}`\n"
             
     # e-posta güvenlik kayıtları
-    md += "\n### 🛡️ E-Posta ve Alan Adı Güvenlik Analizi\n"
+    md += "\n###  E-Posta ve Alan Adı Güvenlik Analizi\n"
     
     # nslookup sorgusu
     import subprocess
@@ -167,7 +167,7 @@ def execute(message: str) -> str:
         except Exception:
             pass
 
-    md += "\n### 📈 Güvenlik Sıkılaştırma Kontrolü\n"
+    md += "\n###  Güvenlik Sıkılaştırma Kontrolü\n"
     
     # spf değerlendirmesi
     if spf_var:
@@ -175,19 +175,19 @@ def execute(message: str) -> str:
         md += f"|:---|:---|:---|\n"
         md += f"| **SPF Kaydı** |  Mevcut (Güvenli) | `{spf_record}` |\n"
     else:
-        md += f"| **SPF Kaydı** | ❌ Eksik (Yüksek Risk) | *Alan adınız adına sahte e-posta (spoofing) gönderilebilir.* |\n"
+        md += f"| **SPF Kaydı** | [-] Eksik (Yüksek Risk) | *Alan adınız adına sahte e-posta (spoofing) gönderilebilir.* |\n"
         
     # dmarc değerlendirmesi
     if dmarc_var:
         if not spf_var:
-            md += f"| **DMARC Kaydı** | ⚠️ Kısmi (SPF Eksik) | `{dmarc_record}` |\n"
+            md += f"| **DMARC Kaydı** | [!] Kısmi (SPF Eksik) | `{dmarc_record}` |\n"
         else:
             md += f"| **DMARC Kaydı** |  Mevcut (Güvenli) | `{dmarc_record}` |\n"
     else:
-        md += f"| **DMARC Kaydı** | ❌ Eksik (Yüksek Risk) | *Oltalama (phishing) saldırılarına karşı koruma zayıftır.* |\n"
+        md += f"| **DMARC Kaydı** | [-] Eksik (Yüksek Risk) | *Oltalama (phishing) saldırılarına karşı koruma zayıftır.* |\n"
         
     if txt_kayitlari:
-        md += "\n### 📝 Diğer TXT Kayıtları\n"
+        md += "\n### Diğer TXT Kayıtları\n"
         for txt in txt_kayitlari:
             if not txt.startswith(("v=spf1", "v=DMARC1")) and len(txt) > 3:
                 md += f"- `{txt}`\n"

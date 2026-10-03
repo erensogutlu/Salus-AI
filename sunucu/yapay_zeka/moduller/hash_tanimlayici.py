@@ -46,44 +46,44 @@ def can_handle(message: str) -> bool:
 # öncelikli formatlar
 HASH_YAPILARI: List[Tuple[str, str, str]] = [
     # argon2
-    (r'^\$argon2[id]\$v=\d+\$m=\d+,t=\d+,p=\d+\$[A-Za-z0-9+/]+(\$[A-Za-z0-9+/]+)?$', 'Argon2 (id/i/d)', 'Çok Güçlü 🛡️'),
+    (r'^\$argon2[id]\$v=\d+\$m=\d+,t=\d+,p=\d+\$[A-Za-z0-9+/]+(\$[A-Za-z0-9+/]+)?$', 'Argon2 (id/i/d)', 'Çok Güçlü'),
     # bcrypt
-    (r'^\$2[abyx]\$[0-9]{2}\$[./A-Za-z0-9]{53}$', 'bcrypt (Blowfish)', 'Güçlü 🟢'),
+    (r'^\$2[abyx]\$[0-9]{2}\$[./A-Za-z0-9]{53}$', 'bcrypt (Blowfish)', 'Güçlü'),
     # scrypt
-    (r'^\$scrypt\$ln=\d+,r=\d+,p=\d+\$[A-Za-z0-9+/]+\$[A-Za-z0-9+/]+$', 'scrypt', 'Güçlü 🟢'),
+    (r'^\$scrypt\$ln=\d+,r=\d+,p=\d+\$[A-Za-z0-9+/]+\$[A-Za-z0-9+/]+$', 'scrypt', 'Güçlü'),
     # pbkdf2
-    (r'^\$pbkdf2-sha256\$\d+\$[A-Za-z0-9./]+\$[A-Za-z0-9./]+$', 'PBKDF2-SHA256 (Passlib)', 'Güçlü 🟢'),
-    (r'^pbkdf2_sha256\$\d+\$[A-Za-z0-9]+\$[A-Za-z0-9+/=]+$', 'Django PBKDF2-SHA256', 'Güçlü 🟢'),
-    (r'^pbkdf2_sha1\$\d+\$[A-Za-z0-9]+\$[A-Za-z0-9+/=]+$', 'Django PBKDF2-SHA1', 'Orta 🟠'),
+    (r'^\$pbkdf2-sha256\$\d+\$[A-Za-z0-9./]+\$[A-Za-z0-9./]+$', 'PBKDF2-SHA256 (Passlib)', 'Güçlü'),
+    (r'^pbkdf2_sha256\$\d+\$[A-Za-z0-9]+\$[A-Za-z0-9+/=]+$', 'Django PBKDF2-SHA256', 'Güçlü'),
+    (r'^pbkdf2_sha1\$\d+\$[A-Za-z0-9]+\$[A-Za-z0-9+/=]+$', 'Django PBKDF2-SHA1', 'Orta '),
     # wordpress ve phpbb3
-    (r'^\$P\$[A-Za-z0-9./]{31}$', 'WordPress (phpass)', 'Zayıf 🔴'),
-    (r'^\$H\$[A-Za-z0-9./]{31}$', 'phpBB3', 'Zayıf 🔴'),
+    (r'^\$P\$[A-Za-z0-9./]{31}$', 'WordPress (phpass)', 'Zayıf'),
+    (r'^\$H\$[A-Za-z0-9./]{31}$', 'phpBB3', 'Zayıf'),
     # drupal
-    (r'^\$S\$[A-Za-z0-9./]{52}$', 'Drupal 7+', 'Güçlü 🟢'),
+    (r'^\$S\$[A-Za-z0-9./]{52}$', 'Drupal 7+', 'Güçlü'),
     # sha-crypt
-    (r'^\$5\$[A-Za-z0-9./]{1,16}\$[A-Za-z0-9./]{43}$', 'SHA-256 Crypt (Linux/Cisco Type 8)', 'Orta 🟠'),
-    (r'^\$6\$[A-Za-z0-9./]{1,16}\$[A-Za-z0-9./]{86}$', 'SHA-512 Crypt (Linux/Cisco Type 9)', 'Güçlü 🟢'),
-    (r'^\$1\$[A-Za-z0-9./]{1,8}\$[A-Za-z0-9./]{22}$', 'MD5 Crypt (Cisco Type 5 / Linux)', 'Zayıf 🔴'),
+    (r'^\$5\$[A-Za-z0-9./]{1,16}\$[A-Za-z0-9./]{43}$', 'SHA-256 Crypt (Linux/Cisco Type 8)', 'Orta '),
+    (r'^\$6\$[A-Za-z0-9./]{1,16}\$[A-Za-z0-9./]{86}$', 'SHA-512 Crypt (Linux/Cisco Type 9)', 'Güçlü'),
+    (r'^\$1\$[A-Za-z0-9./]{1,8}\$[A-Za-z0-9./]{22}$', 'MD5 Crypt (Cisco Type 5 / Linux)', 'Zayıf'),
     # cisco type 4
-    (r'^\$4\$[A-Za-z0-9./]{43}$', 'Cisco Type 4 (SHA-256)', 'Orta 🟠'),
+    (r'^\$4\$[A-Za-z0-9./]{43}$', 'Cisco Type 4 (SHA-256)', 'Orta '),
     # cisco type 7
     (r'^[0-9A-Fa-f]{2}[0-9A-Fa-f]{2,}$', 'Cisco Type 7', 'Kritik  (Kolayca Çözülebilir)'),
     # mysql5
-    (r'^\*[A-Fa-f0-9]{40}$', 'MySQL5 (Dual SHA-1)', 'Orta 🟠'),
+    (r'^\*[A-Fa-f0-9]{40}$', 'MySQL5 (Dual SHA-1)', 'Orta '),
     # netntlmv2
-    (r'^[a-zA-Z0-9\-_]+::[a-zA-Z0-9\-_]+:[0-9a-fA-F]{16}:[0-9a-fA-F]{32}:[0-9a-fA-F]{32,}$', 'NetNTLMv2 / NetNTLMv1', 'Orta 🟠'),
+    (r'^[a-zA-Z0-9\-_]+::[a-zA-Z0-9\-_]+:[0-9a-fA-F]{16}:[0-9a-fA-F]{32}:[0-9a-fA-F]{32,}$', 'NetNTLMv2 / NetNTLMv1', 'Orta '),
     # cisco type 9
-    (r'^\$9\$[A-Za-z0-9./]{1,16}\$[A-Za-z0-9./]{86}$', 'Cisco Type 9 (scrypt)', 'Güçlü 🟢'),
+    (r'^\$9\$[A-Za-z0-9./]{1,16}\$[A-Za-z0-9./]{86}$', 'Cisco Type 9 (scrypt)', 'Güçlü'),
 
     # hex formatları
-    (r'^[a-fA-F0-9]{8}$', 'CRC32 / Adler-32 / fnv1a-32', 'Zayıf 🔴 (Sadece bütünlük kontrolü)'),
+    (r'^[a-fA-F0-9]{8}$', 'CRC32 / Adler-32 / fnv1a-32', 'Zayıf (Sadece bütünlük kontrolü)'),
     (r'^[a-fA-F0-9]{16}$', 'MySQL323 / Haval-128 / LM (Eski / < v4.1)', 'Kritik '),
-    (r'^[a-fA-F0-9]{32}$', 'MD5 / NTLM / MD4 / RipeMD-128 / Domain Cached Credentials (DCC)', 'Zayıf 🔴 / Kritik '),
-    (r'^[a-fA-F0-9]{40}$', 'SHA-1 / RIPEMD-160 / MySQL5 (Yıldızsız) / Tiger-160', 'Zayıf 🔴'),
-    (r'^[a-fA-F0-9]{56}$', 'SHA-224 / SHA-3-224 / Blake2s-224', 'Orta 🟠'),
-    (r'^[a-fA-F0-9]{64}$', 'SHA-256 / SHA-3-256 / GOST R 34.11-94 / Blake2s-256 / Blake3', 'Güçlü 🟢'),
-    (r'^[a-fA-F0-9]{96}$', 'SHA-384 / SHA-3-384 / Blake2b-384', 'Güçlü 🟢'),
-    (r'^[a-fA-F0-9]{128}$', 'SHA-512 / SHA-3-512 / Whirlpool / Blake2b-512', 'Çok Güçlü 🛡️'),
+    (r'^[a-fA-F0-9]{32}$', 'MD5 / NTLM / MD4 / RipeMD-128 / Domain Cached Credentials (DCC)', 'Zayıf  / Kritik '),
+    (r'^[a-fA-F0-9]{40}$', 'SHA-1 / RIPEMD-160 / MySQL5 (Yıldızsız) / Tiger-160', 'Zayıf'),
+    (r'^[a-fA-F0-9]{56}$', 'SHA-224 / SHA-3-224 / Blake2s-224', 'Orta '),
+    (r'^[a-fA-F0-9]{64}$', 'SHA-256 / SHA-3-256 / GOST R 34.11-94 / Blake2s-256 / Blake3', 'Güçlü'),
+    (r'^[a-fA-F0-9]{96}$', 'SHA-384 / SHA-3-384 / Blake2b-384', 'Güçlü'),
+    (r'^[a-fA-F0-9]{128}$', 'SHA-512 / SHA-3-512 / Whirlpool / Blake2b-512', 'Çok Güçlü'),
 ]
 
 
@@ -116,18 +116,18 @@ def analiz_et(hash_metni: str) -> Tuple[List[Dict[str, str]], str]:
         if re.match(kalip, analiz_edilecek):
             # hex çakışması olan durumlarda güven skoru dağılımı yapılır
             if isim == "MD5 / NTLM / MD4 / RipeMD-128 / Domain Cached Credentials (DCC)":
-                sonuclar.append({"isim": "MD5 (En Yaygın Hex)", "seviye": "Zayıf 🔴", "guven": "%65"})
-                sonuclar.append({"isim": "NTLM (Windows Parola Depolama)", "seviye": "Zayıf 🔴", "guven": "%20"})
-                sonuclar.append({"isim": "RipeMD-128", "seviye": "Orta 🟠", "guven": "%8"})
+                sonuclar.append({"isim": "MD5 (En Yaygın Hex)", "seviye": "Zayıf", "guven": "%65"})
+                sonuclar.append({"isim": "NTLM (Windows Parola Depolama)", "seviye": "Zayıf", "guven": "%20"})
+                sonuclar.append({"isim": "RipeMD-128", "seviye": "Orta ", "guven": "%8"})
                 sonuclar.append({"isim": "MD4 (Eski/Kritik)", "seviye": "Kritik ", "guven": "%5"})
-                sonuclar.append({"isim": "Domain Cached Credentials (mscash)", "seviye": "Zayıf 🔴", "guven": "%2"})
+                sonuclar.append({"isim": "Domain Cached Credentials (mscash)", "seviye": "Zayıf", "guven": "%2"})
                 continue
                 
             elif isim == "SHA-1 / RIPEMD-160 / MySQL5 (Yıldızsız) / Tiger-160":
-                sonuclar.append({"isim": "SHA-1 (En Yaygın Hex)", "seviye": "Zayıf 🔴", "guven": "%80"})
-                sonuclar.append({"isim": "RIPEMD-160", "seviye": "Orta 🟠", "guven": "%12"})
-                sonuclar.append({"isim": "MySQL5 (Yıldız Karakteri Eksik)", "seviye": "Orta 🟠", "guven": "%6"})
-                sonuclar.append({"isim": "Tiger-160", "seviye": "Zayıf 🔴", "guven": "%2"})
+                sonuclar.append({"isim": "SHA-1 (En Yaygın Hex)", "seviye": "Zayıf", "guven": "%80"})
+                sonuclar.append({"isim": "RIPEMD-160", "seviye": "Orta ", "guven": "%12"})
+                sonuclar.append({"isim": "MySQL5 (Yıldız Karakteri Eksik)", "seviye": "Orta ", "guven": "%6"})
+                sonuclar.append({"isim": "Tiger-160", "seviye": "Zayıf", "guven": "%2"})
                 continue
                 
             elif "/" in isim:
@@ -182,7 +182,7 @@ def execute(message: str) -> str:
     else:
         fazla_uyari = ""
 
-    md = "## 🧬 Gelişmiş Kriptografik Hash Analiz Raporu\n"
+    md = "## Gelişmiş Kriptografik Hash Analiz Raporu\n"
     md += fazla_uyari
 
     for i, girdi in enumerate(girdiler):
@@ -198,13 +198,13 @@ def execute(message: str) -> str:
             md += f"- **Yapı Analizi:** {tuz_uyarisi}\n"
             
         if not sonuclar:
-            md += "❌ **Analiz Sonucu:** Bu girdinin yapısı bilinen standart hash algoritmalarıyla eşleşmedi. Özel (custom) bir şifreleme, tuzlu yapı veya düz metin olabilir.\n"
+            md += "[-] **Analiz Sonucu:** Bu girdinin yapısı bilinen standart hash algoritmalarıyla eşleşmedi. Özel (custom) bir şifreleme, tuzlu yapı veya düz metin olabilir.\n"
         else:
             md += "\n| Olası Algoritma Türü | Güvenlik Derecesi | Tahmini Eşleşme Payı |\n"
             md += "|:-------------------|:------------------|:---------------------|\n"
             for sonuc in sonuclar:
                 md += f"| **{sonuc['isim']}** | {sonuc['seviye']} | {sonuc['guven']} |\n"
 
-    md += "\n> 🛡️ **Siber Güvenlik Standart Notu:** Zayıf (🔴) veya Kritik olarak işaretlenen algoritmalar (MD5, SHA-1, LM, NTLM vb.) modern kırma donanımları karşısında güvensizdir ve parola saklama amacıyla kesinlikle **kullanılmamalıdır**. Modern sistemlerde şifre depolama için Argon2id, PBKDF2 veya bcrypt tercih edilmelidir."
+    md += "\n> **Siber Güvenlik Standart Notu:** Zayıf veya Kritik olarak işaretlenen algoritmalar (MD5, SHA-1, LM, NTLM vb.) modern kırma donanımları karşısında güvensizdir ve parola saklama amacıyla kesinlikle **kullanılmamalıdır**. Modern sistemlerde şifre depolama için Argon2id, PBKDF2 veya bcrypt tercih edilmelidir."
     
     return md

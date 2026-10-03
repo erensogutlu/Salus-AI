@@ -136,12 +136,12 @@ def seviye_belirle(entropi: float) -> str:
         str: Güvenlik seviyesi etiketi.
     """
     if entropi < 40:
-        return "Zayıf 🔴"
+        return "Zayıf"
     if entropi < 60:
-        return "Orta 🟠"
+        return "Orta"
     if entropi < 80:
-        return "Güvenli 🟢"
-    return "Mükemmel / Ultra Güvenli 🛡️"
+        return "Güvenli"
+    return "Mükemmel / Ultra Güvenli"
 
 
 def execute(message: str) -> str:
@@ -190,7 +190,7 @@ def execute(message: str) -> str:
         })
         
     baslik_tur = "Parola Cümlesi (Passphrase)" if passphrase_modu else "Kriptografik Güvenli Şifre"
-    md = f"## 🔑 {baslik_tur} Üretim Sonuçları\n\n"
+    md = f"## {baslik_tur} Üretim Sonuçları\n\n"
     md += "Sizin için kriptografik olarak güvenli 3 alternatif ürettim. İstediğinizi kopyalayarak kullanabilirsiniz:\n\n"
     
     for i, snc in enumerate(sonuclar):
@@ -200,6 +200,6 @@ def execute(message: str) -> str:
         md += f"- **Şifre Tipi:** {snc['tur']}\n"
         md += f"- **Entropi Değeri:** {snc['entropi']:.1f} bit\n\n"
         
-    md += "> 💡 **Güvenlik İpucu:** Üretilen şifrelerinizi güvende tutmak için güvenilir bir **Şifre Yöneticisi (Password Manager)** kullanmanız ve önemli hesaplarınızda **MFA/2FA** (Çok Faktörlü Doğrulama) özelliğini aktif etmeniz önemle tavsiye edilir."
+    md += "> **Güvenlik İpucu:** Üretilen şifrelerinizi güvende tutmak için güvenilir bir **Şifre Yöneticisi (Password Manager)** kullanmanız ve önemli hesaplarınızda **MFA/2FA** (Çok Faktörlü Doğrulama) özelliğini aktif etmeniz önemle tavsiye edilir."
     
     return md

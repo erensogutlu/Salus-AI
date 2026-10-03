@@ -424,33 +424,33 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
 
     if decimal_lat and decimal_lon:
         risk_puani += 50
-        risk_faktorleri.append("🔴 KRİTİK: Görselde tam coğrafi konum (GPS Koordinatları) açıkta! Fotoğrafın çekildiği yer tespit edilebilir.")
+        risk_faktorleri.append("[KRİTİK]: Görselde tam coğrafi konum (GPS Koordinatları) açıkta! Fotoğrafın çekildiği yer tespit edilebilir.")
 
     if analiz["etiketler"].get("Make") or analiz["etiketler"].get("Model"):
         risk_puani += 20
-        risk_faktorleri.append(f"🟠 YÜKSEK: Cihaz donanım bilgisi ({analiz['etiketler'].get('Make', '')} {analiz['etiketler'].get('Model', '')}) açıkta. Cihaz parmak izi çıkarılabilir.")
+        risk_faktorleri.append(f"[YÜKSEK]: Cihaz donanım bilgisi ({analiz['etiketler'].get('Make', '')} {analiz['etiketler'].get('Model', '')}) açıkta. Cihaz parmak izi çıkarılabilir.")
 
     if analiz["etiketler"].get("DateTimeOriginal") or analiz["etiketler"].get("DateTime"):
         risk_puani += 10
-        risk_faktorleri.append("🟡 ORTA: Çekim zaman damgası mevcut (Kişisel zaman analizi yapılabilir).")
+        risk_faktorleri.append("[ORTA]: Çekim zaman damgası mevcut (Kişisel zaman analizi yapılabilir).")
 
     if analiz["etiketler"].get("Artist") or analiz["etiketler"].get("Copyright") or analiz["etiketler"].get("UserComment"):
         risk_puani += 10
-        risk_faktorleri.append("🟡 ORTA: Yazar, telif veya kullanıcı yorumu alanlarında kişisel bilgi izi var.")
+        risk_faktorleri.append("[ORTA]: Yazar, telif veya kullanıcı yorumu alanlarında kişisel bilgi izi var.")
 
     if analiz["anomaliler"]:
         risk_puani += 25
         for a in analiz["anomaliler"]:
-            risk_faktorleri.append(f"🔴 ANOMALİ: {a}")
+            risk_faktorleri.append(f" ANOMALİ: {a}")
 
     risk_puani = min(100, risk_puani)
     seviye = "Kritik" if risk_puani >= 70 else "Yüksek" if risk_puani >= 50 else "Orta" if risk_puani >= 30 else "Düşük (Güvenli)"
 
     # Markdown Çıktısı Üretimi
     cikti = [
-        f"# 📸 Görsel Metadata & Adli Bilişim Raporu: `{kaynak_adi}`\n",
+        f"# Görsel Metadata & Adli Bilişim Raporu: `{kaynak_adi}`\n",
         f"**Dosya Formatı:** {analiz['format']} | **Boyut:** {round(analiz['boyut_bayt'] / 1024, 2)} KB | **EXIF Verisi:** {'Mevcut' if analiz['exif_bulundu'] else 'Bulunamadı/Temiz'}",
-        f"\n### 🛡️ Gizlilik ve OSINT Risk Değerlendirmesi: `{seviye}` (Risk Skoru: {risk_puani}/100)\n"
+        f"\n###  Gizlilik ve OSINT Risk Değerlendirmesi: `{seviye}` (Risk Skoru: {risk_puani}/100)\n"
     ]
 
     if risk_faktorleri:
@@ -458,13 +458,13 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
         for rf in risk_faktorleri:
             cikti.append(f"- {rf}")
     else:
-        cikti.append("✅ Görselde hassas konum, yazar veya cihaz bilgisi tespit edilmedi (Gizlilik güvenli).")
+        cikti.append("[+] Görselde hassas konum, yazar veya cihaz bilgisi tespit edilmedi (Gizlilik güvenli).")
 
     # GPS Bölümü
     if decimal_lat and decimal_lon:
         maps_link = f"https://www.google.com/maps?q={decimal_lat},{decimal_lon}"
         osm_link = f"https://www.openstreetmap.org/?mlat={decimal_lat}&mlon={decimal_lon}#map=16/{decimal_lat}/{decimal_lon}"
-        cikti.append("\n### 📍 Coğrafi Konum (GPS) Bilgileri")
+        cikti.append("\n### Coğrafi Konum (GPS) Bilgileri")
         cikti.append(f"- **Enlem (Latitude):** `{decimal_lat}` ({lat_ref})")
         cikti.append(f"- **Boylam (Longitude):** `{decimal_lon}` ({lon_ref})")
         if altitude:
@@ -473,7 +473,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
 
     # Kamera & Cihaz Parametreleri
     tags = analiz["etiketler"]
-    cikti.append("\n### 📷 Cihaz & Kamera Parametreleri")
+    cikti.append("\n### Cihaz & Kamera Parametreleri")
     cikti.append(f"| Özellik | Değer |")
     cikti.append(f"| :--- | :--- |")
     cikti.append(f"| **Cihaz Markası / Modeli** | {tags.get('Make', '-')} {tags.get('Model', '')} |")
@@ -489,7 +489,7 @@ def analiz_yap(girdi: str) -> Dict[str, Any]:
     cikti.append(f"| **Odak Uzaklığı** | {focal_str} |")
 
     # Öneriler
-    cikti.append("\n### 💡 Güvenlik & Gizlilik Tavsiyeleri")
+    cikti.append("\n###  Güvenlik & Gizlilik Tavsiyeleri")
     if decimal_lat:
         cikti.append("1. **Konum Gizliliği:** İnternette veya sosyal medyada fotoğraf paylaşmadan önce kameranızın GPS konum etiketleme özelliğini kapatın.")
     cikti.append("2. **Metadata Temizleme:** Hassas ortamlara görsel yüklemeden önce Salus AI'ın **'Metadata Temizle ve Güvenli İndir'** özelliğini kullanarak tüm EXIF etiketlerini sıfırlayın.")
@@ -523,16 +523,9 @@ def execute(message: str) -> Dict[str, Any]:
 
     sonuc = analiz_yap(temiz)
     if not sonuc.get("basarili"):
-        return {
-            "handled": True,
-            "response": f"❌ **Görsel Analiz Hatası:** {sonuc.get('hata', 'Bilinmeyen hata.')}"
-        }
+        return f" **Görsel Analiz Hatası:** {sonuc.get('hata', 'Bilinmeyen hata.')}"
 
-    return {
-        "handled": True,
-        "response": sonuc["markdown"],
-        "veri": sonuc
-    }
+    return sonuc["markdown"]
 
 
 if __name__ == "__main__":
