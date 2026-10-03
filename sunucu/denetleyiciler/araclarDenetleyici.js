@@ -42,11 +42,12 @@ const araciCalistir = async (istek, yanit, sonraki) => {
       });
     }
 
-    // girdi uzunlugu kontrolu (dos korumasi)
-    if (veri.length > 2000) {
+    // girdi uzunlugu kontrolu (dos korumasi - gorsel analizi haric)
+    const maxUzunluk = aracTipi === 'gorselMetadata' ? 15 * 1024 * 1024 : 2000;
+    if (veri.length > maxUzunluk) {
       return yanit.status(400).json({
         basarili: false,
-        mesaj: 'veri en fazla 2000 karakter olabilir'
+        mesaj: `veri en fazla ${maxUzunluk} karakter olabilir`
       });
     }
 
@@ -64,19 +65,26 @@ const araciCalistir = async (istek, yanit, sonraki) => {
       temizVeri = dogrulama.temizHedef;
     }
 
-    // önbellek (cache) kontrolü (ağ tarama ve ıp sorgulamada performansı uçurur)
-    const cacheAnahtari = `arac:${aracTipi}:${temizVeri}`;
+    // önbellek (cache) kontrolü
+    const cacheAnahtari = aracTipi === 'gorselMetadata'
+      ? null
+      : `arac:${aracTipi}:${temizVeri}`;
     
-    const cachedData = await cacheYonetici.get(cacheAnahtari);
-    if (cachedData) {
-      console.log(`[CACHE HIT] Yanıt önbellekten getirildi: ${cacheAnahtari}`);
-      return yanit.status(200).json(cachedData);
+    if (cacheAnahtari) {
+      const cachedData = await cacheYonetici.get(cacheAnahtari);
+      if (cachedData) {
+        console.log(`[CACHE HIT] Yanıt önbellekten getirildi: ${cacheAnahtari}`);
+        return yanit.status(200).json(cachedData);
+      }
     }
 
     // ilgili aracın python modülünü tetikleyecek komut metni
     let pythonKomutMetni = '';
     
     switch (aracTipi) {
+      case 'gorselMetadata':
+        pythonKomutMetni = `görsel analiz ${veri}`;
+        break;
       case 'sifreAnaliz':
         pythonKomutMetni = `şifre analiz ${veri}`;
         break;

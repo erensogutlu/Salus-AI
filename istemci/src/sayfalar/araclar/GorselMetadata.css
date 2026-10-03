@@ -1,0 +1,178 @@
+/* salus ai - gorsel metadata stilleri */
+
+.gorsel-metadata-sayfa {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+.gorsel-metadata-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+  .gorsel-metadata-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.yukleme-alani {
+  border: 2px dashed var(--sinir-vurgu);
+  border-radius: var(--yuvarlatma);
+  padding: 36px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: var(--yuzey-secili);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.yukleme-alani:hover,
+.yukleme-alani.surukleniyor {
+  border-color: var(--birincil);
+  background: var(--birincil-acik);
+}
+
+.yukleme-ikon {
+  color: var(--birincil);
+  animation: süzülme 2.5s ease-in-out infinite;
+}
+
+.onizleme-kapsayici {
+  position: relative;
+  width: 100%;
+  max-height: 320px;
+  border-radius: var(--yuvarlatma-kucuk);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  border: 1px solid var(--sinir);
+  margin-top: 12px;
+}
+
+.onizleme-gorsel {
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+}
+
+.dosya-bilgi-cubuk {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--yuzey-secili);
+  border-radius: var(--yuvarlatma-kucuk);
+  margin-top: 12px;
+  font-size: 0.85rem;
+}
+
+.risk-karti {
+  padding: 20px;
+  border-radius: var(--yuvarlatma);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.risk-karti.kritik {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: var(--tehlike);
+}
+
+.risk-karti.orta {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: var(--uyari);
+}
+
+.risk-karti.dusuk {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: var(--basari);
+}
+
+.kamera-kartlari {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.kamera-stat {
+  background: var(--yuzey-secili);
+  padding: 14px;
+  border-radius: var(--yuvarlatma-kucuk);
+  border: 1px solid var(--sinir);
+}
+
+.kamera-stat-etiket {
+  font-size: 0.75rem;
+  color: var(--metin-soluk);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kamera-stat-deger {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--metin);
+  word-break: break-word;
+}
+
+.gps-harita-kutu {
+  background: var(--yuzey-secili);
+  border: 1px solid var(--sinir);
+  border-radius: var(--yuvarlatma-kucuk);
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.gps-koordinatlar {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.gps-oge {
+  font-family: var(--font-kod);
+  font-size: 0.9rem;
+}
+
+.gps-oge strong {
+  color: var(--birincil);
+}
+
+.temizle-buton-alani {
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--yuvarlatma-kucuk);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@keyframes süzülme {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}

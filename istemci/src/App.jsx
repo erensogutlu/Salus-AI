@@ -30,6 +30,7 @@ import HashBase64 from './sayfalar/araclar/HashBase64';
 import IpSorgu from './sayfalar/araclar/IpSorgu';
 import SubdomainBulucu from './sayfalar/araclar/SubdomainBulucu';
 import HeaderAnalizi from './sayfalar/araclar/HeaderAnalizi';
+import GorselMetadata from './sayfalar/araclar/GorselMetadata';
 
 import Hakkimizda from './sayfalar/Hakkimizda';
 import Blog from './sayfalar/Blog';
@@ -122,6 +123,7 @@ function UygulamaIcerik() {
           <Route path="/araclar/ip-sorgu" element={<IpSorgu />} />
           <Route path="/araclar/subdomain" element={<SubdomainBulucu />} />
           <Route path="/araclar/header" element={<HeaderAnalizi />} />
+          <Route path="/araclar/gorsel-metadata" element={<GorselMetadata />} />
 
           {/* korumalı rotalar (oturum açmış olmalı) */}
           <Route element={<KorumaliRota />}>

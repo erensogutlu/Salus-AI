@@ -17,7 +17,8 @@ import {
   Lock,
   Globe,
   Hash,
-  Sliders
+  Sliders,
+  Camera
 } from 'lucide-react';
 import { useYetkilendirme } from '../baglam/YetkilendirmeBaglami';
 import { panelVerisi } from '../servisler/apiServisi';
@@ -217,6 +218,10 @@ const Panel = () => {
           <Link to="/araclar/ip-sorgu" className="hizli-islem-buton">
             <Globe size={18} />
             IP Sorgulama
+          </Link>
+          <Link to="/araclar/gorsel-metadata" className="hizli-islem-buton">
+            <Camera size={18} />
+            Görsel Metadata
           </Link>
           <Link to="/araclar/header" className="hizli-islem-buton">
             <Sliders size={18} />

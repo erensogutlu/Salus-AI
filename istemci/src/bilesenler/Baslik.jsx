@@ -21,7 +21,8 @@ import {
   Globe,
   FileCode,
   Hash,
-  Sliders
+  Sliders,
+  Camera
 } from 'lucide-react';
 import { useYetkilendirme } from '../baglam/YetkilendirmeBaglami';
 import './Baslik.css';
@@ -87,6 +88,7 @@ const Baslik = () => {
     { yol: '/tehdit-analiz', etiket: 'Tehdit Analizi', ikon: Search },
     { yol: '/ag-tarama', etiket: 'Ağ Tarama', ikon: Wifi },
     { yol: '/log-analiz', etiket: 'Gelişmiş Log Analizi', ikon: Terminal },
+    { yol: '/araclar/gorsel-metadata', etiket: 'Görsel Metadata & EXIF', ikon: Camera },
     { yol: '/araclar/sifre', etiket: 'Şifre Araçları', ikon: Lock },
     { yol: '/araclar/kripto', etiket: 'Encoding & Kodlama', ikon: Hash },
     { yol: '/araclar/ip-sorgu', etiket: 'IP & Coğrafi Konum', ikon: Globe },

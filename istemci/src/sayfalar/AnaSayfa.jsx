@@ -21,6 +21,7 @@ import {
   Zap,
   Check,
   Code2,
+  Camera
 } from 'lucide-react';
 import './AnaSayfa.css';
 
@@ -152,6 +153,14 @@ const AnaSayfa = () => {
       ikon: Globe,
       yol: '/araclar/ip-sorgu',
       etiket: 'Harita & GeoIP',
+    },
+    {
+      id: 'gorsel',
+      baslik: 'Görsel Metadata & EXIF',
+      aciklama: 'Fotoğraflardaki gizli GPS koordinatlarını, kamera modellerini tespit edin ve tek tıkla EXIF verilerini temizleyip indirin.',
+      ikon: Camera,
+      yol: '/araclar/gorsel-metadata',
+      etiket: 'GPS & Gizlilik',
     },
     {
       id: 'header',
